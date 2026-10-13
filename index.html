@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abee Detalles - Catálogo Coquette</title>
+  <title>Abee Detalles</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,7 +13,8 @@
     <div class="header-inner">
       <h1 class="brand-title">Abee Detalles</h1>
       <p class="brand-subtitle">Detalles artesanales en chenille</p>
-      <span class="brand-handle">@abee_detalles</span>
+      
+      <a href="http://Instagram.com" target="_blank"><span class="brand-handle">@abee_detalles</span></a>
     </div>
   </header>
 
@@ -36,7 +37,7 @@
       <!-- Tarjeta de Diseño Personalizado -->
       <div class="custom-card">
         <h3>¿Tienes una idea en mente?</h3>
-        <p>Si viste un diseño en Pinterest, TikTok o Instagram, envíanos tu foto de referencia. Adaptamos tu idea a nuestro estilo en chenille con el mayor cuidado y dedicación[cite: 23].</p>
+        <p>Si viste un diseño en Pinterest, TikTok o Instagram, envíanos tu foto de referencia. Adaptamos tu idea a nuestro estilo en chenille con el mayor cuidado y dedicación.</p>
         <textarea id="custom-idea-input" placeholder="Describe tu idea o modelo de referencia..."></textarea>
         <button class="btn-custom-action" onclick="addCustomIdea()">Agregar idea personalizada</button>
       </div>
@@ -62,7 +63,7 @@
 
   </main>
 
-  <!-- Modal de Detalles y Selección de Color con Etiquetas -->
+  <!-- Modal de Detalles y Selección de Color -->
   <div class="modal-overlay" id="product-modal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeProductModal()">✕</button>
@@ -76,7 +77,7 @@
       <div class="modal-color-group">
         <label>Elige un color:</label>
         <div class="color-options-grid" id="color-options-container">
-          <!-- Se generan círculos con texto debajo dinámicamente -->
+          <!-- Círculos de color -->
         </div>
         <input type="text" id="modal-custom-color" placeholder="O escribe otro color personalizado..." class="color-input-text">
       </div>

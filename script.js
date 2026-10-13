@@ -42,45 +42,45 @@ const colorHexMap = {
   "Flores Rosadas con papel Kraft": "#d9777f"
 };
 
-// Catálogo completo con las 32 referencias e imágenes locales sincronizadas
+// Catálogo sin ninguna marca de citación
 const products = [
   // LLAVEROS
-  { id: 1, category: "llaveros", name: "Ramo De Tulipanes", price: 4.00, desc: "Un toque primaveral que no se marchita[cite: 3].", colors: ["Azul", "Rosado", "Amarillo", "Rojo", "Lila"], img: "imagenes/img1322.jpg" },
-  { id: 2, category: "llaveros", name: "Cerezas Coquette", price: 4.00, desc: "Dulces, coquetas y coloridas[cite: 3].", colors: ["Rojo clásico", "Rosado pastel"], img: "imagenes/img1325.jpg" },
-  { id: 3, category: "llaveros", name: "Pingüinito", price: 4.00, desc: "Un símbolo de lealtad para compartir con alguien[cite: 4].", colors: ["Azul", "Negro", "Gris"], img: "imagenes/img1337.jpg" },
-  { id: 4, category: "llaveros", name: "Osito Panda", price: 4.00, desc: "Un tierno y esponjoso compañero[cite: 4].", colors: ["Blanco y Negro"], img: "imagenes/img1340.jpg" },
-  { id: 5, category: "llaveros", name: "Paltita Cute", price: 6.00, desc: "La mitad perfecta para acompañarte a todos lados[cite: 5].", colors: ["Verde tradicional"], img: "imagenes/img1352.jpg" },
-  { id: 6, category: "llaveros", name: "Conchita De Mar", price: 6.00, desc: "Un pedacito de mar y brisa marina siempre contigo[cite: 5].", colors: ["Lila", "Rosado", "Azul mar"], img: "imagenes/conchita_de_mar.jpg" },
-  { id: 7, category: "llaveros", name: "Pelota De Fútbol", price: 6.00, desc: "Para llevar la pasión del fútbol a donde vayas[cite: 6].", colors: ["Blanco y Negro"], img: "imagenes/pelota_de_futbol.jpg" },
-  { id: 8, category: "llaveros", name: "Letra", price: 6.00, desc: "Tu inicial preferida hecha un detalle[cite: 6].", colors: ["Guinda", "Rosado", "Azul", "Negro"], img: "imagenes/letra.jpg" },
-  { id: 9, category: "llaveros", name: "Mini Maceta", price: 6.00, desc: "Toda la ternura de una maceta en versión mini[cite: 7].", colors: ["Morado", "Amarillo", "Rosado"], img: "imagenes/mini_maceta.jpg" },
-  { id: 10, category: "llaveros", name: "Fresa Dulce", price: 6.00, desc: "Tierna y llena de color. Un accesorio bonito y liviano[cite: 7].", colors: ["Rojo", "Rosado"], img: "imagenes/fresa_dulce.jpg" },
-  { id: 11, category: "llaveros", name: "Aro Primavera", price: 6.00, desc: "Un toque floral para llenar de color tu bolso[cite: 8].", colors: ["Amarillo", "Rosado", "Blanco"], img: "imagenes/aro_primavera.jpg" },
-  { id: 12, category: "llaveros", name: "Corazón", price: 6.00, desc: "El detalle perfecto para expresar algo especial[cite: 8].", colors: ["Rosado", "Rojo", "Blanco"], img: "imagenes/corazon.jpg" },
-  { id: 13, category: "llaveros", name: "Flor Fulgor", price: 6.00, desc: "«Flor que da fulgor, con tu brillo fiel...» Lleva la magia, la luz y el poder de sanar siempre contigo[cite: 9].", colors: ["Amarillo y Morado"], img: "imagenes/flor_fulgor.jpg" },
-  { id: 14, category: "llaveros", name: "Ojo Turco", price: 6.00, desc: "Un amuleto floral hecho a mano para llenar tu día de buenas energías y protección[cite: 9].", colors: ["Azul Real"], img: "imagenes/ojo_turco.jpg" },
-  { id: 15, category: "llaveros", name: "Spidey", price: 10.00, desc: "Colgando de su telaraña para acompañarte en cada aventura. Tamaño aprox: 5cm x 9cm[cite: 10].", colors: ["Rojo y Azul"], img: "imagenes/spidey.jpg" },
-  { id: 16, category: "llaveros", name: "Buhito", price: 10.00, desc: "Un compañero lleno de ternura para acompañar tus días. Tamaño aprox: 5cm x 8cm[cite: 10].", colors: ["Marrón", "Gris", "Vino"], img: "imagenes/buhito.jpg" },
-  { id: 17, category: "llaveros", name: "Pollito", price: 15.00, desc: "Un compañero súper divertido preparado a tu gusto. Tamaño aprox: 6cm x 11cm[cite: 11].", colors: ["Amarillo y Rojo"], img: "imagenes/pollito.jpg" },
+  { id: 1, category: "llaveros", name: "Ramo De Tulipanes", price: 4.00, desc: "Un toque primaveral que no se marchita.", colors: ["Azul", "Rosado", "Amarillo", "Rojo", "Lila"], img: "imagenes/img1322.jpg" },
+  { id: 2, category: "llaveros", name: "Cerezas Coquette", price: 4.00, desc: "Dulces, coquetas y coloridas.", colors: ["Rojo clásico", "Rosado pastel"], img: "imagenes/img1325.jpg" },
+  { id: 3, category: "llaveros", name: "Pingüinito", price: 4.00, desc: "Un símbolo de lealtad para compartir con alguien.", colors: ["Azul", "Negro", "Gris"], img: "imagenes/img1337.jpg" },
+  { id: 4, category: "llaveros", name: "Osito Panda", price: 4.00, desc: "Un tierno y esponjoso compañero.", colors: ["Blanco y Negro"], img: "imagenes/img1340.jpg" },
+  { id: 5, category: "llaveros", name: "Paltita Cute", price: 6.00, desc: "La mitad perfecta para acompañarte a todos lados.", colors: ["Verde tradicional"], img: "imagenes/img1352.jpg" },
+  { id: 6, category: "llaveros", name: "Conchita De Mar", price: 6.00, desc: "Un pedacito de mar y brisa marina siempre contigo.", colors: ["Lila", "Rosado", "Azul mar"], img: "imagenes/conchita_de_mar.jpg" },
+  { id: 7, category: "llaveros", name: "Pelota De Fútbol", price: 6.00, desc: "Para llevar la pasión del fútbol a donde vayas.", colors: ["Blanco y Negro"], img: "imagenes/pelota_de_futbol.jpg" },
+  { id: 8, category: "llaveros", name: "Letra", price: 6.00, desc: "Tu inicial preferida hecha un detalle.", colors: ["Guinda", "Rosado", "Azul", "Negro"], img: "imagenes/letra.jpg" },
+  { id: 9, category: "llaveros", name: "Mini Maceta", price: 6.00, desc: "Toda la ternura de una maceta en versión mini.", colors: ["Morado", "Amarillo", "Rosado"], img: "imagenes/mini_maceta.jpg" },
+  { id: 10, category: "llaveros", name: "Fresa Dulce", price: 6.00, desc: "Tierna y llena de color. Un accesorio bonito y liviano.", colors: ["Rojo", "Rosado"], img: "imagenes/fresa_dulce.jpg" },
+  { id: 11, category: "llaveros", name: "Aro Primavera", price: 6.00, desc: "Un toque floral para llenar de color tu bolso.", colors: ["Amarillo", "Rosado", "Blanco"], img: "imagenes/aro_primavera.jpg" },
+  { id: 12, category: "llaveros", name: "Corazón", price: 6.00, desc: "El detalle perfecto para expresar algo especial.", colors: ["Rosado", "Rojo", "Blanco"], img: "imagenes/corazon.jpg" },
+  { id: 13, category: "llaveros", name: "Flor Fulgor", price: 6.00, desc: "«Flor que da fulgor, con tu brillo fiel...» Lleva la magia, la luz y el poder de sanar siempre contigo.", colors: ["Amarillo y Morado"], img: "imagenes/flor_fulgor.jpg" },
+  { id: 14, category: "llaveros", name: "Ojo Turco", price: 6.00, desc: "Un amuleto floral hecho a mano para llenar tu día de buenas energías y protección.", colors: ["Azul Real"], img: "imagenes/ojo_turco.jpg" },
+  { id: 15, category: "llaveros", name: "Spidey", price: 10.00, desc: "Colgando de su telaraña para acompañarte en cada aventura. Tamaño aprox: 5cm x 9cm.", colors: ["Rojo y Azul"], img: "imagenes/spidey.jpg" },
+  { id: 16, category: "llaveros", name: "Buhito", price: 10.00, desc: "Un compañero lleno de ternura para acompañar tus días. Tamaño aprox: 5cm x 8cm.", colors: ["Marrón", "Gris", "Vino"], img: "imagenes/buhito.jpg" },
+  { id: 17, category: "llaveros", name: "Pollito", price: 15.00, desc: "Un compañero súper divertido preparado a tu gusto. Tamaño aprox: 6cm x 11cm.", colors: ["Amarillo y Rojo"], img: "imagenes/pollito.jpg" },
 
   // MACETAS
-  { id: 18, category: "macetas", name: "Macetita Lirio", price: 15.00, desc: "Elegancia y color para alegrar cualquier rincón[cite: 14].", colors: ["Rojo", "Rosado", "Blanco", "Amarillo"], img: "imagenes/macetita_lirio.jpg" },
-  { id: 19, category: "macetas", name: "Mini Jardín", price: 15.00, desc: "Un ramito de flores que no se marchita[cite: 14].", colors: ["Amarillo", "Rosado", "Multicolor"], img: "imagenes/mini_jardin.jpg" },
-  { id: 20, category: "macetas", name: "Canastita Tulipanes", price: 16.00, desc: "Frescura, calma y delicadeza reunidas en una dulce canasta primaveral[cite: 15].", colors: ["Celeste", "Rosado", "Lila"], img: "imagenes/canastita_tulipanes.jpg" },
-  { id: 21, category: "macetas", name: "Macetita Girasol", price: 16.00, desc: "Un rayito de sol para llenar de luz y energía tu escritorio[cite: 15].", colors: ["Amarillo clásico"], img: "imagenes/macetita_girasol.jpg" },
-  { id: 22, category: "macetas", name: "Maceta De Conejito", price: 17.00, desc: "Un detalle tierno para decorar tu lugar favorito[cite: 16].", colors: ["Blanco con flores rosadas"], img: "imagenes/maceta_de_conejito.jpg" },
-  { id: 23, category: "macetas", name: "Macetita Cactus", price: 17.00, desc: "El compañero perfecto que llena de vida tu escritorio[cite: 16].", colors: ["Verde con flores rosadas"], img: "imagenes/macetita_cactus.jpg" },
-  { id: 24, category: "macetas", name: "Jardín De Conejitos", price: 17.00, desc: "Pequeños conejitos que alegran cualquier espacio[cite: 17].", colors: ["Blanco"], img: "imagenes/jardin_de_conejitos.jpg" },
-  { id: 25, category: "macetas", name: "Macetita Spidey", price: 17.00, desc: "Un gran detalle para un gran héroe[cite: 17].", colors: ["Rojo y Verde"], img: "imagenes/macetita_spidey.jpg" },
-  { id: 26, category: "macetas", name: "Jardín De Honguitos", price: 17.00, desc: "Un rincón mágico y lleno de fantasía para tu hogar[cite: 18].", colors: ["Mezcla Fantasía"], img: "imagenes/jardin_de_honguitos.jpg" },
+  { id: 18, category: "macetas", name: "Macetita Lirio", price: 15.00, desc: "Elegancia y color para alegrar cualquier rincón.", colors: ["Rojo", "Rosado", "Blanco", "Amarillo"], img: "imagenes/macetita_lirio.jpg" },
+  { id: 19, category: "macetas", name: "Mini Jardín", price: 15.00, desc: "Un ramito de flores que no se marchita.", colors: ["Amarillo", "Rosado", "Multicolor"], img: "imagenes/mini_jardin.jpg" },
+  { id: 20, category: "macetas", name: "Canastita Tulipanes", price: 16.00, desc: "Frescura, calma y delicadeza reunidas en una dulce canasta primaveral.", colors: ["Celeste", "Rosado", "Lila"], img: "imagenes/canastita_tulipanes.jpg" },
+  { id: 21, category: "macetas", name: "Macetita Girasol", price: 16.00, desc: "Un rayito de sol para llenar de luz y energía tu escritorio.", colors: ["Amarillo clásico"], img: "imagenes/macetita_girasol.jpg" },
+  { id: 22, category: "macetas", name: "Maceta De Conejito", price: 17.00, desc: "Un detalle tierno para decorar tu lugar favorito.", colors: ["Blanco con flores rosadas"], img: "imagenes/maceta_de_conejito.jpg" },
+  { id: 23, category: "macetas", name: "Macetita Cactus", price: 17.00, desc: "El compañero perfecto que llena de vida tu escritorio.", colors: ["Verde con flores rosadas"], img: "imagenes/macetita_cactus.jpg" },
+  { id: 24, category: "macetas", name: "Jardín De Conejitos", price: 17.00, desc: "Pequeños conejitos que alegran cualquier espacio.", colors: ["Blanco"], img: "imagenes/jardin_de_conejitos.jpg" },
+  { id: 25, category: "macetas", name: "Macetita Spidey", price: 17.00, desc: "Un gran detalle para un gran héroe.", colors: ["Rojo y Verde"], img: "imagenes/macetita_spidey.jpg" },
+  { id: 26, category: "macetas", name: "Jardín De Honguitos", price: 17.00, desc: "Un rincón mágico y lleno de fantasía para tu hogar.", colors: ["Mezcla Fantasía"], img: "imagenes/jardin_de_honguitos.jpg" },
 
   // RAMOS
-  { id: 27, category: "ramos", name: "Flor Individual", price: 10.00, desc: "Un detalle sutil y delicado para alegrar el día. Flor a elección: Tulipán, Lirio, Girasol o Gerbera[cite: 20].", colors: ["Tulipán", "Lirio", "Girasol", "Gerbera"], img: "imagenes/flor_individual.jpg" },
-  { id: 28, category: "ramos", name: "Ramo Girasol", price: 22.00, desc: "Luz y alegría que duran para siempre. Incluye: 1 girasol grande, 5 margaritas, 1 rama de eucalipto, papel coreano y lazo[cite: 20].", colors: ["Amarillo con papel rojo", "Amarillo con papel crema"], img: "imagenes/ramo_girasol.jpg" },
-  { id: 29, category: "ramos", name: "Ramo Dulzura", price: 25.00, desc: "Tonos suaves y detalles delicados para expresar el cariño más sincero. Incluye: 1 tulipán, 1 lirio, 3 margaritas, 1 rama de follaje, papel coreano y lazo[cite: 21].", colors: ["Tonos Rosados", "Tonos Pastel"], img: "imagenes/ramo_dulzura.jpg" },
-  { id: 30, category: "ramos", name: "Ramo Lirios", price: 25.00, desc: "Sofisticación y delicadeza que perduran en el tiempo. Incluye: 3 lirios, 2 ramitas de follaje, papel coreano y lazo[cite: 21].", colors: ["Lirios Rosados", "Lirios Blancos"], img: "imagenes/ramo_lirios.jpg" },
-  { id: 31, category: "ramos", name: "Ramo Sol Radiante", price: 39.00, desc: "Luz, calidez y la mejor energía para regalar. Incluye: 1 girasol grande, 3 girasoles medianos, 2 ramas de follaje, papel coreano y lazo[cite: 22].", colors: ["Amarillo intenso"], img: "imagenes/ramo_sol_radiante.jpg" },
-  { id: 32, category: "ramos", name: "Ramo Encanto", price: 40.00, desc: "Una combinación elegante y llena de ternura. Incluye: 3 lirios, 2 tulipanes, 2 ramitas de follaje, papel coreano y lazo[cite: 22].", colors: ["Flores Rosadas con papel Kraft"], img: "imagenes/ramo_encanto.jpg" }
+  { id: 27, category: "ramos", name: "Flor Individual", price: 10.00, desc: "Un detalle sutil y delicado para alegrar el día. Flor a elección: Tulipán, Lirio, Girasol o Gerbera.", colors: ["Tulipán", "Lirio", "Girasol", "Gerbera"], img: "imagenes/flor_individual.jpg" },
+  { id: 28, category: "ramos", name: "Ramo Girasol", price: 22.00, desc: "Luz y alegría que duran para siempre. Incluye: 1 girasol grande, 5 margaritas, 1 rama de eucalipto, papel coreano y lazo.", colors: ["Amarillo con papel rojo", "Amarillo con papel crema"], img: "imagenes/ramo_girasol.jpg" },
+  { id: 29, category: "ramos", name: "Ramo Dulzura", price: 25.00, desc: "Tonos suaves y detalles delicados para expresar el cariño más sincero. Incluye: 1 tulipán, 1 lirio, 3 margaritas, 1 rama de follaje, papel coreano y lazo.", colors: ["Tonos Rosados", "Tonos Pastel"], img: "imagenes/ramo_dulzura.jpg" },
+  { id: 30, category: "ramos", name: "Ramo Lirios", price: 25.00, desc: "Sofisticación y delicadeza que perduran en el tiempo. Incluye: 3 lirios, 2 ramitas de follaje, papel coreano y lazo.", colors: ["Lirios Rosados", "Lirios Blancos"], img: "imagenes/ramo_lirios.jpg" },
+  { id: 31, category: "ramos", name: "Ramo Sol Radiante", price: 39.00, desc: "Luz, calidez y la mejor energía para regalar. Incluye: 1 girasol grande, 3 girasoles medianos, 2 ramas de follaje, papel coreano y lazo.", colors: ["Amarillo intenso"], img: "imagenes/ramo_sol_radiante.jpg" },
+  { id: 32, category: "ramos", name: "Ramo Encanto", price: 40.00, desc: "Una combinación elegante y llena de ternura. Incluye: 3 lirios, 2 tulipanes, 2 ramitas de follaje, papel coreano y lazo.", colors: ["Flores Rosadas con papel Kraft"], img: "imagenes/ramo_encanto.jpg" }
 ];
 
 let cart = [];
@@ -129,24 +129,24 @@ function openProductModal(id) {
   document.getElementById("modal-desc").innerText = product.desc;
   document.getElementById("modal-custom-color").value = "";
 
-  // Renderizar círculos de color con su respectiva etiqueta abajo
+  // Renderizar opciones de color como botones estilo píldora con puntito de color
   const colorContainer = document.getElementById("color-options-container");
   colorContainer.innerHTML = product.colors.map(colorName => {
     const hex = colorHexMap[colorName] || "#d9777f";
     return `
-      <div class="color-option-item" onclick="selectColorOption(this, '${colorName}')">
-        <div class="color-swatch-mini" style="background-color: ${hex};"></div>
-        <span class="color-label-mini">${colorName}</span>
-      </div>
+      <button class="color-pill-btn" onclick="selectColorPill(this, '${colorName}')">
+        <span class="color-dot" style="background-color: ${hex};"></span>
+        <span>${colorName}</span>
+      </button>
     `;
   }).join("");
 
   document.getElementById("product-modal").classList.add("open");
 }
 
-function selectColorOption(elementEl, colorName) {
-  document.querySelectorAll(".color-option-item").forEach(el => el.classList.remove("selected"));
-  elementEl.classList.add("selected");
+function selectColorPill(buttonEl, colorName) {
+  document.querySelectorAll(".color-pill-btn").forEach(btn => btn.classList.remove("selected"));
+  buttonEl.classList.add("selected");
   activeSelectedColor = colorName;
   document.getElementById("modal-custom-color").value = "";
 }
@@ -156,6 +156,13 @@ function closeProductModal() {
   selectedProductForModal = null;
   activeSelectedColor = "";
 }
+
+// Cerrar modal al hacer clic en el fondo oscuro exterior
+document.getElementById("product-modal").addEventListener("click", (e) => {
+  if (e.target.id === "product-modal") {
+    closeProductModal();
+  }
+});
 
 document.getElementById("modal-add-btn").addEventListener("click", () => {
   if (!selectedProductForModal) return;
@@ -223,6 +230,13 @@ function toggleMobileCart(open) {
   }
 }
 
+// Cerrar carrito móvil al hacer clic afuera
+document.getElementById("mobile-cart-modal").addEventListener("click", (e) => {
+  if (e.target.id === "mobile-cart-modal") {
+    toggleMobileCart(false);
+  }
+});
+
 function updateCartUI() {
   const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   document.getElementById("mobile-badge").innerText = totalCount;
@@ -272,7 +286,7 @@ function buildOrderMessage() {
   if (total > 0) {
     msg += `\nTotal estimado: S/ ${total.toFixed(2)}\n`;
   }
-  msg += "\nQuedo atento(a) para coordinar el adelanto del 50%, la disponibilidad y los puntos de entrega[cite: 23].";
+  msg += "\nQuedo atento(a) para coordinar el adelanto del 50%, la disponibilidad y los puntos de entrega.";
   return msg;
 }
 
@@ -287,7 +301,7 @@ function checkoutInstagram() {
   const msg = buildOrderMessage();
   
   navigator.clipboard.writeText(msg).then(() => {
-    alert("El resumen de tu pedido ha sido copiado al portapapeles. Serás dirigido al perfil de Instagram @abee_detalles para enviarlo por mensaje directo[cite: 23].");
+    alert("El resumen de tu pedido ha sido copiado al portapapeles. Serás dirigido al perfil de Instagram @abee_detalles para enviarlo por mensaje directo.");
     window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
   }).catch(() => {
     window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
