@@ -1,41 +1,92 @@
-const PHONE_NUMBER = "51999999999"; // Cambiar por tu numero real de WhatsApp
+const PHONE_NUMBER = "51999999999"; 
 const INSTAGRAM_USER = "abee_detalles";
 
-// Catálogo completo con descripciones oficiales del PDF
+const colorHexMap = {
+  "Azul": "#3b82f6",
+  "Rosado": "#f472b6",
+  "Amarillo": "#eab308",
+  "Rojo": "#dc2626",
+  "Lila": "#c084fc",
+  "Rojo clásico": "#b91c1c",
+  "Rosado pastel": "#fbcfe8",
+  "Negro": "#171717",
+  "Gris": "#9ca3af",
+  "Blanco y Negro": "#333333",
+  "Verde tradicional": "#15803d",
+  "Azul mar": "#0284c7",
+  "Guinda": "#831843",
+  "Morado": "#9333ea",
+  "Blanco": "#ffffff",
+  "Amarillo y Morado": "#a855f7",
+  "Azul Real": "#1d4ed8",
+  "Rojo y Azul": "#b91c1c",
+  "Marrón": "#78350f",
+  "Vino": "#831843",
+  "Amarillo y Rojo": "#eab308",
+  "Multicolor": "#ec4899",
+  "Celeste": "#38bdf8",
+  "Blanco con flores rosadas": "#fbcfe8",
+  "Verde con flores rosadas": "#15803d",
+  "Mezcla Fantasía": "#a855f7",
+  "Tulipán": "#f472b6",
+  "Lirio": "#fb7185",
+  "Girasol": "#eab308",
+  "Gerbera": "#f97316",
+  "Amarillo con papel rojo": "#dc2626",
+  "Amarillo con papel crema": "#fef08a",
+  "Tonos Rosados": "#f472b6",
+  "Tonos Pastel": "#fed7aa",
+  "Lirios Rosados": "#fda4af",
+  "Lirios Blancos": "#ffffff",
+  "Amarillo intenso": "#ca8a04",
+  "Flores Rosadas con papel Kraft": "#d9777f"
+};
+
+// Catálogo completo con las 32 referencias e imágenes locales sincronizadas
 const products = [
-  // Llaveros
-  { id: 1, category: "llaveros", name: "Cerezas Coquette", price: 4.00, desc: "Dulces, coquetas y coloridas. Hechos a mano en chenille super suave y liviano.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
-  { id: 2, category: "llaveros", name: "Ramo De Tulipanes", price: 4.00, desc: "Un toque primaveral que no se marchita.", img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=400&q=80" },
-  { id: 3, category: "llaveros", name: "Osito Panda", price: 4.00, desc: "Un tierno y esponjoso companero.", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
-  { id: 4, category: "llaveros", name: "Pingüinito", price: 4.00, desc: "Un simbolo de lealtad para compartir con alguien.", img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80" },
-  { id: 5, category: "llaveros", name: "Conchita De Mar", price: 6.00, desc: "Un pedacito de mar y brisa marina siempre contigo.", img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=400&q=80" },
-  { id: 6, category: "llaveros", name: "Paltita Cute", price: 6.00, desc: "La mitad perfecta para acompanarte a todos lados.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
-  { id: 7, category: "llaveros", name: "Pelota De Fútbol", price: 6.00, desc: "Para llevar la pasion del futbol a donde vayas.", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
-  { id: 8, category: "llaveros", name: "Letra Inicial", price: 6.00, desc: "Tu inicial preferida hecha un detalle.", img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=400&q=80" },
-  { id: 9, category: "llaveros", name: "Fresa Dulce", price: 6.00, desc: "Tierna y llena de color. Un accesorio bonito y liviano.", img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80" },
-  { id: 10, category: "llaveros", name: "Buhito", price: 10.00, desc: "Un companero lleno de ternura. Tamano aprox: 5cm x 8cm.", img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=400&q=80" },
-  { id: 11, category: "llaveros", name: "Spidey", price: 10.00, desc: "Colgando de su telarana. Tamano aprox: 5cm x 9cm.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
-  { id: 12, category: "llaveros", name: "Pollito", price: 15.00, desc: "Un companero super divertido. Tamano aprox: 6cm x 11cm.", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
+  // LLAVEROS
+  { id: 1, category: "llaveros", name: "Ramo De Tulipanes", price: 4.00, desc: "Un toque primaveral que no se marchita[cite: 3].", colors: ["Azul", "Rosado", "Amarillo", "Rojo", "Lila"], img: "imagenes/img1322.jpg" },
+  { id: 2, category: "llaveros", name: "Cerezas Coquette", price: 4.00, desc: "Dulces, coquetas y coloridas[cite: 3].", colors: ["Rojo clásico", "Rosado pastel"], img: "imagenes/img1325.jpg" },
+  { id: 3, category: "llaveros", name: "Pingüinito", price: 4.00, desc: "Un símbolo de lealtad para compartir con alguien[cite: 4].", colors: ["Azul", "Negro", "Gris"], img: "imagenes/img1337.jpg" },
+  { id: 4, category: "llaveros", name: "Osito Panda", price: 4.00, desc: "Un tierno y esponjoso compañero[cite: 4].", colors: ["Blanco y Negro"], img: "imagenes/img1340.jpg" },
+  { id: 5, category: "llaveros", name: "Paltita Cute", price: 6.00, desc: "La mitad perfecta para acompañarte a todos lados[cite: 5].", colors: ["Verde tradicional"], img: "imagenes/img1352.jpg" },
+  { id: 6, category: "llaveros", name: "Conchita De Mar", price: 6.00, desc: "Un pedacito de mar y brisa marina siempre contigo[cite: 5].", colors: ["Lila", "Rosado", "Azul mar"], img: "imagenes/conchita_de_mar.jpg" },
+  { id: 7, category: "llaveros", name: "Pelota De Fútbol", price: 6.00, desc: "Para llevar la pasión del fútbol a donde vayas[cite: 6].", colors: ["Blanco y Negro"], img: "imagenes/pelota_de_futbol.jpg" },
+  { id: 8, category: "llaveros", name: "Letra", price: 6.00, desc: "Tu inicial preferida hecha un detalle[cite: 6].", colors: ["Guinda", "Rosado", "Azul", "Negro"], img: "imagenes/letra.jpg" },
+  { id: 9, category: "llaveros", name: "Mini Maceta", price: 6.00, desc: "Toda la ternura de una maceta en versión mini[cite: 7].", colors: ["Morado", "Amarillo", "Rosado"], img: "imagenes/mini_maceta.jpg" },
+  { id: 10, category: "llaveros", name: "Fresa Dulce", price: 6.00, desc: "Tierna y llena de color. Un accesorio bonito y liviano[cite: 7].", colors: ["Rojo", "Rosado"], img: "imagenes/fresa_dulce.jpg" },
+  { id: 11, category: "llaveros", name: "Aro Primavera", price: 6.00, desc: "Un toque floral para llenar de color tu bolso[cite: 8].", colors: ["Amarillo", "Rosado", "Blanco"], img: "imagenes/aro_primavera.jpg" },
+  { id: 12, category: "llaveros", name: "Corazón", price: 6.00, desc: "El detalle perfecto para expresar algo especial[cite: 8].", colors: ["Rosado", "Rojo", "Blanco"], img: "imagenes/corazon.jpg" },
+  { id: 13, category: "llaveros", name: "Flor Fulgor", price: 6.00, desc: "«Flor que da fulgor, con tu brillo fiel...» Lleva la magia, la luz y el poder de sanar siempre contigo[cite: 9].", colors: ["Amarillo y Morado"], img: "imagenes/flor_fulgor.jpg" },
+  { id: 14, category: "llaveros", name: "Ojo Turco", price: 6.00, desc: "Un amuleto floral hecho a mano para llenar tu día de buenas energías y protección[cite: 9].", colors: ["Azul Real"], img: "imagenes/ojo_turco.jpg" },
+  { id: 15, category: "llaveros", name: "Spidey", price: 10.00, desc: "Colgando de su telaraña para acompañarte en cada aventura. Tamaño aprox: 5cm x 9cm[cite: 10].", colors: ["Rojo y Azul"], img: "imagenes/spidey.jpg" },
+  { id: 16, category: "llaveros", name: "Buhito", price: 10.00, desc: "Un compañero lleno de ternura para acompañar tus días. Tamaño aprox: 5cm x 8cm[cite: 10].", colors: ["Marrón", "Gris", "Vino"], img: "imagenes/buhito.jpg" },
+  { id: 17, category: "llaveros", name: "Pollito", price: 15.00, desc: "Un compañero súper divertido preparado a tu gusto. Tamaño aprox: 6cm x 11cm[cite: 11].", colors: ["Amarillo y Rojo"], img: "imagenes/pollito.jpg" },
 
-  // Macetas
-  { id: 13, category: "macetas", name: "Mini Jardín", price: 15.00, desc: "Un ramito de flores que no se marchita.", img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80" },
-  { id: 14, category: "macetas", name: "Macetita Lirio", price: 15.00, desc: "Elegancia y color para alegrar cualquier rincon.", img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=400&q=80" },
-  { id: 15, category: "macetas", name: "Canastita Tulipanes", price: 16.00, desc: "Frescura, calma y delicadeza en una dulce canasta primaveral.", img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=400&q=80" },
-  { id: 16, category: "macetas", name: "Macetita Girasol", price: 16.00, desc: "Un rayito de sol para llenar de luz y energia tu escritorio.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
-  { id: 17, category: "macetas", name: "Maceta De Conejito", price: 17.00, desc: "Un detalle tierno para decorar tu lugar favorito.", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
-  { id: 18, category: "macetas", name: "Jardín De Honguitos", price: 17.00, desc: "Un rincon magico y lleno de fantasia para tu hogar.", img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80" },
+  // MACETAS
+  { id: 18, category: "macetas", name: "Macetita Lirio", price: 15.00, desc: "Elegancia y color para alegrar cualquier rincón[cite: 14].", colors: ["Rojo", "Rosado", "Blanco", "Amarillo"], img: "imagenes/macetita_lirio.jpg" },
+  { id: 19, category: "macetas", name: "Mini Jardín", price: 15.00, desc: "Un ramito de flores que no se marchita[cite: 14].", colors: ["Amarillo", "Rosado", "Multicolor"], img: "imagenes/mini_jardin.jpg" },
+  { id: 20, category: "macetas", name: "Canastita Tulipanes", price: 16.00, desc: "Frescura, calma y delicadeza reunidas en una dulce canasta primaveral[cite: 15].", colors: ["Celeste", "Rosado", "Lila"], img: "imagenes/canastita_tulipanes.jpg" },
+  { id: 21, category: "macetas", name: "Macetita Girasol", price: 16.00, desc: "Un rayito de sol para llenar de luz y energía tu escritorio[cite: 15].", colors: ["Amarillo clásico"], img: "imagenes/macetita_girasol.jpg" },
+  { id: 22, category: "macetas", name: "Maceta De Conejito", price: 17.00, desc: "Un detalle tierno para decorar tu lugar favorito[cite: 16].", colors: ["Blanco con flores rosadas"], img: "imagenes/maceta_de_conejito.jpg" },
+  { id: 23, category: "macetas", name: "Macetita Cactus", price: 17.00, desc: "El compañero perfecto que llena de vida tu escritorio[cite: 16].", colors: ["Verde con flores rosadas"], img: "imagenes/macetita_cactus.jpg" },
+  { id: 24, category: "macetas", name: "Jardín De Conejitos", price: 17.00, desc: "Pequeños conejitos que alegran cualquier espacio[cite: 17].", colors: ["Blanco"], img: "imagenes/jardin_de_conejitos.jpg" },
+  { id: 25, category: "macetas", name: "Macetita Spidey", price: 17.00, desc: "Un gran detalle para un gran héroe[cite: 17].", colors: ["Rojo y Verde"], img: "imagenes/macetita_spidey.jpg" },
+  { id: 26, category: "macetas", name: "Jardín De Honguitos", price: 17.00, desc: "Un rincón mágico y lleno de fantasía para tu hogar[cite: 18].", colors: ["Mezcla Fantasía"], img: "imagenes/jardin_de_honguitos.jpg" },
 
-  // Ramos
-  { id: 19, category: "ramos", name: "Flor Individual", price: 10.00, desc: "Un detalle sutil y delicado. Eleccion: Tulipan, Lirio, Girasol o Gerbera.", img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=400&q=80" },
-  { id: 20, category: "ramos", name: "Ramo Girasol", price: 22.00, desc: "Incluye: 1 girasol grande, 5 margaritas, 1 rama de eucalipto, papel coreano y lazo.", img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=400&q=80" },
-  { id: 21, category: "ramos", name: "Ramo Lirios", price: 25.00, desc: "Incluye: 3 lirios, 2 ramitas de follaje, papel coreano y lazo.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
-  { id: 22, category: "ramos", name: "Ramo Sol Radiante", price: 39.00, desc: "Incluye: 1 girasol grande, 3 girasoles medianos, 2 ramas de follaje, papel coreano y lazo.", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
-  { id: 23, category: "ramos", name: "Ramo Encanto", price: 40.00, desc: "Incluye: 3 lirios, 2 tulipanes, 2 ramitas de follaje, papel coreano y lazo.", img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80" }
+  // RAMOS
+  { id: 27, category: "ramos", name: "Flor Individual", price: 10.00, desc: "Un detalle sutil y delicado para alegrar el día. Flor a elección: Tulipán, Lirio, Girasol o Gerbera[cite: 20].", colors: ["Tulipán", "Lirio", "Girasol", "Gerbera"], img: "imagenes/flor_individual.jpg" },
+  { id: 28, category: "ramos", name: "Ramo Girasol", price: 22.00, desc: "Luz y alegría que duran para siempre. Incluye: 1 girasol grande, 5 margaritas, 1 rama de eucalipto, papel coreano y lazo[cite: 20].", colors: ["Amarillo con papel rojo", "Amarillo con papel crema"], img: "imagenes/ramo_girasol.jpg" },
+  { id: 29, category: "ramos", name: "Ramo Dulzura", price: 25.00, desc: "Tonos suaves y detalles delicados para expresar el cariño más sincero. Incluye: 1 tulipán, 1 lirio, 3 margaritas, 1 rama de follaje, papel coreano y lazo[cite: 21].", colors: ["Tonos Rosados", "Tonos Pastel"], img: "imagenes/ramo_dulzura.jpg" },
+  { id: 30, category: "ramos", name: "Ramo Lirios", price: 25.00, desc: "Sofisticación y delicadeza que perduran en el tiempo. Incluye: 3 lirios, 2 ramitas de follaje, papel coreano y lazo[cite: 21].", colors: ["Lirios Rosados", "Lirios Blancos"], img: "imagenes/ramo_lirios.jpg" },
+  { id: 31, category: "ramos", name: "Ramo Sol Radiante", price: 39.00, desc: "Luz, calidez y la mejor energía para regalar. Incluye: 1 girasol grande, 3 girasoles medianos, 2 ramas de follaje, papel coreano y lazo[cite: 22].", colors: ["Amarillo intenso"], img: "imagenes/ramo_sol_radiante.jpg" },
+  { id: 32, category: "ramos", name: "Ramo Encanto", price: 40.00, desc: "Una combinación elegante y llena de ternura. Incluye: 3 lirios, 2 tulipanes, 2 ramitas de follaje, papel coreano y lazo[cite: 22].", colors: ["Flores Rosadas con papel Kraft"], img: "imagenes/ramo_encanto.jpg" }
 ];
 
 let cart = [];
 let currentFilter = "todos";
 let selectedProductForModal = null;
+let activeSelectedColor = "";
 
 function renderCatalog() {
   const grid = document.getElementById("catalog-grid");
@@ -70,30 +121,54 @@ function openProductModal(id) {
   if (!product) return;
 
   selectedProductForModal = product;
+  activeSelectedColor = "";
+
   document.getElementById("modal-img").src = product.img;
   document.getElementById("modal-title").innerText = product.name;
   document.getElementById("modal-price").innerText = `S/ ${product.price.toFixed(2)}`;
   document.getElementById("modal-desc").innerText = product.desc;
-  document.getElementById("modal-color-input").value = "";
+  document.getElementById("modal-custom-color").value = "";
+
+  // Renderizar círculos de color con su respectiva etiqueta abajo
+  const colorContainer = document.getElementById("color-options-container");
+  colorContainer.innerHTML = product.colors.map(colorName => {
+    const hex = colorHexMap[colorName] || "#d9777f";
+    return `
+      <div class="color-option-item" onclick="selectColorOption(this, '${colorName}')">
+        <div class="color-swatch-mini" style="background-color: ${hex};"></div>
+        <span class="color-label-mini">${colorName}</span>
+      </div>
+    `;
+  }).join("");
 
   document.getElementById("product-modal").classList.add("open");
+}
+
+function selectColorOption(elementEl, colorName) {
+  document.querySelectorAll(".color-option-item").forEach(el => el.classList.remove("selected"));
+  elementEl.classList.add("selected");
+  activeSelectedColor = colorName;
+  document.getElementById("modal-custom-color").value = "";
 }
 
 function closeProductModal() {
   document.getElementById("product-modal").classList.remove("open");
   selectedProductForModal = null;
+  activeSelectedColor = "";
 }
 
 document.getElementById("modal-add-btn").addEventListener("click", () => {
   if (!selectedProductForModal) return;
 
-  const colorInput = document.getElementById("modal-color-input").value.trim();
-  if (!colorInput) {
-    alert("Por favor indica el color o combinación deseada.");
+  const customText = document.getElementById("modal-custom-color").value.trim();
+  const finalColor = customText || activeSelectedColor;
+
+  if (!finalColor) {
+    alert("Por favor selecciona un color o escribe uno personalizado.");
     return;
   }
 
-  const uniqueId = `${selectedProductForModal.id}-${colorInput}`;
+  const uniqueId = `${selectedProductForModal.id}-${finalColor}`;
   const existing = cart.find(item => item.uniqueId === uniqueId);
 
   if (existing) {
@@ -102,7 +177,7 @@ document.getElementById("modal-add-btn").addEventListener("click", () => {
     cart.push({
       ...selectedProductForModal,
       uniqueId: uniqueId,
-      chosenColor: colorInput,
+      chosenColor: finalColor,
       quantity: 1
     });
   }
@@ -153,7 +228,7 @@ function updateCartUI() {
   document.getElementById("mobile-badge").innerText = totalCount;
 
   const htmlContent = cart.length === 0 
-    ? `<p class="empty-text">Tu carrito esta vacio.</p>`
+    ? `<p class="empty-text">Tu carrito está vacío.</p>`
     : cart.map(item => `
         <div class="cart-item-row">
           <div class="item-info">
@@ -184,7 +259,7 @@ function updateCartUI() {
 }
 
 function buildOrderMessage() {
-  let msg = "Hola Abee Detalles, me gustaria realizar el siguiente pedido:\n\n";
+  let msg = "Hola Abee Detalles, me gustaría realizar el siguiente pedido:\n\n";
   cart.forEach(item => {
     if (item.isCustom) {
       msg += `- [PERSONALIZADO] ${item.name}\n`;
@@ -197,7 +272,7 @@ function buildOrderMessage() {
   if (total > 0) {
     msg += `\nTotal estimado: S/ ${total.toFixed(2)}\n`;
   }
-  msg += "\nQuedo atento(a) para coordinar el adelanto del 50%, la disponibilidad y los puntos de entrega.";
+  msg += "\nQuedo atento(a) para coordinar el adelanto del 50%, la disponibilidad y los puntos de entrega[cite: 23].";
   return msg;
 }
 
@@ -212,7 +287,7 @@ function checkoutInstagram() {
   const msg = buildOrderMessage();
   
   navigator.clipboard.writeText(msg).then(() => {
-    alert("El resumen de tu pedido ha sido copiado al portapapeles. Seras dirigido al perfil de Instagram @abee_detalles para enviarlo por mensaje directo.");
+    alert("El resumen de tu pedido ha sido copiado al portapapeles. Serás dirigido al perfil de Instagram @abee_detalles para enviarlo por mensaje directo[cite: 23].");
     window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
   }).catch(() => {
     window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");

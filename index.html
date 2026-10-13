@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abee Detalles</title>
+  <title>Abee Detalles - Catálogo Coquette</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -30,23 +30,23 @@
       </nav>
 
       <div class="products-grid" id="catalog-grid">
-        <!-- Renderizado dinamico -->
+        <!-- Renderizado dinámico -->
       </div>
 
       <!-- Tarjeta de Diseño Personalizado -->
       <div class="custom-card">
         <h3>¿Tienes una idea en mente?</h3>
-        <p>Si viste un diseño en Pinterest, TikTok o Instagram, envianos tu foto de referencia. Adaptamos tu idea a nuestro estilo.</p>
+        <p>Si viste un diseño en Pinterest, TikTok o Instagram, envíanos tu foto de referencia. Adaptamos tu idea a nuestro estilo en chenille con el mayor cuidado y dedicación[cite: 23].</p>
         <textarea id="custom-idea-input" placeholder="Describe tu idea o modelo de referencia..."></textarea>
         <button class="btn-custom-action" onclick="addCustomIdea()">Agregar idea personalizada</button>
       </div>
     </section>
 
-    <!-- Carrito Lateral (Visible en Escritorio) -->
+    <!-- Carrito Lateral (Escritorio) -->
     <aside class="cart-sidebar desktop-only" id="desktop-cart">
       <h2>Tu Pedido</h2>
       <div class="cart-items-box" id="cart-items-desktop">
-        <p class="empty-text">Tu carrito esta vacio.</p>
+        <p class="empty-text">Tu carrito está vacío.</p>
       </div>
       <div class="cart-footer">
         <div class="total-row">
@@ -62,10 +62,10 @@
 
   </main>
 
-  <!-- Ventana Modal de Vista Ampliada y Selección de Color -->
+  <!-- Modal de Detalles y Selección de Color con Etiquetas -->
   <div class="modal-overlay" id="product-modal">
     <div class="modal-box">
-      <button class="modal-close" onclick="closeProductModal()">X</button>
+      <button class="modal-close" onclick="closeProductModal()">✕</button>
       <div class="modal-img-container">
         <img id="modal-img" src="" alt="" class="modal-img">
       </div>
@@ -74,21 +74,24 @@
       <p id="modal-desc" class="modal-desc"></p>
       
       <div class="modal-color-group">
-        <label for="modal-color-input">Indica el color o combinacion de colores:</label>
-        <input type="text" id="modal-color-input" placeholder="Ej: Rosado pastel con blanco, rojo entero...">
+        <label>Elige un color:</label>
+        <div class="color-options-grid" id="color-options-container">
+          <!-- Se generan círculos con texto debajo dinámicamente -->
+        </div>
+        <input type="text" id="modal-custom-color" placeholder="O escribe otro color personalizado..." class="color-input-text">
       </div>
 
       <button class="btn-modal-add" id="modal-add-btn">Agregar al pedido</button>
     </div>
   </div>
 
-  <!-- Botón Flotante para Celular (Acceso rápido al Carrito) -->
+  <!-- Botón Flotante Celular -->
   <button class="floating-cart-btn mobile-only" onclick="toggleMobileCart(true)">
     <span>Ver Pedido</span>
     <span class="badge-count" id="mobile-badge">0</span>
   </button>
 
-  <!-- Ventana Flotante del Carrito (Para Celular) -->
+  <!-- Carrito Modal Celular -->
   <div class="cart-modal-overlay mobile-only" id="mobile-cart-modal">
     <div class="cart-modal-content">
       <div class="modal-header">
@@ -96,7 +99,7 @@
         <button class="btn-close-modal" onclick="toggleMobileCart(false)">Cerrar</button>
       </div>
       <div class="cart-items-box" id="cart-items-mobile">
-        <p class="empty-text">Tu carrito esta vacio.</p>
+        <p class="empty-text">Tu carrito está vacío.</p>
       </div>
       <div class="cart-footer">
         <div class="total-row">
