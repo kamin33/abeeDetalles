@@ -516,9 +516,10 @@ function checkoutWhatsApp() {
   toggleMobileCart(false);
 
   const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
-  window.open(url, "_blank");
+  
+  // Usamos assign para que el navegador lo tome como una navegación legítima en la misma pestaña
+  window.location.assign(url);
 }
-
 // 🟢 FUNCIÓN DE INSTAGRAM CON BOTÓN DE CANCELAR
 // 🟢 FUNCIÓN DE INSTAGRAM CORREGIDA
 function checkoutInstagram() {
