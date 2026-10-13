@@ -452,6 +452,8 @@ function calculateCartTotals() {
   return grandTotal;
 }
 
+// REEMPLAZAR ESTA FUNCIÓN EN TU script.js
+
 function updateCartUI() {
   const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   document.getElementById("mobile-badge").innerText = totalCount;
@@ -459,16 +461,25 @@ function updateCartUI() {
 
   const htmlContent = cart.length === 0 
     ? `<p class="empty-text">Tu carrito está vacío.</p>`
-    : cart.map(item => `
-        <div class="cart-item-row">
-          <div class="item-info">
-            <span class="item-title">${item.name}</span>
-            <span class="item-sub">Color: ${item.chosenColor}</span>
-            <span class="item-sub">Cant: ${item.quantity} | P.U: S/ ${item.price.toFixed(2)}</span>
+    : cart.map(item => {
+        // Imagen por defecto si es una idea personalizada
+        const thumbImg = item.isCustom ? 'imagenes/logo.png' : item.img;
+        const isClickable = !item.isCustom; // Solo abre modal si no es personalizado
+
+        return `
+          <div class="cart-item-row">
+            <div class="cart-item-thumb-box" ${isClickable ? `onclick="openProductModal(${item.id})"` : ''}>
+              <img src="${thumbImg}" alt="${item.name}" class="cart-item-thumb">
+            </div>
+            <div class="item-info">
+              <span class="item-title" ${isClickable ? `onclick="openProductModal(${item.id})"` : ''}>${item.name}</span>
+              <span class="item-sub">Color: ${item.chosenColor}</span>
+              <span class="item-sub">Cant: ${item.quantity} | P.U: S/ ${item.price.toFixed(2)}</span>
+            </div>
+            <button class="btn-remove-item" onclick="removeFromCart('${item.uniqueId}')">Quitar</button>
           </div>
-          <button class="btn-remove-item" onclick="removeFromCart('${item.uniqueId}')">Quitar</button>
-        </div>
-      `).join("");
+        `;
+      }).join("");
 
   document.getElementById("cart-items-desktop").innerHTML = htmlContent;
   document.getElementById("cart-items-mobile").innerHTML = htmlContent;
@@ -504,39 +515,44 @@ function buildOrderMessage() {
   return msg;
 }
 
-function checkoutWhatsApp() {
-  if (cart.length === 0) return;
-  const msg = encodeURIComponent(buildOrderMessage());
-  window.open(`https://wa.me/${PHONE_NUMBER}?text=${msg}`, "_blank");
-}
+// REEMPLAZAR ESTA FUNCIÓN EN TU script.js
 
 function checkoutInstagram() {
   if (cart.length === 0) return;
   const msg = buildOrderMessage();
+
+  // 1. Cerrar carrito móvil si estuviera abierto para limpiar la pantalla
+  toggleMobileCart(false);
+
+  // 2. Intentar copiar al portapapeles
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(msg).catch(err => {
+      console.warn("No se pudo copiar automáticamente:", err);
+    });
+  }
+
+  // 3. Mostrar la alerta centrada
+  const overlay = document.getElementById("center-toast-overlay");
+  const countdownEl = document.getElementById("countdown-timer");
+  let timeLeft = 5;
   
-  navigator.clipboard.writeText(msg).then(() => {
-    const overlay = document.getElementById("center-toast-overlay");
-    const countdownEl = document.getElementById("countdown-timer");
-    let timeLeft = 5;
-    countdownEl.innerText = timeLeft;
-    overlay.classList.add("show");
+  if (countdownEl) countdownEl.innerText = timeLeft;
+  if (overlay) overlay.classList.add("show");
 
-    const timerInterval = setInterval(() => {
-      timeLeft--;
-      if (timeLeft >= 0) {
-        countdownEl.innerText = timeLeft;
-      }
-    }, 1000);
+  // 4. Cuenta regresiva
+  const timerInterval = setInterval(() => {
+    timeLeft--;
+    if (timeLeft >= 0 && countdownEl) {
+      countdownEl.innerText = timeLeft;
+    }
+  }, 1000);
 
-    setTimeout(() => {
-      clearInterval(timerInterval);
-      overlay.classList.remove("show");
-      window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
-    }, 5000);
-
-  }).catch(() => {
+  // 5. Redirigir al finalizar los 5s
+  setTimeout(() => {
+    clearInterval(timerInterval);
+    if (overlay) overlay.classList.remove("show");
     window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
-  });
+  }, 5000);
 }
 
 renderCatalog();

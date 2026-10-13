@@ -96,6 +96,7 @@
     </section>
 
     <!-- Carrito Lateral (Escritorio) -->
+     
     <aside class="cart-sidebar desktop-only" id="desktop-cart">
       <h2>Tu Pedido</h2>
       <div class="cart-items-box" id="cart-items-desktop">
@@ -111,9 +112,13 @@
           <span id="cart-total-desktop">S/ 0.00</span>
         </div>
         <div class="checkout-btns">
-          <button class="btn-checkout wsp" id="btn-wsp-d" disabled onclick="checkoutWhatsApp()">Pedir por WhatsApp</button>
-          <button class="btn-checkout ig" id="btn-ig-d" disabled onclick="checkoutInstagram()">Pedir por Instagram DM</button>
-        </div>
+  <button class="btn-checkout wsp" id="btn-wsp-d" disabled onclick="checkoutWhatsApp()">
+    Pedir por WhatsApp
+  </button>
+  <button class="btn-checkout ig" id="btn-ig-d" disabled onclick="checkoutInstagram()">
+    Pedir por Instagram DM
+  </button>
+</div>
       </div>
     </aside>
 
@@ -158,7 +163,7 @@
     <h3 id="modal-title"></h3>
     <p id="modal-price" class="modal-price"></p>
   </div>
-
+ </div>
   <p id="modal-desc" class="modal-desc"></p>
   
   <div class="modal-color-group">
@@ -207,11 +212,18 @@
   <div id="coquette-toast" class="coquette-toast"></div>
 
   <!-- Alerta Centrada de 5 Segundos para Instagram -->
-  <div id="center-toast-overlay" class="center-toast-overlay">
+ <!-- Alerta Centrada para Instagram -->
+<div id="center-toast-overlay" class="center-toast-overlay">
     <div class="center-toast-card">
-      <div class="center-toast-icon">✨</div>
-      <h3 class="center-toast-title">¡Pedido copiado al portapapeles!</h3>
-      <p class="center-toast-text">Redirigiéndote a Instagram en <span id="countdown-timer">5</span> segundos...</p>
+      <div class="center-toast-icon">📋✨</div>
+      <h3 class="center-toast-title">¡Pedido generado y copiado!</h3>
+      <p class="center-toast-text">
+        Tu resumen ya se copió al portapapeles.<br>
+        <strong>Solo pégalo en nuestro chat de Instagram.</strong>
+      </p>
+      <div class="center-toast-timer-badge">
+        Redirigiéndote a Instagram en <span id="countdown-timer">5</span>s...
+      </div>
     </div>
   </div>
 
