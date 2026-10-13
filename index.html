@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abee Detalles - Catálogo Coquette</title>
+  <title>Abee Detalles</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -20,9 +20,11 @@
   <!-- Navbar Superior Fijo con Logo -->
   <header class="navbar-fixed">
     <div class="navbar-container">
-      <a href="#inicio" class="nav-brand-logo">
-        <img src="imagenes/logo.png" alt="Abee Detalles Logo" class="brand-img-logo">
-      </a>
+      <!-- ANTES -->
+<!-- DESPUÉS (BLINDADO CONTRA CACHÉ) -->
+<a href="#inicio" class="nav-brand-logo">
+  <img src="imagenes/logo.png" alt="Abee Detalles Logo" class="brand-img-logo" width="42" height="42" style="width: 42px; height: 42px; object-fit: cover; border-radius: 50%;">
+</a>
       <nav class="nav-links">
         <a href="#inicio">Inicio</a>
         <a href="#catalogo">Catálogo</a>
