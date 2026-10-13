@@ -241,8 +241,8 @@ a {
 .hero-banner-section {
   position: relative;
   width: 100%;
-  background: var(--accent-100);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #fdf4f7 0%, #f6dbe4 100%);
+  border-bottom: 1px solid #efc9d6;
   overflow: hidden;
   padding: 1.6rem 1rem 1.2rem;
   text-align: center;
@@ -285,8 +285,9 @@ a {
 
 .slide-tag {
   display: inline-block;
-  background: var(--brand-100);
+  background: #ffffff;
   color: var(--brand-700);
+  box-shadow: var(--shadow-xs);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.12em;
