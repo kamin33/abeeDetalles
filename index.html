@@ -17,17 +17,56 @@
     </div>
   </div>
 
-  <!-- Encabezado Coquette -->
-  <header class="coquette-header">
-    <div class="header-inner">
-      <h1 class="brand-title">Abee Detalles</h1>
-      <p class="brand-subtitle">Detalles artesanales en chenille</p>
-      <span class="brand-handle">@abee_detalles</span>
+  <!-- Navbar Superior Fijo -->
+  <header class="navbar-fixed">
+    <div class="navbar-container">
+      <a href="#inicio" class="nav-brand">Abee Detalles</a>
+      <nav class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#conocenos">Conócenos</a>
+      </nav>
+      <button class="nav-cart-btn" onclick="toggleMobileCart(true)">
+        <span>🛒</span>
+        <span class="nav-badge" id="nav-cart-count">0</span>
+      </button>
     </div>
   </header>
 
+  <!-- Banner Hero Rotativo / Carrusel -->
+  <section class="hero-banner-section" id="inicio">
+    <div class="hero-carousel" id="hero-carousel">
+      <div class="carousel-slide active">
+        <div class="slide-content">
+          <span class="slide-tag">Novedades Chenille</span>
+          <h2>Detalles que enamoran y perduran</h2>
+          <p>Regala la magia de las flores y accesorios hechos completamente a mano.</p>
+        </div>
+      </div>
+      <div class="carousel-slide">
+        <div class="slide-content">
+          <span class="slide-tag">Combos Especiales</span>
+          <h2>¡Combínalos como quieras!</h2>
+          <p>Aprovecha los descuentos especiales en llaveros y macetitas.</p>
+        </div>
+      </div>
+      <div class="carousel-slide">
+        <div class="slide-content">
+          <span class="slide-tag">Pedidos Personalizados</span>
+          <h2>¿Tienes una idea en mente?</h2>
+          <p>Envíanos tu foto de referencia de Instagram o Pinterest y la creamos para ti.</p>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-dots" id="carousel-dots">
+      <span class="dot active" onclick="setSlide(0)"></span>
+      <span class="dot" onclick="setSlide(1)"></span>
+      <span class="dot" onclick="setSlide(2)"></span>
+    </div>
+  </section>
+
   <!-- Contenedor Principal -->
-  <main class="main-layout">
+  <main class="main-layout" id="catalogo">
     
     <!-- Catálogo -->
     <section class="catalog-section">
@@ -38,6 +77,7 @@
         <button class="filter-tab" onclick="filterCategory('ramos')">Ramos</button>
       </nav>
 
+      <!-- Grilla de productos (2 columnas en celular) -->
       <div class="products-grid" id="catalog-grid">
         <!-- Renderizado dinámico -->
       </div>
@@ -75,6 +115,32 @@
 
   </main>
 
+  <!-- Pie de Página / Footer Conócenos -->
+  <footer class="coquette-footer" id="conocenos">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h3>Sobre Abee Detalles</h3>
+        <p>Somos un emprendimiento artesanal dedicado a crear figuras, ramos y accesorios únicos con limpia pipas y chenille de alta calidad. Cada detalle está elaborado 100% a mano con dedicación y cariño.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Condiciones de Pedido</h3>
+        <ul>
+          <li>✨ 50% de adelanto para iniciar la confección.</li>
+          <li>⏱️ Pedidos con al menos 2 días de anticipación.</li>
+          <li>📍 Entregas a coordinar por WhatsApp o Instagram.</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Redes Sociales</h3>
+        <p>Sigue nuestras creaciones en Instagram:</p>
+        <a href="https://instagram.com/abee_detalles" target="_blank" class="footer-link">@abee_detalles</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Abee Detalles — Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
   <!-- Modal de Detalles y Selección de Colores -->
   <div class="modal-overlay" id="product-modal">
     <div class="modal-box">
@@ -86,17 +152,13 @@
       <p id="modal-price" class="modal-price"></p>
       
       <!-- Listón Informativo de Oferta -->
-      <div class="promo-banner-box" id="modal-offer-box">
-        <!-- Generado dinámicamente -->
-      </div>
+      <div class="promo-banner-box" id="modal-offer-box"></div>
 
       <p id="modal-desc" class="modal-desc"></p>
       
       <div class="modal-color-group">
         <label>Elige la cantidad por cada color:</label>
-        <div class="color-quantity-list" id="color-options-container">
-          <!-- Filas de color -->
-        </div>
+        <div class="color-quantity-list" id="color-options-container"></div>
         <input type="text" id="modal-custom-color" placeholder="O escribe otro color personalizado..." class="color-input-text">
       </div>
 
@@ -137,7 +199,7 @@
     </div>
   </div>
 
-  <!-- Notificación Flotante Toast inferior -->
+  <!-- Notificación Flotante Toast Inferior -->
   <div id="coquette-toast" class="coquette-toast"></div>
 
   <!-- Alerta Centrada de 5 Segundos para Instagram -->

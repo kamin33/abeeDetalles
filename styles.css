@@ -16,13 +16,15 @@
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--bg-coquette);
   color: var(--text-main);
   min-height: 100vh;
-  padding-bottom: 4rem;
+  padding-top: 60px;
+  padding-bottom: 2rem;
 }
 
 /* Preloader */
@@ -52,9 +54,6 @@ body {
   border: 1px solid var(--soft-border);
   box-shadow: 0 15px 35px rgba(217, 119, 127, 0.15);
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .preloader-spinner {
@@ -64,7 +63,7 @@ body {
   border-top-color: var(--primary-pink);
   border-radius: 50%;
   animation: spin 0.8s infinite linear;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
 }
 
 @keyframes spin {
@@ -72,48 +71,158 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-.preloader-title {
-  font-size: 1.4rem;
-  color: var(--text-main);
-  margin-bottom: 0.2rem;
-}
-
-.preloader-text {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.coquette-header {
-  background: var(--card-bg);
+/* Navbar Fijo */
+.navbar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #ffffff;
   border-bottom: 1px solid var(--soft-border);
+  box-shadow: 0 4px 12px rgba(217, 119, 127, 0.05);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-container {
+  max-width: 1150px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--primary-pink);
+}
+
+.nav-cart-btn {
+  background: #fff0f2;
+  border: 1px solid var(--soft-border);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.nav-badge {
+  background: var(--primary-pink);
+  color: white;
+  font-size: 0.75rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+/* Hero Carousel Banner */
+.hero-banner-section {
+  position: relative;
+  background: linear-gradient(135deg, #fff0f2 0%, #ffe4e8 100%);
+  border-bottom: 1px solid var(--soft-border);
+  overflow: hidden;
   padding: 2.5rem 1rem;
   text-align: center;
-  box-shadow: var(--shadow);
 }
 
-.brand-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--text-main);
+.hero-carousel {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 110px;
 }
 
-.brand-subtitle {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin-top: 0.4rem;
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+  pointer-events: none;
 }
 
-.brand-handle {
+.carousel-slide.active {
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.slide-tag {
   display: inline-block;
-  font-size: 0.85rem;
+  background: #ffffff;
   color: var(--primary-pink);
-  font-weight: 600;
-  margin-top: 0.6rem;
-  background: #fff0f2;
+  font-size: 0.75rem;
+  font-weight: 700;
   padding: 0.2rem 0.8rem;
   border-radius: 20px;
+  margin-bottom: 0.6rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
+.slide-content h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.slide-content p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1.2rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--soft-border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.dot.active {
+  background: var(--primary-pink);
+  width: 20px;
+  border-radius: 10px;
+}
+
+/* Layout Principal */
 .main-layout {
   max-width: 1150px;
   margin: 2rem auto;
@@ -160,16 +269,24 @@ body {
   border-color: var(--primary-pink);
 }
 
+/* Grilla de productos: 2 Columnas en Celulares */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+@media (min-width: 600px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1.2rem;
+  }
 }
 
 .product-card {
   background: var(--card-bg);
   border: 1px solid var(--soft-border);
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
   box-shadow: var(--shadow);
   display: flex;
@@ -184,7 +301,7 @@ body {
 
 .product-img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   background-color: #faf5f5;
   cursor: pointer;
@@ -196,7 +313,7 @@ body {
 }
 
 .product-details {
-  padding: 1rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -204,20 +321,21 @@ body {
 }
 
 .product-category {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--primary-pink);
   font-weight: 700;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.1rem;
 }
 
 .product-name {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-main);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   cursor: pointer;
+  line-height: 1.25;
 }
 
 .product-name:hover {
@@ -225,10 +343,10 @@ body {
 }
 
 .product-price {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-main);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.6rem;
 }
 
 .btn-add-item {
@@ -236,9 +354,9 @@ body {
   background: var(--text-main);
   color: #ffffff;
   border: none;
-  padding: 0.65rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
+  padding: 0.55rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -292,7 +410,61 @@ body {
   cursor: pointer;
 }
 
-/* Modal */
+/* Footer Conócenos */
+.coquette-footer {
+  background: var(--card-bg);
+  border-top: 1px solid var(--soft-border);
+  margin-top: 3rem;
+  padding: 2.5rem 1rem 1.5rem;
+}
+
+.footer-container {
+  max-width: 1150px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-col h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.8rem;
+}
+
+.footer-col p, .footer-col ul {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col ul li {
+  margin-bottom: 0.4rem;
+}
+
+.footer-link {
+  color: var(--primary-pink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  max-width: 1150px;
+  margin: 0 auto;
+  border-top: 1px solid var(--soft-border);
+  padding-top: 1.2rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Modal de Detalles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -388,9 +560,6 @@ body {
   letter-spacing: 0.6px;
   color: var(--primary-pink);
   font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .promo-banner-text {
@@ -404,10 +573,6 @@ body {
   color: var(--text-muted);
   margin-bottom: 1rem;
   line-height: 1.45;
-}
-
-.modal-color-group {
-  margin-bottom: 1.2rem;
 }
 
 .modal-color-group label {
@@ -455,7 +620,6 @@ body {
 .color-name-text {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-main);
 }
 
 .qty-selector-mini {
@@ -472,7 +636,6 @@ body {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
-  color: var(--text-main);
 }
 
 .qty-btn-mini:hover {
@@ -507,9 +670,10 @@ body {
   border-radius: 10px;
   font-weight: 700;
   cursor: pointer;
+  margin-top: 1rem;
 }
 
-/* Notificación Toast Inferior */
+/* Toast Inferior */
 .coquette-toast {
   position: fixed;
   bottom: 30px;
@@ -593,6 +757,7 @@ body {
   line-height: 1.45;
 }
 
+/* Carrito Sidebar */
 .cart-sidebar {
   flex: 1;
   background: var(--card-bg);
@@ -601,7 +766,7 @@ body {
   padding: 1.5rem;
   box-shadow: var(--shadow);
   position: sticky;
-  top: 1.5rem;
+  top: 80px;
   min-width: 290px;
 }
 
@@ -631,10 +796,6 @@ body {
 
 .cart-rules-box p {
   margin-bottom: 0.2rem;
-}
-
-.cart-rules-box p:last-child {
-  margin-bottom: 0;
 }
 
 .empty-text {
