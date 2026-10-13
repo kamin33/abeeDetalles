@@ -17,6 +17,15 @@
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   scroll-behavior: smooth;
+
+  /* Quitar recuadro / hitbox cuadrado azul feo al tocar botones en celulares */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+input, textarea {
+  user-select: text;
 }
 
 body {
@@ -96,11 +105,25 @@ body {
   align-items: center;
 }
 
-.nav-brand {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--text-main);
+/* Logo en Navbar */
+.nav-brand-logo {
+  display: flex;
+  align-items: center;
   text-decoration: none;
+}
+
+.brand-img-logo {
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--soft-border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.brand-img-logo:active {
+  transform: scale(0.95);
 }
 
 .nav-links {
@@ -130,6 +153,7 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 0.9rem;
+  outline: none;
 }
 
 .nav-badge {
@@ -149,6 +173,7 @@ body {
   overflow: hidden;
   padding: 2.5rem 1rem;
   text-align: center;
+  touch-action: pan-y;
 }
 
 .hero-carousel {
@@ -189,14 +214,14 @@ body {
 }
 
 .slide-content h2 {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: var(--text-main);
   margin-bottom: 0.4rem;
 }
 
 .slide-content p {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
 }
 
@@ -261,6 +286,8 @@ body {
   color: var(--text-muted);
   cursor: pointer;
   white-space: nowrap;
+  outline: none;
+  transition: background 0.2s, color 0.2s;
 }
 
 .filter-tab.active, .filter-tab:hover {
@@ -295,8 +322,8 @@ body {
   transition: transform 0.2s ease;
 }
 
-.product-card:hover {
-  transform: translateY(-3px);
+.product-card:active {
+  transform: scale(0.98);
 }
 
 .product-img {
@@ -306,10 +333,6 @@ body {
   background-color: #faf5f5;
   cursor: pointer;
   transition: opacity 0.2s;
-}
-
-.product-img:hover {
-  opacity: 0.92;
 }
 
 .product-details {
@@ -338,10 +361,6 @@ body {
   line-height: 1.25;
 }
 
-.product-name:hover {
-  color: var(--primary-pink);
-}
-
 .product-price {
   font-size: 0.95rem;
   font-weight: 700;
@@ -359,9 +378,10 @@ body {
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
+  outline: none;
 }
 
-.btn-add-item:hover {
+.btn-add-item:active {
   background: var(--primary-pink);
 }
 
@@ -408,6 +428,7 @@ body {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  outline: none;
 }
 
 /* Footer Conócenos */
@@ -513,6 +534,7 @@ body {
   cursor: pointer;
   color: var(--text-main);
   z-index: 10;
+  outline: none;
 }
 
 .modal-img-container {
@@ -636,9 +658,10 @@ body {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  outline: none;
 }
 
-.qty-btn-mini:hover {
+.qty-btn-mini:active {
   background: var(--primary-pink);
   color: white;
   border-color: var(--primary-pink);
@@ -671,6 +694,7 @@ body {
   font-weight: 700;
   cursor: pointer;
   margin-top: 1rem;
+  outline: none;
 }
 
 /* Toast Inferior */
@@ -698,7 +722,7 @@ body {
   opacity: 1;
 }
 
-/* Alerta Centrada de 5 Segundos para Instagram */
+/* Alerta Centrada para Instagram */
 .center-toast-overlay {
   position: fixed;
   top: 0;
@@ -834,6 +858,7 @@ body {
   font-size: 0.8rem;
   cursor: pointer;
   padding: 0.2rem 0.4rem;
+  outline: none;
 }
 
 .cart-footer {
@@ -863,6 +888,7 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  outline: none;
 }
 
 .btn-checkout.wsp {
@@ -911,6 +937,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  outline: none;
 }
 
 .badge-count {
@@ -981,4 +1008,5 @@ body {
   color: var(--text-muted);
   cursor: pointer;
   font-size: 0.9rem;
+  outline: none;
 }

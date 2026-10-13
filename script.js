@@ -68,8 +68,8 @@ let currentFilter = "todos";
 let selectedProductForModal = null;
 let modalColorQuantities = {};
 let currentSlideIndex = 0;
+let carouselTimer = null;
 
-// Carrusel del Banner Hero
 function setSlide(index) {
   const slides = document.querySelectorAll(".carousel-slide");
   const dots = document.querySelectorAll(".dot");
@@ -78,16 +78,46 @@ function setSlide(index) {
   slides.forEach(s => s.classList.remove("active"));
   dots.forEach(d => d.classList.remove("active"));
 
-  currentSlideIndex = index;
+  currentSlideIndex = (index + slides.length) % slides.length;
   slides[currentSlideIndex].classList.add("active");
   dots[currentSlideIndex].classList.add("active");
 }
 
-function autoRotateCarousel() {
-  setInterval(() => {
-    let next = (currentSlideIndex + 1) % 3;
-    setSlide(next);
-  }, 5500);
+function startCarouselTimer() {
+  if (carouselTimer) clearInterval(carouselTimer);
+  carouselTimer = setInterval(() => {
+    setSlide(currentSlideIndex + 1);
+  }, 5500); // 5500 ms por banner
+}
+
+// Eventos de deslizamiento táctil (Swipe)
+function setupCarouselSwipe() {
+  const banner = document.getElementById("hero-banner-section") || document.getElementById("inicio");
+  if (!banner) return;
+
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  banner.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  banner.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 40) { // Umbral mínimo de movimiento
+      if (diff > 0) {
+        setSlide(currentSlideIndex + 1); // Deslizar izquierda -> siguiente
+      } else {
+        setSlide(currentSlideIndex - 1); // Deslizar derecha -> anterior
+      }
+      startCarouselTimer(); // Reiniciar contador
+    }
+  }
 }
 
 function saveCartToStorage() {
@@ -503,4 +533,5 @@ function checkoutInstagram() {
 renderCatalog();
 updateCartUI();
 preloadImages();
-autoRotateCarousel();
+startCarouselTimer();
+setupCarouselSwipe();
