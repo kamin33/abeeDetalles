@@ -25,6 +25,64 @@ body {
   padding-bottom: 4rem;
 }
 
+/* Pantalla de Carga (Preloader) */
+.preloader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-coquette);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.preloader-card {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--soft-border);
+  box-shadow: 0 15px 35px rgba(217, 119, 127, 0.15);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preloader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--soft-border);
+  border-top-color: var(--primary-pink);
+  border-radius: 50%;
+  animation: spin 0.8s infinite linear;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.preloader-title {
+  font-size: 1.4rem;
+  color: var(--text-main);
+  margin-bottom: 0.2rem;
+}
+
+.preloader-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 .coquette-header {
   background: var(--card-bg);
   border-bottom: 1px solid var(--soft-border);
@@ -303,7 +361,7 @@ body {
 
 .modal-box h3 {
   font-size: 1.25rem;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.2rem;
 }
 
 .modal-price {
@@ -311,6 +369,34 @@ body {
   font-weight: 700;
   color: var(--primary-pink);
   margin-bottom: 0.6rem;
+}
+
+/* Diseño Moderno de Ofertas (Píldoras & Gradientes) */
+.modern-offer-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.offer-chip-price {
+  background: #fff0f2;
+  border: 1px solid var(--soft-border);
+  color: var(--primary-pink);
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.offer-chip-badge {
+  background: linear-gradient(135deg, #d9777f 0%, #b85e65 100%);
+  color: #ffffff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(217, 119, 127, 0.25);
 }
 
 .modal-desc {
@@ -332,47 +418,74 @@ body {
   color: var(--text-main);
 }
 
-/* Opciones de Colores Bonitas y Horizontales en Celular */
-.color-options-grid {
+.color-quantity-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-bottom: 0.8rem;
 }
 
-.color-pill-btn {
-  display: inline-flex;
+.modal-color-row {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
-  background: #fff0f2;
-  border: 1.5px solid var(--soft-border);
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.8rem;
+  background: #fffafa;
+  border: 1px solid var(--soft-border);
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+}
+
+.color-info-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-dot {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.2) !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+}
+
+.color-name-text {
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-main);
 }
 
-.color-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.15);
-  display: inline-block;
+.qty-selector-mini {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.color-pill-btn:hover, .color-pill-btn.selected {
-  background: #ffe4e8;
-  border-color: var(--primary-pink);
-  box-shadow: 0 2px 6px rgba(217, 119, 127, 0.2);
+.qty-btn-mini {
+  background: var(--card-bg);
+  border: 1px solid var(--soft-border);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--text-main);
 }
 
-.color-pill-btn.selected {
-  border-color: var(--primary-pink);
+.qty-btn-mini:hover {
   background: var(--primary-pink);
-  color: #ffffff;
+  color: white;
+  border-color: var(--primary-pink);
+}
+
+.qty-val-num {
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-width: 18px;
+  text-align: center;
 }
 
 .color-input-text {
@@ -396,7 +509,30 @@ body {
   cursor: pointer;
 }
 
-/* Carrito Sidebar */
+.coquette-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #2d2627;
+  color: #ffffff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 5000;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+  text-align: center;
+}
+
+.coquette-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
 .cart-sidebar {
   flex: 1;
   background: var(--card-bg);
@@ -418,9 +554,27 @@ body {
 }
 
 .cart-items-box {
-  max-height: 280px;
+  max-height: 220px;
   overflow-y: auto;
+  margin-bottom: 0.8rem;
+}
+
+.cart-rules-box {
+  background: #fff0f2;
+  border: 1px dashed var(--soft-border);
+  border-radius: 10px;
+  padding: 0.7rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
   margin-bottom: 1rem;
+}
+
+.cart-rules-box p {
+  margin-bottom: 0.2rem;
+}
+
+.cart-rules-box p:last-child {
+  margin-bottom: 0;
 }
 
 .empty-text {

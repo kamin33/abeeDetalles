@@ -3,18 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abee Detalles</title>
+  <title>Abee Detalles - Catálogo Coquette</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+  <!-- Pantalla de Carga (Preloader) -->
+  <div id="app-preloader" class="preloader-overlay">
+    <div class="preloader-card">
+      <div class="preloader-spinner"></div>
+      <h2 class="preloader-title">Abee Detalles</h2>
+      <p class="preloader-text">Cargando catálogo artesanal...</p>
+    </div>
+  </div>
 
   <!-- Encabezado Coquette -->
   <header class="coquette-header">
     <div class="header-inner">
       <h1 class="brand-title">Abee Detalles</h1>
       <p class="brand-subtitle">Detalles artesanales en chenille</p>
-      
-      <a href="http://Instagram.com" target="_blank"><span class="brand-handle">@abee_detalles</span></a>
+      <span class="brand-handle">@abee_detalles</span>
     </div>
   </header>
 
@@ -49,6 +57,10 @@
       <div class="cart-items-box" id="cart-items-desktop">
         <p class="empty-text">Tu carrito está vacío.</p>
       </div>
+      <div class="cart-rules-box">
+        <p>⚠️ <strong>Adelanto:</strong> 50% para iniciar tu pedido.</p>
+        <p>⏱️ <strong>Anticipación:</strong> Mínimo 2 días.</p>
+      </div>
       <div class="cart-footer">
         <div class="total-row">
           <span>Total estimado:</span>
@@ -63,7 +75,7 @@
 
   </main>
 
-  <!-- Modal de Detalles y Selección de Color -->
+  <!-- Modal de Detalles y Selección de Colores -->
   <div class="modal-overlay" id="product-modal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeProductModal()">✕</button>
@@ -72,12 +84,18 @@
       </div>
       <h3 id="modal-title"></h3>
       <p id="modal-price" class="modal-price"></p>
+      
+      <!-- Contenedor Moderno de Ofertas (Chips) -->
+      <div class="modern-offer-wrapper" id="modal-offer-box">
+        <!-- Generado dinámicamente -->
+      </div>
+
       <p id="modal-desc" class="modal-desc"></p>
       
       <div class="modal-color-group">
-        <label>Elige un color:</label>
-        <div class="color-options-grid" id="color-options-container">
-          <!-- Círculos de color -->
+        <label>Elige la cantidad por cada color:</label>
+        <div class="color-quantity-list" id="color-options-container">
+          <!-- Filas de color -->
         </div>
         <input type="text" id="modal-custom-color" placeholder="O escribe otro color personalizado..." class="color-input-text">
       </div>
@@ -102,6 +120,10 @@
       <div class="cart-items-box" id="cart-items-mobile">
         <p class="empty-text">Tu carrito está vacío.</p>
       </div>
+      <div class="cart-rules-box">
+        <p>⚠️ <strong>Adelanto:</strong> 50% para iniciar tu pedido.</p>
+        <p>⏱️ <strong>Anticipación:</strong> Mínimo 2 días.</p>
+      </div>
       <div class="cart-footer">
         <div class="total-row">
           <span>Total estimado:</span>
@@ -114,6 +136,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Notificación Flotante Toast -->
+  <div id="coquette-toast" class="coquette-toast"></div>
 
   <script src="script.js"></script>
 </body>
