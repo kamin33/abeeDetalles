@@ -151,24 +151,24 @@
       <button class="modal-close" onclick="closeProductModal()">✕</button>
       <div class="modal-img-container">
         <img id="modal-img" src="" alt="" class="modal-img">
-      </div>
-      <h3 id="modal-title"></h3>
-      <p id="modal-price" class="modal-price"></p>
-      
-      <!-- Listón Informativo de Oferta -->
-      <div class="promo-banner-box" id="modal-offer-box"></div>
-
-      <p id="modal-desc" class="modal-desc"></p>
-      
-      <div class="modal-color-group">
-        <label>Elige la cantidad por cada color:</label>
-        <div class="color-quantity-list" id="color-options-container"></div>
-        <input type="text" id="modal-custom-color" placeholder="O escribe otro color personalizado..." class="color-input-text">
+        <div class="modal-promo-badge" id="modal-offer-badge"></div>
       </div>
 
-      <button class="btn-modal-add" id="modal-add-btn">Agregar al pedido</button>
-    </div>
+      <div class="modal-title-price-row">
+    <h3 id="modal-title"></h3>
+    <p id="modal-price" class="modal-price"></p>
   </div>
+
+  <p id="modal-desc" class="modal-desc"></p>
+  
+  <div class="modal-color-group">
+    <label>Elige la cantidad por cada color:</label>
+    <div class="color-quantity-list" id="color-options-container"></div>
+    <input type="text" id="modal-custom-color" placeholder="O escribe otro color personalizado..." class="color-input-text">
+  </div>
+
+  <button class="btn-modal-add" id="modal-add-btn">Agregar al pedido</button>
+</div>
 
   <!-- Botón Flotante Celular -->
   <button class="floating-cart-btn mobile-only" onclick="toggleMobileCart(true)">
