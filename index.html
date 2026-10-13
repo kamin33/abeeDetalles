@@ -85,8 +85,8 @@
       <h3 id="modal-title"></h3>
       <p id="modal-price" class="modal-price"></p>
       
-      <!-- Contenedor Moderno de Ofertas (Chips) -->
-      <div class="modern-offer-wrapper" id="modal-offer-box">
+      <!-- Listón Informativo de Oferta -->
+      <div class="promo-banner-box" id="modal-offer-box">
         <!-- Generado dinámicamente -->
       </div>
 
@@ -137,8 +137,17 @@
     </div>
   </div>
 
-  <!-- Notificación Flotante Toast -->
+  <!-- Notificación Flotante Toast inferior -->
   <div id="coquette-toast" class="coquette-toast"></div>
+
+  <!-- Alerta Centrada de 5 Segundos para Instagram -->
+  <div id="center-toast-overlay" class="center-toast-overlay">
+    <div class="center-toast-card">
+      <div class="center-toast-icon">✨</div>
+      <h3 class="center-toast-title">¡Pedido copiado al portapapeles!</h3>
+      <p class="center-toast-text">Redirigiéndote a Instagram en <span id="countdown-timer">5</span> segundos...</p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
