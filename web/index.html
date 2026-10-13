@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abee Detalles - Catálogo Artesanal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Encabezado Estilo Glass -->
+  <header class="glass-header">
+    <div class="header-content">
+      <h1 class="brand-title">Abee Detalles</h1>
+      <p class="brand-subtitle">Detalles artesanales en chenille</p>
+      <span class="brand-handle">@abee_detalles</span>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="main-container">
+    
+    <!-- Sección de Catálogo -->
+    <section class="catalog-section">
+      <!-- Filtros de Categorías -->
+      <nav class="filter-nav">
+        <button class="filter-btn active" onclick="filterCategory('todos')">Todos</button>
+        <button class="filter-btn" onclick="filterCategory('llaveros')">Llaveros</button>
+        <button class="filter-btn" onclick="filterCategory('macetas')">Macetas</button>
+        <button class="filter-btn" onclick="filterCategory('ramos')">Ramos</button>
+      </nav>
+
+      <div class="catalog-grid" id="catalog-grid">
+        <!-- Renderizado dinámico desde script.js -->
+      </div>
+
+      <!-- Sección de Diseño Personalizado -->
+      <div class="custom-glass-card">
+        <h3>¿Tienes una idea en mente?</h3>
+        <p>Si viste un diseño en Pinterest, TikTok o Instagram, envíanos tu foto de referencia. Adaptamos tu idea a nuestro estilo en chenille[cite: 23].</p>
+        <textarea id="custom-idea-input" placeholder="Describe tu idea personalizada o modelo de referencia..."></textarea>
+        <button class="btn-custom" onclick="addCustomIdea()">Agregar idea personalizada</button>
+      </div>
+    </section>
+
+    <!-- Sección del Carrito / Resumen -->
+    <aside class="cart-glass-panel">
+      <h2>Tu Pedido</h2>
+      <div class="cart-items-container" id="cart-items-container">
+        <p class="cart-empty-msg">Tu carrito está vacío.</p>
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Total estimado:</span>
+          <span id="cart-total-price">S/ 0.00</span>
+        </div>
+        
+        <div class="checkout-actions">
+          <button id="btn-whatsapp" class="btn-checkout btn-wsp" disabled onclick="checkoutWhatsApp()">
+            Pedir por WhatsApp
+          </button>
+          <button id="btn-instagram" class="btn-checkout btn-ig" disabled onclick="checkoutInstagram()">
+            Pedir por Instagram DM
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
