@@ -1,9 +1,8 @@
-const PHONE_NUMBER = "51999999999"; // Reemplazar con el número real de WhatsApp de Abee Detalles
+const PHONE_NUMBER = "51999999999"; // Cambiar por tu número real de WhatsApp
 const INSTAGRAM_USER = "abee_detalles";
 
-// Catálogo completo basado en el PDF de Abee Detalles
+// Catálogo oficial basado en el PDF
 const products = [
-  // Llaveros
   { id: 1, category: "llaveros", name: "Cerezas Coquette", price: 4.00, img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
   { id: 2, category: "llaveros", name: "Ramo De Tulipanes", price: 4.00, img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=400&q=80" },
   { id: 3, category: "llaveros", name: "Osito Panda", price: 4.00, img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
@@ -17,7 +16,6 @@ const products = [
   { id: 11, category: "llaveros", name: "Spidey", price: 10.00, img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
   { id: 12, category: "llaveros", name: "Pollito", price: 15.00, img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
 
-  // Macetas
   { id: 13, category: "macetas", name: "Mini Jardín", price: 15.00, img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80" },
   { id: 14, category: "macetas", name: "Macetita Lirio", price: 15.00, img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=400&q=80" },
   { id: 15, category: "macetas", name: "Canastita Tulipanes", price: 16.00, img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=400&q=80" },
@@ -25,7 +23,6 @@ const products = [
   { id: 17, category: "macetas", name: "Maceta De Conejito", price: 17.00, img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80" },
   { id: 18, category: "macetas", name: "Jardín De Honguitos", price: 17.00, img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=400&q=80" },
 
-  // Ramos
   { id: 19, category: "ramos", name: "Flor Individual", price: 10.00, img: "https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=400&q=80" },
   { id: 20, category: "ramos", name: "Ramo Girasol", price: 22.00, img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=400&q=80" },
   { id: 21, category: "ramos", name: "Ramo Lirios", price: 25.00, img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" },
@@ -45,13 +42,13 @@ function renderCatalog() {
   grid.innerHTML = filtered.map(p => `
     <div class="product-card">
       <img src="${p.img}" alt="${p.name}" class="product-img">
-      <div class="product-info">
+      <div class="product-details">
         <div>
           <span class="product-category">${p.category}</span>
           <h4 class="product-name">${p.name}</h4>
           <p class="product-price">S/ ${p.price.toFixed(2)}</p>
         </div>
-        <button class="btn-add" onclick="addToCart(${p.id})">Agregar</button>
+        <button class="btn-add-item" onclick="addToCart(${p.id})">Agregar</button>
       </div>
     </div>
   `).join("");
@@ -59,7 +56,7 @@ function renderCatalog() {
 
 function filterCategory(cat) {
   currentFilter = cat;
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
   event.target.classList.add("active");
   renderCatalog();
 }
@@ -102,36 +99,48 @@ function removeFromCart(id) {
   updateCartUI();
 }
 
-function updateCartUI() {
-  const container = document.getElementById("cart-items-container");
-  const totalPriceEl = document.getElementById("cart-total-price");
-  const btnWsp = document.getElementById("btn-whatsapp");
-  const btnIg = document.getElementById("btn-instagram");
-
-  if (cart.length === 0) {
-    container.innerHTML = `<p class="cart-empty-msg">Tu carrito está vacío.</p>`;
-    totalPriceEl.innerText = "S/ 0.00";
-    btnWsp.disabled = true;
-    btnIg.disabled = true;
-    return;
+function toggleMobileCart(open) {
+  const modal = document.getElementById("mobile-cart-modal");
+  if (open) {
+    modal.classList.add("open");
+  } else {
+    modal.classList.remove("open");
   }
+}
 
-  container.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <div class="item-details">
-        <span class="item-name">${item.name}</span>
-        <span class="item-price">
-          ${item.isCustom ? "A cotizar" : `${item.quantity} x S/ ${item.price.toFixed(2)} = S/ ${(item.price * item.quantity).toFixed(2)}`}
-        </span>
-      </div>
-      <button class="btn-remove" onclick="removeFromCart('${item.id}')">Quitar</button>
-    </div>
-  `).join("");
+function updateCartUI() {
+  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById("mobile-badge").innerText = totalCount;
+
+  const htmlContent = cart.length === 0 
+    ? `<p class="empty-text">Tu carrito está vacío.</p>`
+    : cart.map(item => `
+        <div class="cart-item-row">
+          <div class="item-info">
+            <span class="item-title">${item.name}</span>
+            <span class="item-sub">
+              ${item.isCustom ? "A cotizar" : `${item.quantity} x S/ ${item.price.toFixed(2)} = S/ ${(item.price * item.quantity).toFixed(2)}`}
+            </span>
+          </div>
+          <button class="btn-remove-item" onclick="removeFromCart('${item.id}')">Quitar</button>
+        </div>
+      `).join("");
+
+  // Actualizar tanto vista desktop como mobile
+  document.getElementById("cart-items-desktop").innerHTML = htmlContent;
+  document.getElementById("cart-items-mobile").innerHTML = htmlContent;
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  totalPriceEl.innerText = `S/ ${total.toFixed(2)}`;
-  btnWsp.disabled = false;
-  btnIg.disabled = false;
+  const totalFormatted = `S/ ${total.toFixed(2)}`;
+  
+  document.getElementById("cart-total-desktop").innerText = totalFormatted;
+  document.getElementById("cart-total-mobile").innerText = totalFormatted;
+
+  const hasItems = cart.length > 0;
+  document.getElementById("btn-wsp-d").disabled = !hasItems;
+  document.getElementById("btn-ig-d").disabled = !hasItems;
+  document.getElementById("btn-wsp-m").disabled = !hasItems;
+  document.getElementById("btn-ig-m").disabled = !hasItems;
 }
 
 function buildOrderMessage() {
@@ -162,7 +171,6 @@ function checkoutInstagram() {
   if (cart.length === 0) return;
   const msg = buildOrderMessage();
   
-  // Copiar al portapapeles para facilitar pegar en Instagram DM
   navigator.clipboard.writeText(msg).then(() => {
     alert("El resumen de tu pedido ha sido copiado al portapapeles. Seras dirigido al perfil de Instagram @abee_detalles para enviarlo por mensaje directo.");
     window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
