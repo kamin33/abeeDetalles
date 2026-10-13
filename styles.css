@@ -22,7 +22,6 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   scroll-behavior: smooth;
 
-  /* Quitar recuadro / hitbox cuadrado azul feo al tocar botones en celulares */
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   user-select: none;
@@ -533,6 +532,7 @@ body {
   position: relative;
   max-height: 92vh;
   overflow-y: auto;
+  display: block !important; /* Fuerza a que los elementos se apilen en columna */
 }
 
 .modal-close {
