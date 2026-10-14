@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Abee Detalles</title>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -22,11 +21,9 @@
   <!-- Navbar Superior Fijo con Logo -->
   <header class="navbar-fixed">
     <div class="navbar-container">
-      <!-- ANTES -->
-<!-- DESPUÉS (BLINDADO CONTRA CACHÉ) -->
-<a href="#inicio" class="nav-brand-logo">
-  <img src="imagenes/logo.png" alt="Abee Detalles Logo" class="brand-img-logo" width="42" height="42" style="width: 42px; height: 42px; object-fit: cover; border-radius: 50%;">
-</a>
+      <a href="#inicio" class="nav-brand-logo">
+        <img src="imagenes/logo.png" alt="Abee Detalles Logo" class="brand-img-logo" width="42" height="42" style="width: 42px; height: 42px; object-fit: cover; border-radius: 50%;">
+      </a>
       <nav class="nav-links">
         <a href="#inicio">Inicio</a>
         <a href="#catalogo">Catálogo</a>
@@ -40,63 +37,63 @@
   </header>
 
   <!-- Banner Hero Rotativo / Carrusel (Con Swipe Táctil) -->
-  <!-- Banner Hero Rotativo / Carrusel (Con Swipe Táctil) -->
-<section class="hero-banner-section" id="inicio">
+  <section class="hero-banner-section" id="inicio">
 
-  <!-- Fondo animado: cambia banner.gif por tu archivo -->
-  <div class="hero-bg" style="background-image:url('imagenes/banner.gif')"></div>
-  <div class="hero-overlay"></div>
+    <!-- Fondos animados (dos capas para el fundido) -->
+    <div class="hero-bg is-visible" id="hero-bg-a" style="background-image:url('imagenes/banner.gif')"></div>
+    <div class="hero-bg" id="hero-bg-b"></div>
+    <div class="hero-overlay"></div>
 
-  <div class="hero-carousel" id="hero-carousel">
-    <div class="carousel-slide active">
-      <div class="slide-content">
-        <span class="slide-tag">Novedades Chenille</span>
-        <h2>Detalles que enamoran y perduran</h2>
-        <p>Regala la magia de las flores y accesorios hechos completamente a mano.</p>
+    <div class="hero-carousel" id="hero-carousel">
+      <div class="carousel-slide active" data-bg="imagenes/banner.gif">
+        <div class="slide-content">
+          <span class="slide-tag">Novedades Chenille</span>
+          <h2>Detalles que enamoran y perduran</h2>
+          <p>Regala la magia de las flores y accesorios hechos completamente a mano.</p>
+        </div>
+      </div>
+      <div class="carousel-slide" data-bg="imagenes/banner-02.gif">
+        <div class="slide-content">
+          <span class="slide-tag">Combos Especiales</span>
+          <h2>¡Combínalos como quieras!</h2>
+          <p>Aprovecha los descuentos especiales en llaveros y macetitas.</p>
+        </div>
+      </div>
+      <div class="carousel-slide" data-bg="imagenes/banner-03.gif">
+        <div class="slide-content">
+          <span class="slide-tag">Pedidos Personalizados</span>
+          <h2>¿Tienes una idea en mente?</h2>
+          <p>Envíanos tu foto de referencia de Instagram o Pinterest y la creamos para ti.</p>
+        </div>
       </div>
     </div>
-    <div class="carousel-slide">
-      <div class="slide-content">
-        <span class="slide-tag">Combos Especiales</span>
-        <h2>¡Combínalos como quieras!</h2>
-        <p>Aprovecha los descuentos especiales en llaveros y macetitas.</p>
-      </div>
+
+    <div class="carousel-dots" id="carousel-dots">
+      <span class="dot active" onclick="setSlide(0)"></span>
+      <span class="dot" onclick="setSlide(1)"></span>
+      <span class="dot" onclick="setSlide(2)"></span>
     </div>
-    <div class="carousel-slide">
-      <div class="slide-content">
-        <span class="slide-tag">Pedidos Personalizados</span>
-        <h2>¿Tienes una idea en mente?</h2>
-        <p>Envíanos tu foto de referencia de Instagram o Pinterest y la creamos para ti.</p>
-      </div>
+
+    <!-- Botón de música -->
+    <div class="hero-controls">
+      <button class="hero-ctrl-btn" id="musicBtn" aria-label="Activar sonido" aria-pressed="false">
+        <svg class="icon-muted" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 8.5h3.5L11 4.5v13l-4.5-4H3z"/>
+          <path d="M15 8.5l4.5 5M19.5 8.5l-4.5 5"/>
+        </svg>
+        <svg class="icon-on" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 8.5h3.5L11 4.5v13l-4.5-4H3z"/>
+          <path d="M14.5 8a4.2 4.2 0 0 1 0 6M17 5.5a7.8 7.8 0 0 1 0 11"/>
+        </svg>
+      </button>
     </div>
-  </div>
 
-  <div class="carousel-dots" id="carousel-dots">
-    <span class="dot active" onclick="setSlide(0)"></span>
-    <span class="dot" onclick="setSlide(1)"></span>
-    <span class="dot" onclick="setSlide(2)"></span>
-  </div>
-
-  <!-- Botón de música -->
-  <div class="hero-controls">
-    <button class="hero-ctrl-btn" id="musicBtn" aria-label="Activar sonido" aria-pressed="false">
-      <svg class="icon-muted" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 8.5h3.5L11 4.5v13l-4.5-4H3z"/>
-        <path d="M15 8.5l4.5 5M19.5 8.5l-4.5 5"/>
-      </svg>
-      <svg class="icon-on" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 8.5h3.5L11 4.5v13l-4.5-4H3z"/>
-        <path d="M14.5 8a4.2 4.2 0 0 1 0 6M17 5.5a7.8 7.8 0 0 1 0 11"/>
-      </svg>
-    </button>
-  </div>
-
-  <audio id="bannerMusic" src="musica/musica.mp3" loop preload="auto"></audio>
-</section>
+    <audio id="bannerMusic" src="musica/musica.mp3" loop preload="auto"></audio>
+  </section>
 
   <!-- Contenedor Principal -->
   <main class="main-layout" id="catalogo">
-    
+
     <!-- Catálogo -->
     <section class="catalog-section">
       <nav class="filter-bar">
@@ -121,7 +118,6 @@
     </section>
 
     <!-- Carrito Lateral (Escritorio) -->
-     
     <aside class="cart-sidebar desktop-only" id="desktop-cart">
       <h2>Tu Pedido</h2>
       <div class="cart-items-box" id="cart-items-desktop">
@@ -137,13 +133,13 @@
           <span id="cart-total-desktop">S/ 0.00</span>
         </div>
         <div class="checkout-btns">
-  <button class="btn-checkout wsp" id="btn-wsp-d" disabled onclick="checkoutWhatsApp()">
-    Pedir por WhatsApp
-  </button>
-  <button class="btn-checkout ig" id="btn-ig-d" disabled onclick="checkoutInstagram()">
-    Pedir por Instagram DM
-  </button>
-</div>
+          <button class="btn-checkout wsp" id="btn-wsp-d" disabled onclick="checkoutWhatsApp()">
+            Pedir por WhatsApp
+          </button>
+          <button class="btn-checkout ig" id="btn-ig-d" disabled onclick="checkoutInstagram()">
+            Pedir por Instagram DM
+          </button>
+        </div>
       </div>
     </aside>
 
@@ -175,8 +171,7 @@
     </div>
   </footer>
 
-  
-<!-- Modal de Detalles y Selección de Colores -->
+  <!-- Modal de Detalles y Selección de Colores -->
   <div class="modal-overlay" id="product-modal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeProductModal()">✕</button>
@@ -191,7 +186,7 @@
       </div>
 
       <p id="modal-desc" class="modal-desc"></p>
-      
+
       <div class="modal-color-group">
         <label>Elige la cantidad por cada color:</label>
         <div class="color-quantity-list" id="color-options-container"></div>
@@ -238,9 +233,8 @@
   <!-- Notificación Flotante Toast Inferior -->
   <div id="coquette-toast" class="coquette-toast"></div>
 
-  <!-- Alerta Centrada de 5 Segundos para Instagram -->
- <!-- Alerta Centrada para Instagram -->
-<div id="center-toast-overlay" class="center-toast-overlay">
+  <!-- Alerta Centrada para Instagram -->
+  <div id="center-toast-overlay" class="center-toast-overlay">
     <div class="center-toast-card">
       <div class="center-toast-icon">📋✨</div>
       <h3 class="center-toast-title">¡Pedido generado y copiado!</h3>
@@ -251,32 +245,38 @@
       <div class="center-toast-timer-badge">
         Redirigiéndote a Instagram en <span id="countdown-timer">5</span>s...
       </div>
-          <div style="display: flex; gap: 10px; margin-top: 1rem;">
-      <button onclick="cancelInstagramCheckout()" style="flex: 1; background: #f4f4f5; border: none; padding: 0.7rem; border-radius: 12px; font-weight: bold; cursor: pointer;">Cancelar</button>
-      <button onclick="openInstagramNow()" style="flex: 1; background: var(--ig-color); color: white; border: none; padding: 0.7rem; border-radius: 12px; font-weight: bold; cursor: pointer;">Ir ahora</button>
-    </div>
+      <div style="display: flex; gap: 10px; margin-top: 1rem;">
+        <button onclick="cancelInstagramCheckout()" style="flex: 1; background: #f4f4f5; border: none; padding: 0.7rem; border-radius: 12px; font-weight: bold; cursor: pointer;">Cancelar</button>
+        <button onclick="openInstagramNow()" style="flex: 1; background: var(--ig-color); color: white; border: none; padding: 0.7rem; border-radius: 12px; font-weight: bold; cursor: pointer;">Ir ahora</button>
+      </div>
     </div>
   </div>
-<script>
-  const music = document.getElementById('bannerMusic');
-  const musicBtn = document.getElementById('musicBtn');
-  music.volume = 0.5;
 
-  function setMusic(on) {
-    if (on) {
-      music.play().then(() => {
-        musicBtn.setAttribute('aria-pressed', 'true');
-        musicBtn.setAttribute('aria-label', 'Silenciar');
-      }).catch(() => {});
-    } else {
-      music.pause();
-      musicBtn.setAttribute('aria-pressed', 'false');
-      musicBtn.setAttribute('aria-label', 'Activar sonido');
+  <!-- Música (bucle) -->
+  <script>
+    const music = document.getElementById('bannerMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    music.volume = 0.5;
+    music.loop = true;
+
+    function setMusic(on) {
+      if (on) {
+        music.play().then(() => {
+          musicBtn.setAttribute('aria-pressed', 'true');
+          musicBtn.setAttribute('aria-label', 'Silenciar');
+        }).catch(() => {});
+      } else {
+        music.pause();
+        musicBtn.setAttribute('aria-pressed', 'false');
+        musicBtn.setAttribute('aria-label', 'Activar sonido');
+      }
     }
-  }
 
-  musicBtn.addEventListener('click', () => setMusic(music.paused));
-</script>
+    musicBtn.addEventListener('click', () => setMusic(music.paused));
+
+    // Refuerzo del bucle
+    music.addEventListener('ended', () => { music.currentTime = 0; music.play(); });
+  </script>
 
   <script src="script.js"></script>
 </body>

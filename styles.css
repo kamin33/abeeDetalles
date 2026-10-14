@@ -1377,3 +1377,13 @@ a {
     letter-spacing: 0.03em;
   }
 }
+
+/* ===== Fundido entre banners ===== */
+.hero-bg {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.hero-bg.is-visible {
+  opacity: 1;
+}

@@ -67,58 +67,97 @@ let cart = loadCartFromStorage();
 let currentFilter = "todos";
 let selectedProductForModal = null;
 let modalColorQuantities = {};
-let currentSlideIndex = 0;
-let carouselTimer = null;
 let instagramTimerInterval = null; // Control de la cuenta regresiva de IG
 
-function setSlide(index) {
-  const slides = document.querySelectorAll(".carousel-slide");
-  const dots = document.querySelectorAll(".dot");
-  if (slides.length === 0) return;
+/* =====================================================
+   BANNER: GIF cada 11000 ms, texto cada 5500 ms
+   (contadores independientes). Un click o arrastre sobre
+   el banner reinicia ambos contadores; un arrastre además
+   avanza/retrocede texto y GIF.
+   ===================================================== */
+function initBanner() {
+  const BG_LIST = ['imagenes/banner.gif', 'imagenes/banner-02.gif','imagenes/banner-03.gif'];
+  const BG_DELAY = 11000;
+  const TEXT_DELAY = 5500;
+  const SWIPE_MIN = 40; // px mínimos para considerar un arrastre
 
-  slides.forEach(s => s.classList.remove("active"));
-  dots.forEach(d => d.classList.remove("active"));
+  const hero = document.getElementById('inicio');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('#carousel-dots .dot');
+  const bgA = document.getElementById('hero-bg-a');
+  const bgB = document.getElementById('hero-bg-b');
+  if (!hero || slides.length === 0 || !bgA || !bgB) return;
 
-  currentSlideIndex = (index + slides.length) % slides.length;
-  slides[currentSlideIndex].classList.add("active");
-  dots[currentSlideIndex].classList.add("active");
-}
+  let frontBg = bgA, backBg = bgB;
+  let bgIndex = 0, textIndex = 0, bgTimer = null, textTimer = null;
 
-function startCarouselTimer() {
-  if (carouselTimer) clearInterval(carouselTimer);
-  carouselTimer = setInterval(() => {
-    setSlide(currentSlideIndex + 1);
-  }, 5500);
-}
+  // Precarga para que el cambio no parpadee
+  BG_LIST.forEach(src => { const img = new Image(); img.src = src; });
 
-function setupCarouselSwipe() {
-  const banner = document.getElementById("hero-banner-section") || document.getElementById("inicio");
-  if (!banner) return;
+  const mod = (n, m) => ((n % m) + m) % m;
 
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  banner.addEventListener("touchstart", (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  banner.addEventListener("touchend", (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }, { passive: true });
-
-  function handleSwipe() {
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) {
-        setSlide(currentSlideIndex + 1);
-      } else {
-        setSlide(currentSlideIndex - 1);
-      }
-      startCarouselTimer();
-    }
+  function showBg(i) {
+    bgIndex = mod(i, BG_LIST.length);
+    backBg.style.backgroundImage = `url('${BG_LIST[bgIndex]}')`;
+    backBg.classList.add('is-visible');
+    frontBg.classList.remove('is-visible');
+    [frontBg, backBg] = [backBg, frontBg];
   }
+
+  function showText(i) {
+    textIndex = mod(i, slides.length);
+    slides.forEach((s, k) => s.classList.toggle('active', k === textIndex));
+    dots.forEach((d, k) => d.classList.toggle('active', k === textIndex));
+  }
+
+  function startBgTimer() {
+    clearInterval(bgTimer);
+    bgTimer = setInterval(() => showBg(bgIndex + 1), BG_DELAY);
+  }
+
+  function startTextTimer() {
+    clearInterval(textTimer);
+    textTimer = setInterval(() => showText(textIndex + 1), TEXT_DELAY);
+  }
+
+  function resetTimers() {
+    startBgTimer();
+    startTextTimer();
+  }
+
+  // Los puntos (onclick="setSlide(n)") cambian el texto y reinician solo su contador
+  window.setSlide = function (i) {
+    showText(i);
+    startTextTimer();
+  };
+
+  let startX = null;
+
+  hero.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.hero-controls, .dot')) return;
+    startX = e.clientX;
+  });
+
+  window.addEventListener('pointerup', (e) => {
+    if (startX === null) return;
+    const dx = e.clientX - startX;
+    startX = null;
+
+    if (Math.abs(dx) >= SWIPE_MIN) {
+      const dir = dx < 0 ? 1 : -1; // arrastrar a la izquierda = siguiente
+      showText(textIndex + dir);
+      showBg(bgIndex + dir);
+    }
+    resetTimers();
+  });
+
+  window.addEventListener('pointercancel', () => { startX = null; });
+
+  showText(0);
+  resetTimers();
 }
+
+/* ===================== CARRITO ===================== */
 
 function saveCartToStorage() {
   try {
@@ -509,19 +548,19 @@ function buildOrderMessage() {
   return msg;
 }
 
-// 🟢 FUNCIÓN DE WHATSAPP (AQUÍ ESTABA FALTANDO)
+/* ===================== WHATSAPP ===================== */
 function checkoutWhatsApp() {
   if (cart.length === 0) return;
   const msg = buildOrderMessage();
   toggleMobileCart(false);
 
   const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`;
-  
-  // Usamos assign para que el navegador lo tome como una navegación legítima en la misma pestaña
+
+  // assign para que el navegador lo tome como navegación legítima en la misma pestaña
   window.location.assign(url);
 }
-// 🟢 FUNCIÓN DE INSTAGRAM CON BOTÓN DE CANCELAR
-// 🟢 FUNCIÓN DE INSTAGRAM CORREGIDA
+
+/* ===================== INSTAGRAM ===================== */
 function checkoutInstagram() {
   if (cart.length === 0) return;
   const msg = buildOrderMessage();
@@ -557,7 +596,7 @@ function checkoutInstagram() {
   }, 1000);
 }
 
-// Función para cancelar la redirección
+// Cancelar la redirección a Instagram
 function cancelInstagramCheckout() {
   if (instagramTimerInterval) {
     clearInterval(instagramTimerInterval);
@@ -569,20 +608,8 @@ function cancelInstagramCheckout() {
   showCoquetteToast("✨ Redirección cancelada");
 }
 
-// 🟢 NUEVA FUNCIÓN PARA EL BOTÓN "IR AHORA" (Detiene el temporizador y abre una sola vez)
+// Botón "Ir ahora": detiene el temporizador y abre Instagram una sola vez
 function openInstagramNow() {
-  if (instagramTimerInterval) {
-    clearInterval(instagramTimerInterval); // Detiene los 5 segundos para evitar que se abra doble
-  }
-  const overlay = document.getElementById("center-toast-overlay");
-  if (overlay) {
-    overlay.classList.remove("show");
-  }
-  window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
-}
-
-// Función para cancelar la redirección a Instagram
-function cancelInstagramCheckout() {
   if (instagramTimerInterval) {
     clearInterval(instagramTimerInterval);
   }
@@ -590,23 +617,11 @@ function cancelInstagramCheckout() {
   if (overlay) {
     overlay.classList.remove("show");
   }
-  showCoquetteToast("✨ Redirección cancelada");
-}
-
-// 🟢 NUEVA FUNCIÓN PARA EL BOTÓN "IR AHORA" (Detiene el temporizador y abre una sola vez)
-function openInstagramNow() {
-  if (instagramTimerInterval) {
-    clearInterval(instagramTimerInterval); // Detiene los 5 segundos para evitar que se abra doble
-  }
-  const overlay = document.getElementById("center-toast-overlay");
-  if (overlay) {
-    overlay.classList.remove("show");
-  }
   window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
 }
 
+/* ===================== INICIO ===================== */
 renderCatalog();
 updateCartUI();
 preloadImages();
-startCarouselTimer();
-setupCarouselSwipe();
+initBanner();
