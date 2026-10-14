@@ -40,36 +40,59 @@
   </header>
 
   <!-- Banner Hero Rotativo / Carrusel (Con Swipe Táctil) -->
-  <section class="hero-banner-section" id="inicio">
-    <div class="hero-carousel" id="hero-carousel">
-      <div class="carousel-slide active">
-        <div class="slide-content">
-          <span class="slide-tag">Novedades Chenille</span>
-          <h2>Detalles que enamoran y perduran</h2>
-          <p>Regala la magia de las flores y accesorios hechos completamente a mano.</p>
-        </div>
-      </div>
-      <div class="carousel-slide">
-        <div class="slide-content">
-          <span class="slide-tag">Combos Especiales</span>
-          <h2>¡Combínalos como quieras!</h2>
-          <p>Aprovecha los descuentos especiales en llaveros y macetitas.</p>
-        </div>
-      </div>
-      <div class="carousel-slide">
-        <div class="slide-content">
-          <span class="slide-tag">Pedidos Personalizados</span>
-          <h2>¿Tienes una idea en mente?</h2>
-          <p>Envíanos tu foto de referencia de Instagram o Pinterest y la creamos para ti.</p>
-        </div>
+  <!-- Banner Hero Rotativo / Carrusel (Con Swipe Táctil) -->
+<section class="hero-banner-section" id="inicio">
+
+  <!-- Fondo animado: cambia banner.gif por tu archivo -->
+  <div class="hero-bg" style="background-image:url('imagenes/banner.gif')"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-carousel" id="hero-carousel">
+    <div class="carousel-slide active">
+      <div class="slide-content">
+        <span class="slide-tag">Novedades Chenille</span>
+        <h2>Detalles que enamoran y perduran</h2>
+        <p>Regala la magia de las flores y accesorios hechos completamente a mano.</p>
       </div>
     </div>
-    <div class="carousel-dots" id="carousel-dots">
-      <span class="dot active" onclick="setSlide(0)"></span>
-      <span class="dot" onclick="setSlide(1)"></span>
-      <span class="dot" onclick="setSlide(2)"></span>
+    <div class="carousel-slide">
+      <div class="slide-content">
+        <span class="slide-tag">Combos Especiales</span>
+        <h2>¡Combínalos como quieras!</h2>
+        <p>Aprovecha los descuentos especiales en llaveros y macetitas.</p>
+      </div>
     </div>
-  </section>
+    <div class="carousel-slide">
+      <div class="slide-content">
+        <span class="slide-tag">Pedidos Personalizados</span>
+        <h2>¿Tienes una idea en mente?</h2>
+        <p>Envíanos tu foto de referencia de Instagram o Pinterest y la creamos para ti.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-dots" id="carousel-dots">
+    <span class="dot active" onclick="setSlide(0)"></span>
+    <span class="dot" onclick="setSlide(1)"></span>
+    <span class="dot" onclick="setSlide(2)"></span>
+  </div>
+
+  <!-- Botón de música -->
+  <div class="hero-controls">
+    <button class="hero-ctrl-btn" id="musicBtn" aria-label="Activar sonido" aria-pressed="false">
+      <svg class="icon-muted" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 8.5h3.5L11 4.5v13l-4.5-4H3z"/>
+        <path d="M15 8.5l4.5 5M19.5 8.5l-4.5 5"/>
+      </svg>
+      <svg class="icon-on" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 8.5h3.5L11 4.5v13l-4.5-4H3z"/>
+        <path d="M14.5 8a4.2 4.2 0 0 1 0 6M17 5.5a7.8 7.8 0 0 1 0 11"/>
+      </svg>
+    </button>
+  </div>
+
+  <audio id="bannerMusic" src="musica/musica.mp3" loop preload="auto"></audio>
+</section>
 
   <!-- Contenedor Principal -->
   <main class="main-layout" id="catalogo">
@@ -234,6 +257,26 @@
     </div>
     </div>
   </div>
+<script>
+  const music = document.getElementById('bannerMusic');
+  const musicBtn = document.getElementById('musicBtn');
+  music.volume = 0.5;
+
+  function setMusic(on) {
+    if (on) {
+      music.play().then(() => {
+        musicBtn.setAttribute('aria-pressed', 'true');
+        musicBtn.setAttribute('aria-label', 'Silenciar');
+      }).catch(() => {});
+    } else {
+      music.pause();
+      musicBtn.setAttribute('aria-pressed', 'false');
+      musicBtn.setAttribute('aria-label', 'Activar sonido');
+    }
+  }
+
+  musicBtn.addEventListener('click', () => setMusic(music.paused));
+</script>
 
   <script src="script.js"></script>
 </body>

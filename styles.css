@@ -1265,3 +1265,63 @@ a {
     scroll-behavior: auto;
   }
 }
+
+/* ===== Banner con GIF de fondo + control de música ===== */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* Capa clara para que el texto se lea sobre el GIF */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.88) 0%, rgba(253,244,247,0.55) 55%, rgba(246,219,228,0.25) 100%);
+  z-index: 1;
+}
+
+.hero-carousel,
+.carousel-dots {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-controls {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.hero-ctrl-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--brand-900);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.hero-ctrl-btn:hover {
+  background: var(--brand-900);
+  color: #fff;
+}
+
+.hero-ctrl-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.hero-ctrl-btn .icon-on { display: none; }
+.hero-ctrl-btn[aria-pressed="true"] .icon-on { display: block; }
+.hero-ctrl-btn[aria-pressed="true"] .icon-muted { display: none; }
