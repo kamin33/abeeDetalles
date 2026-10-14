@@ -88,7 +88,7 @@
       </button>
     </div>
 
-    <audio id="bannerMusic" src="musica/musica.mp3" loop preload="none"></audio>
+    <audio id="bannerMusic" data-src="musica/musica.mp3" loop preload="none"></audio>
   </section>
 
   <!-- Contenedor Principal -->
@@ -259,8 +259,35 @@
     music.volume = 0.5;
     music.loop = true;
 
+    let musicLoaded = false;
+
+    // Descarga el MP3 (solo una vez)
+    function loadMusic() {
+      if (musicLoaded) return;
+      musicLoaded = true;
+      music.preload = 'auto';
+      music.src = music.dataset.src;
+      music.load();
+    }
+
+    // Lo carga cuando la página ya terminó lo esencial
+    function scheduleMusicLoad() {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadMusic, { timeout: 3000 });
+      } else {
+        setTimeout(loadMusic, 1500);
+      }
+    }
+
+    if (document.readyState === 'complete') {
+      scheduleMusicLoad();
+    } else {
+      window.addEventListener('load', scheduleMusicLoad);
+    }
+
     function setMusic(on) {
       if (on) {
+        loadMusic(); // por si el usuario pulsa antes de que termine la carga
         music.play().then(() => {
           musicBtn.setAttribute('aria-pressed', 'true');
           musicBtn.setAttribute('aria-label', 'Silenciar');

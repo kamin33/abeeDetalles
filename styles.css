@@ -913,6 +913,7 @@ a {
   position: sticky;
   top: 88px;
   min-width: 300px;
+  display: none;
 }
 
 .cart-sidebar h2 {

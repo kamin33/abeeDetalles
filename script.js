@@ -584,7 +584,7 @@ function checkoutInstagram() {
     if (timeLeft <= 0) {
       clearInterval(instagramTimerInterval);
       if (overlay) overlay.classList.remove("show");
-      window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
+      window.location.assign(`https://instagram.com/${INSTAGRAM_USER}`);
     }
   }, 1000);
 }
