@@ -178,26 +178,19 @@ function loadCartFromStorage() {
 }
 
 function preloadImages() {
+  const first = products.slice(0, 6);   // solo las primeras que se ven
   let loaded = 0;
-  const total = products.length;
 
-  if (total === 0) {
-    hidePreloader();
-    return;
-  }
-
-  products.forEach(p => {
+  first.forEach(p => {
     const img = new Image();
     img.onload = img.onerror = () => {
       loaded++;
-      if (loaded >= total) {
-        hidePreloader();
-      }
+      if (loaded >= first.length) hidePreloader();
     };
     img.src = p.img;
   });
 
-  setTimeout(hidePreloader, 3500);
+  setTimeout(hidePreloader, 1500);      // tope más corto
 }
 
 function hidePreloader() {
@@ -215,7 +208,7 @@ function renderCatalog() {
 
   grid.innerHTML = filtered.map(p => `
     <div class="product-card">
-      <img src="${p.img}" alt="${p.name}" class="product-img" onclick="openProductModal(${p.id})">
+      <img src="${p.img}" alt="${p.name}" class="product-img" loading="lazy" onclick="openProductModal(${p.id})">
       <div class="product-details">
         <div>
           <span class="product-category">${p.category}</span>
