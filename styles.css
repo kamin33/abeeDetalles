@@ -1388,3 +1388,26 @@ a {
 .hero-bg.is-visible {
   opacity: 1;
 }
+
+#catalogo,
+#conocenos {
+  scroll-margin-top: 84px;
+}
+@media (min-width: 900px) {
+  
+
+  .navbar-container,
+  .footer-container,
+  .footer-bottom { max-width: 1360px; }
+
+  .main-layout {
+    max-width: 1360px;
+    width: calc(100% - 2rem);
+    background: #ffffff;
+    padding: 1.75rem;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .products-grid { grid-template-columns: repeat(4, 1fr); }
+}

@@ -612,9 +612,26 @@ function openInstagramNow() {
   }
   window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
 }
+/* ===================== SCROLL SUAVE SIN CAMBIAR LA URL ===================== */
+function initSmoothAnchors() {
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href').slice(1);
+      e.preventDefault(); // evita que se agregue #seccion a la URL
 
+      if (!id || id === 'inicio') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
 /* ===================== INICIO ===================== */
 renderCatalog();
 updateCartUI();
 preloadImages();
 initBanner();
+initSmoothAnchors();
