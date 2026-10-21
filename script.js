@@ -73,10 +73,14 @@ let instagramTimerInterval = null; // Control de la cuenta regresiva de IG
    BANNER: GIF cada 11000 ms, texto cada 5500 ms
    (contadores independientes). Un click o arrastre sobre
    el banner reinicia ambos contadores; un arrastre además
-   avanza/retrocede texto y GIF.
+   avanza/retrocede texto y video.
    ===================================================== */
 function initBanner() {
-  const BG_LIST = ['imagenes/banner.gif', 'imagenes/banner-02.gif','imagenes/banner-03.gif'];
+  const BG_LIST = [
+    { webm: 'imagenes/banner.webm', mp4: 'imagenes/banner.mp4' },
+    { webm: 'imagenes/banner-02.webm', mp4: 'imagenes/banner-02.mp4' },
+    { webm: 'imagenes/banner-03.webm', mp4: 'imagenes/banner-03.mp4' }
+  ];
   const BG_DELAY = 11000;
   const TEXT_DELAY = 5500;
   const SWIPE_MIN = 40; // px mínimos para considerar un arrastre
@@ -84,24 +88,25 @@ function initBanner() {
   const hero = document.getElementById('inicio');
   const slides = document.querySelectorAll('.carousel-slide');
   const dots = document.querySelectorAll('#carousel-dots .dot');
-  const bgA = document.getElementById('hero-bg-a');
-  const bgB = document.getElementById('hero-bg-b');
-  if (!hero || slides.length === 0 || !bgA || !bgB) return;
+  const backgrounds = [...document.querySelectorAll('.hero-bg')];
+  if (!hero || slides.length === 0 || backgrounds.length < BG_LIST.length) return;
 
-  let frontBg = bgA, backBg = bgB;
   let bgIndex = 0, textIndex = 0, bgTimer = null, textTimer = null;
-
-  // Precarga para que el cambio no parpadee
-  BG_LIST.forEach(src => { const img = new Image(); img.src = src; });
+  let currentBg = backgrounds[0];
 
   const mod = (n, m) => ((n % m) + m) % m;
 
   function showBg(i) {
     bgIndex = mod(i, BG_LIST.length);
-    backBg.style.backgroundImage = `url('${BG_LIST[bgIndex]}')`;
-    backBg.classList.add('is-visible');
-    frontBg.classList.remove('is-visible');
-    [frontBg, backBg] = [backBg, frontBg];
+    const nextBg = backgrounds[bgIndex];
+    if (nextBg === currentBg) return;
+
+    nextBg.currentTime = 0;
+    nextBg.play().catch(() => {});
+    nextBg.classList.add('is-visible');
+    currentBg.classList.remove('is-visible');
+    currentBg.pause();
+    currentBg = nextBg;
   }
 
   function showText(i) {
@@ -177,20 +182,24 @@ function loadCartFromStorage() {
   }
 }
 
-function preloadImages() {
-  const first = products.slice(0, 6);   // solo las primeras que se ven
-  let loaded = 0;
+function preloadCriticalAssets() {
+  const firstBanner = document.getElementById("hero-bg-a");
+  let finished = false;
 
-  first.forEach(p => {
-    const img = new Image();
-    img.onload = img.onerror = () => {
-      loaded++;
-      if (loaded >= first.length) hidePreloader();
-    };
-    img.src = p.img;
-  });
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    hidePreloader();
+  };
 
-  setTimeout(hidePreloader, 1500);      // tope más corto
+  if (!firstBanner) {
+    finish();
+    return;
+  }
+
+  firstBanner.addEventListener("canplay", finish, { once: true });
+  firstBanner.addEventListener("error", finish, { once: true });
+  setTimeout(finish, 1200);
 }
 
 function hidePreloader() {
@@ -208,7 +217,7 @@ function renderCatalog() {
 
   grid.innerHTML = filtered.map(p => `
     <div class="product-card">
-      <img src="${p.img}" alt="${p.name}" class="product-img" loading="lazy" onclick="openProductModal(${p.id})">
+      <img src="${p.img}" alt="${p.name}" class="product-img" loading="lazy" decoding="async" onclick="openProductModal(${p.id})">
       <div class="product-details">
         <div>
           <span class="product-category">${p.category}</span>
@@ -584,7 +593,7 @@ function checkoutInstagram() {
     if (timeLeft <= 0) {
       clearInterval(instagramTimerInterval);
       if (overlay) overlay.classList.remove("show");
-      window.location.assign(`https://instagram.com/${INSTAGRAM_USER}`);
+      window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
     }
   }, 1000);
 }
@@ -612,26 +621,9 @@ function openInstagramNow() {
   }
   window.open(`https://instagram.com/${INSTAGRAM_USER}`, "_blank");
 }
-/* ===================== SCROLL SUAVE SIN CAMBIAR LA URL ===================== */
-function initSmoothAnchors() {
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const id = link.getAttribute('href').slice(1);
-      e.preventDefault(); // evita que se agregue #seccion a la URL
 
-      if (!id || id === 'inicio') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-
-      const target = document.getElementById(id);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-}
 /* ===================== INICIO ===================== */
 renderCatalog();
 updateCartUI();
-preloadImages();
+preloadCriticalAssets();
 initBanner();
-initSmoothAnchors();

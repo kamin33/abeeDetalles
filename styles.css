@@ -913,7 +913,6 @@ a {
   position: sticky;
   top: 88px;
   min-width: 300px;
-  display: none;
 }
 
 .cart-sidebar h2 {
@@ -1267,13 +1266,22 @@ a {
   }
 }
 
-/* ===== Banner con GIF de fondo + control de música ===== */
+/* ===== Banner con video de fondo + control de música ===== */
 .hero-bg {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   z-index: 0;
+}
+
+.hero-bg:not(.is-visible) {
+  pointer-events: none;
 }
 
 /* Capa clara para que el texto se lea sobre el GIF */
@@ -1387,27 +1395,4 @@ a {
 
 .hero-bg.is-visible {
   opacity: 1;
-}
-
-#catalogo,
-#conocenos {
-  scroll-margin-top: 84px;
-}
-@media (min-width: 900px) {
-  
-
-  .navbar-container,
-  .footer-container,
-  .footer-bottom { max-width: 1360px; }
-
-  .main-layout {
-    max-width: 1360px;
-    width: calc(100% - 2rem);
-    background: #ffffff;
-    padding: 1.75rem;
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-xs);
-  }
-
-  .products-grid { grid-template-columns: repeat(4, 1fr); }
 }

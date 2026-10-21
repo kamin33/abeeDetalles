@@ -39,27 +39,37 @@
   <!-- Banner Hero Rotativo / Carrusel (Con Swipe Táctil) -->
   <section class="hero-banner-section" id="inicio">
 
-    <!-- Fondos animados (dos capas para el fundido) -->
-    <div class="hero-bg is-visible" id="hero-bg-a" style="background-image:url('imagenes/banner.gif')"></div>
-    <div class="hero-bg" id="hero-bg-b"></div>
+    <!-- Fondos animados precargados para cambios instantáneos -->
+    <video class="hero-bg is-visible" id="hero-bg-a" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="imagenes/banner.webm" type="video/webm">
+      <source src="imagenes/banner.mp4" type="video/mp4">
+    </video>
+    <video class="hero-bg" id="hero-bg-b" muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="imagenes/banner-02.webm" type="video/webm">
+      <source src="imagenes/banner-02.mp4" type="video/mp4">
+    </video>
+    <video class="hero-bg" id="hero-bg-c" muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="imagenes/banner-03.webm" type="video/webm">
+      <source src="imagenes/banner-03.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay"></div>
 
     <div class="hero-carousel" id="hero-carousel">
-      <div class="carousel-slide active" data-bg="imagenes/banner.gif">
+      <div class="carousel-slide active" data-bg="imagenes/banner.webm">
         <div class="slide-content">
           <span class="slide-tag">Novedades Chenille</span>
           <h2>Detalles que enamoran y perduran</h2>
           <p>Regala la magia de las flores y accesorios hechos completamente a mano.</p>
         </div>
       </div>
-      <div class="carousel-slide" data-bg="imagenes/banner-02.gif">
+      <div class="carousel-slide" data-bg="imagenes/banner-02.webm">
         <div class="slide-content">
           <span class="slide-tag">Combos Especiales</span>
           <h2>¡Combínalos como quieras!</h2>
           <p>Aprovecha los descuentos especiales en llaveros y macetitas.</p>
         </div>
       </div>
-      <div class="carousel-slide" data-bg="imagenes/banner-03.gif">
+      <div class="carousel-slide" data-bg="imagenes/banner-03.webm">
         <div class="slide-content">
           <span class="slide-tag">Pedidos Personalizados</span>
           <h2>¿Tienes una idea en mente?</h2>
@@ -258,36 +268,18 @@
     const musicBtn = document.getElementById('musicBtn');
     music.volume = 0.5;
     music.loop = true;
-
     let musicLoaded = false;
 
-    // Descarga el MP3 (solo una vez)
     function loadMusic() {
       if (musicLoaded) return;
       musicLoaded = true;
-      music.preload = 'auto';
       music.src = music.dataset.src;
       music.load();
     }
 
-    // Lo carga cuando la página ya terminó lo esencial
-    function scheduleMusicLoad() {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadMusic, { timeout: 3000 });
-      } else {
-        setTimeout(loadMusic, 1500);
-      }
-    }
-
-    if (document.readyState === 'complete') {
-      scheduleMusicLoad();
-    } else {
-      window.addEventListener('load', scheduleMusicLoad);
-    }
-
     function setMusic(on) {
       if (on) {
-        loadMusic(); // por si el usuario pulsa antes de que termine la carga
+        loadMusic();
         music.play().then(() => {
           musicBtn.setAttribute('aria-pressed', 'true');
           musicBtn.setAttribute('aria-label', 'Silenciar');
