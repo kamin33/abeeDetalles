@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración | Abee Detalles</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../admin.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <section id="login-view" class="admin-card admin-login">
+      <img src="../imagenes/logo.png" alt="Abee Detalles" class="admin-logo">
+      <p class="admin-eyebrow">Abee Detalles</p>
+      <h1>Panel de administración</h1>
+      <p class="admin-muted">Gestiona tu catálogo desde cualquier dispositivo.</p>
+      <form id="login-form" class="admin-form">
+        <label>Correo<input id="login-email" type="email" autocomplete="email" required></label>
+        <label>Contraseña<input id="login-password" type="password" autocomplete="current-password" required></label>
+        <button class="admin-button" type="submit">Ingresar</button>
+      </form>
+      <p id="login-message" class="admin-message" role="alert"></p>
+      <p id="local-mode-note" class="admin-note">Modo local: configura Supabase en config.js para activar el acceso remoto.</p>
+    </section>
+
+    <section id="dashboard-view" class="admin-dashboard" hidden>
+      <header class="admin-header">
+        <div><p class="admin-eyebrow">Abee Detalles</p><h1>Tu catálogo</h1></div>
+        <div class="admin-header-actions"><a href="../index.html" class="admin-link" target="_blank" rel="noopener noreferrer">Ver tienda</a><button id="logout-button" class="admin-button secondary">Cerrar sesión</button></div>
+      </header>
+      <p id="dashboard-message" class="admin-message" role="status"></p>
+      <nav class="admin-tabs" aria-label="Secciones del panel">
+        <button class="admin-tab active" data-section="products-section">Productos</button>
+        <button class="admin-tab" data-section="banners-section">Banners</button>
+      </nav>
+
+      <section id="products-section" class="admin-panel">
+        <div class="admin-panel-heading"><div><h2>Productos</h2><p class="admin-muted">Precios, ofertas y visibilidad del catálogo.</p></div><div class="admin-header-actions"><!-- Importación puntual ya realizada: <button id="import-legacy" class="admin-button secondary">Importar catálogo anterior</button> --><button id="new-product" class="admin-button">Nuevo producto</button></div></div>
+        <div id="products-list" class="admin-list"></div>
+      </section>
+      <section id="banners-section" class="admin-panel" hidden>
+        <div class="admin-panel-heading"><div><h2>Banners</h2><p class="admin-muted">Ordena y actualiza tus imágenes o videos promocionales.</p></div><button id="new-banner" class="admin-button">Nuevo banner</button></div>
+        <div id="banners-list" class="admin-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="editor-dialog" class="admin-dialog">
+    <form id="editor-form" class="admin-form" method="dialog">
+      <div class="admin-dialog-header"><h2 id="editor-title"></h2><button type="button" id="close-editor" class="admin-icon-button" aria-label="Cerrar">✕</button></div>
+      <div id="product-fields">
+        <label>Nombre<input id="product-name" maxlength="80"></label>
+        <div class="admin-form-grid"><label>Categoría<input id="product-category" maxlength="30" placeholder="llaveros"></label><label>Precio (S/)<input id="product-price" type="number" min="0" step="0.01"></label></div>
+        <label>Oferta visible<input id="product-offer" maxlength="180" placeholder="1 por S/ 10 — 2 por S/ 18"></label>
+        <label>Descripción<textarea id="product-desc" maxlength="500"></textarea></label>
+        <label>Colores separados por coma<input id="product-colors" placeholder="Rosado, Blanco"></label>
+        <label>Imagen<input id="product-image" type="file" accept="image/*"></label>
+      </div>
+      <div id="banner-fields" hidden>
+        <label>Etiqueta<input id="banner-tag" maxlength="60"></label>
+        <label>Título<input id="banner-title" maxlength="100"></label>
+        <label>Descripción<textarea id="banner-description" maxlength="240"></textarea></label>
+        <label>Imagen o video<input id="banner-media" type="file" accept="image/*,video/*"></label>
+        <div class="admin-form-grid"><label>Orden<input id="banner-order" type="number" min="0" step="1" value="0"></label><label class="admin-checkbox"><input id="entry-active" type="checkbox" checked> Visible</label></div>
+      </div>
+      <p id="editor-message" class="admin-message" role="alert"></p>
+      <button class="admin-button" type="submit">Guardar cambios</button>
+    </form>
+  </dialog>
+  <script src="../config.js"></script>
+  <script src="../catalog-service.js"></script>
+  <!-- <script src="legacy-products.js"></script> -->
+  <script src="../admin.js"></script>
+</body>
+</html>
+

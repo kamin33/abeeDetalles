@@ -23,7 +23,7 @@ Con una configuración válida, el panel utiliza autenticación por correo y con
 
 ## Importar los productos originales
 
-Después de iniciar sesión en `admin.html` con la cuenta de Supabase:
+Después de iniciar sesión en `admin/` con la cuenta de Supabase:
 
 1. Entra a la pestaña **Productos**.
 2. Pulsa **Importar catálogo anterior**.
@@ -42,3 +42,10 @@ Si la reparación no deja los textos correctos, usa [`replace-products.sql`](./r
 ## Publicar gratis
 
 El proyecto puede publicarse como sitio estático en GitHub Pages. Supabase se usa como servicio externo para autenticación, base de datos y multimedia. Revisa las cuotas vigentes del plan gratuito y del beneficio disponible en GitHub Student Developer Pack antes de subir videos grandes.
+
+## URLs publicadas
+
+- Tienda: `https://abeedetalles.studio/`
+- Panel: `https://abeedetalles.studio/admin/`
+
+GitHub Pages sirve `index.html` automáticamente en la raíz y `admin/index.html` automáticamente dentro de `/admin/`, por eso las extensiones `.html` no aparecen en las URLs.

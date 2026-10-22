@@ -49,7 +49,7 @@
   function renderProducts() {
     $("products-list").innerHTML = state.products.length ? state.products.map(product => `
       <article class="admin-list-item">
-        <img src="${escapeAttribute(product.img || "imagenes/logo.png")}" alt="">
+        <img src="${escapeAttribute(resolveMediaUrl(product.img))}" alt="">
         <div><h3>${escapeHtml(product.name)}</h3><p>S/ ${Number(product.price).toFixed(2)} · ${escapeHtml(product.category)} · ${product.active === false ? "Oculto" : "Visible"}</p><p>${escapeHtml(product.offer_text || product.offerText || "Sin oferta")}</p></div>
         <div class="admin-item-actions"><button data-edit-product="${product.id}">Editar</button><button data-delete-product="${product.id}">Eliminar</button></div>
       </article>`).join("") : `<p class="admin-muted">No hay productos guardados. Crea el primero para probar el panel.</p>`;
@@ -58,7 +58,7 @@
   function renderBanners() {
     $("banners-list").innerHTML = state.banners.length ? state.banners.map(banner => `
       <article class="admin-list-item">
-        ${banner.media_type === "video" ? `<video src="${escapeAttribute(banner.media_url)}" muted></video>` : `<img src="${escapeAttribute(banner.media_url || "imagenes/logo.png")}" alt="">`}
+        ${banner.media_type === "video" ? `<video src="${escapeAttribute(resolveMediaUrl(banner.media_url))}" muted></video>` : `<img src="${escapeAttribute(resolveMediaUrl(banner.media_url))}" alt="">`}
         <div><h3>${escapeHtml(banner.title)}</h3><p>${escapeHtml(banner.tag || "")} · Orden ${Number(banner.sort_order || 0)} · ${banner.active === false ? "Oculto" : "Visible"}</p></div>
         <div class="admin-item-actions"><button data-edit-banner="${banner.id}">Editar</button><button data-delete-banner="${banner.id}">Eliminar</button></div>
       </article>`).join("") : `<p class="admin-muted">No hay banners guardados.</p>`;
@@ -85,6 +85,12 @@
 
   function escapeAttribute(value) {
     return escapeHtml(value).replace(/`/g, "&#096;");
+  }
+
+  function resolveMediaUrl(value, fallback = "imagenes/logo.png") {
+    const source = value || fallback;
+    if (/^(https?:|data:|blob:|\/)/i.test(source)) return source;
+    return window.location.pathname.includes("/admin/") ? `../${source}` : source;
   }
 
   function openEditor(type, id = null) {
