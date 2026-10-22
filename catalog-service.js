@@ -54,19 +54,26 @@
   }
 
   async function loadProducts(fallback) {
-    const localProducts = localRead(PRODUCTS_KEY, null);
-    if (localProducts) return localProducts.filter(product => product.active !== false).map(normalizeProduct);
-    if (!hasRemoteConfig()) return fallback;
+    if (hasRemoteConfig()) {
+      const remoteProducts = await remoteRequest("products?select=*&active=eq.true&order=created_at.asc");
+      return remoteProducts.map(normalizeProduct);
+    }
 
-    const remoteProducts = await remoteRequest("products?select=*&active=eq.true&order=created_at.asc");
-    return remoteProducts.map(normalizeProduct);
+    const localProducts = localRead(PRODUCTS_KEY, null);
+    return localProducts
+      ? localProducts.filter(product => product.active !== false).map(normalizeProduct)
+      : fallback;
   }
 
   async function loadBanners(fallback) {
+    if (hasRemoteConfig()) {
+      return remoteRequest("banners?select=*&active=eq.true&order=sort_order.asc");
+    }
+
     const localBanners = localRead(BANNERS_KEY, null);
-    if (localBanners) return localBanners.filter(banner => banner.active !== false);
-    if (!hasRemoteConfig()) return fallback;
-    return remoteRequest("banners?select=*&active=eq.true&order=sort_order.asc");
+    return localBanners
+      ? localBanners.filter(banner => banner.active !== false)
+      : fallback;
   }
 
   async function saveProducts(products) {
