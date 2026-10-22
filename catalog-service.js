@@ -55,7 +55,7 @@
 
   async function loadProducts(fallback) {
     if (hasRemoteConfig()) {
-      const remoteProducts = await remoteRequest("products?select=*&active=eq.true&order=created_at.asc");
+      const remoteProducts = await remoteRequest("products?select=*&active=eq.true&order=created_at.desc");
       return remoteProducts.map(normalizeProduct);
     }
 
