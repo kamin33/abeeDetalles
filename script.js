@@ -15,7 +15,7 @@ const colorHexMap = {
   "Flores Rosadas con papel Kraft": "#d9777f"
 };
 
-const products = [
+let products = [
   // LLAVEROS S/ 4.00
   { id: 1, category: "llaveros", name: "Ramo De Tulipanes", price: 4.00, promoTier: "tier4", offerText: "1 por S/ 4.00 — 2 por S/ 7.00 ¡Combínalos como quieras!", desc: "Un toque primaveral que no se marchita.", colors: ["Azul", "Rosado", "Amarillo", "Rojo", "Lila"], img: "imagenes/img1322.jpg" },
   { id: 2, category: "llaveros", name: "Cerezas Coquette", price: 4.00, promoTier: "tier4", offerText: "1 por S/ 4.00 — 2 por S/ 7.00 ¡Combínalos como quieras!", desc: "Dulces, coquetas y coloridas.", colors: ["Rojo clásico", "Rosado pastel"], img: "imagenes/img1325.jpg" },
@@ -160,6 +160,32 @@ function initBanner() {
 
   showText(0);
   resetTimers();
+}
+
+function applyManagedBanners(banners) {
+  if (!Array.isArray(banners) || banners.length === 0) return;
+
+  const activeBanners = banners.filter(banner => banner.active !== false).sort((a, b) => {
+    return Number(a.sort_order || 0) - Number(b.sort_order || 0);
+  }).slice(0, 3);
+  const slides = [...document.querySelectorAll(".carousel-slide")];
+  activeBanners.forEach((banner, index) => {
+    const slide = slides[index];
+    if (!slide) return;
+    slide.dataset.bg = banner.media_url || slide.dataset.bg;
+    slide.innerHTML = `
+      <div class="slide-content">
+        <span class="slide-tag">${banner.tag || ""}</span>
+        <h2>${banner.title || ""}</h2>
+        <p>${banner.description || ""}</p>
+      </div>
+    `;
+    if (banner.media_type === "image" && banner.media_url) {
+      slide.style.backgroundImage = `url("${banner.media_url.replace(/"/g, '\\"')}")`;
+      slide.style.backgroundSize = "cover";
+      slide.style.backgroundPosition = "center";
+    }
+  });
 }
 
 /* ===================== CARRITO ===================== */
@@ -623,7 +649,22 @@ function openInstagramNow() {
 }
 
 /* ===================== INICIO ===================== */
-renderCatalog();
-updateCartUI();
-preloadCriticalAssets();
-initBanner();
+async function initializeStorefront() {
+  if (window.catalogService) {
+    try {
+      products = await window.catalogService.loadProducts(products);
+      const banners = await window.catalogService.loadBanners([]);
+      applyManagedBanners(banners);
+    } catch (error) {
+      console.error("No se pudo cargar el catálogo remoto. Se usará el catálogo local.", error);
+      showCoquetteToast("No se pudo actualizar el catálogo. Mostrando la versión guardada.");
+    }
+  }
+
+  renderCatalog();
+  updateCartUI();
+  preloadCriticalAssets();
+  initBanner();
+}
+
+initializeStorefront();
