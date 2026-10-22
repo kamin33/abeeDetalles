@@ -106,12 +106,7 @@
 
     <!-- Catálogo -->
     <section class="catalog-section">
-      <nav class="filter-bar">
-        <button class="filter-tab active" onclick="filterCategory('todos')">Todos</button>
-        <button class="filter-tab" onclick="filterCategory('llaveros')">Llaveros</button>
-        <button class="filter-tab" onclick="filterCategory('macetas')">Macetas</button>
-        <button class="filter-tab" onclick="filterCategory('ramos')">Ramos</button>
-      </nav>
+      <nav class="filter-bar" id="category-filters" aria-label="Filtrar catálogo"></nav>
 
       <!-- Grilla de productos (2 columnas en celular) -->
       <div class="products-grid" id="catalog-grid">

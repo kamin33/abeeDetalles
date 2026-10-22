@@ -235,18 +235,51 @@ function hidePreloader() {
   }
 }
 
+function formatCategoryName(category) {
+  return String(category || "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/\b\w/g, character => character.toUpperCase());
+}
+
+function renderCategoryFilters() {
+  const filterBar = document.getElementById("category-filters");
+  if (!filterBar) return;
+
+  const categories = [...new Set(
+    products
+      .filter(product => product.active !== false && product.category)
+      .map(product => product.category.trim().toLowerCase())
+  )];
+
+  if (currentFilter !== "todos" && !categories.includes(currentFilter)) {
+    currentFilter = "todos";
+  }
+
+  filterBar.innerHTML = [
+    { value: "todos", label: "Todos" },
+    ...categories.map(category => ({ value: category, label: formatCategoryName(category) }))
+  ].map(category => `
+    <button class="filter-tab${currentFilter === category.value ? " active" : ""}"
+      onclick="filterCategory('${category.value.replace(/'/g, "\\'")}')">
+      ${category.label}
+    </button>
+  `).join("");
+}
+
 function renderCatalog() {
   const grid = document.getElementById("catalog-grid");
+  renderCategoryFilters();
   const filtered = currentFilter === "todos" 
     ? products 
-    : products.filter(p => p.category === currentFilter);
+    : products.filter(p => String(p.category || "").trim().toLowerCase() === currentFilter);
 
   grid.innerHTML = filtered.map(p => `
     <div class="product-card">
       <img src="${p.img}" alt="${p.name}" class="product-img" loading="lazy" decoding="async" onclick="openProductModal(${p.id})">
       <div class="product-details">
         <div>
-          <span class="product-category">${p.category}</span>
+          <span class="product-category">${formatCategoryName(p.category)}</span>
           <h4 class="product-name" onclick="openProductModal(${p.id})">${p.name}</h4>
           <p class="product-price">S/ ${p.price.toFixed(2)}</p>
         </div>
@@ -258,8 +291,6 @@ function renderCatalog() {
 
 function filterCategory(cat) {
   currentFilter = cat;
-  document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
-  event.target.classList.add("active");
   renderCatalog();
 }
 
