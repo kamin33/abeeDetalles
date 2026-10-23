@@ -250,6 +250,15 @@
       <div class="center-toast-timer-badge">
         Redirigiéndote a Instagram en <span id="countdown-timer">5</span>s...
       </div>
+
+      <section class="assistant-widget" aria-label="Asistente de Abee Detalles">
+        <div id="assistant-panel" class="assistant-panel" hidden>
+          <header class="assistant-header"><div><strong>Asistente Abee</strong><small>Te ayudo a elegir tu detalle</small></div><button id="assistant-close" type="button" aria-label="Cerrar chat">×</button></header>
+          <div id="assistant-messages" class="assistant-messages"><div class="assistant-message bot"><p>¡Hola! Pregúntame por un producto o dime para quién es, tu presupuesto o tu color favorito.</p></div></div>
+          <form id="assistant-form" class="assistant-form"><input id="assistant-input" maxlength="240" placeholder="Ej. busco un regalo de S/ 15" autocomplete="off"><button type="submit" aria-label="Enviar">➤</button></form>
+        </div>
+        <button id="assistant-toggle" class="assistant-toggle" type="button" aria-expanded="false">💬 <span>¿Te ayudo?</span></button>
+      </section>
       <div style="display: flex; gap: 10px; margin-top: 1rem;">
         <button onclick="cancelInstagramCheckout()" style="flex: 1; background: #f4f4f5; border: none; padding: 0.7rem; border-radius: 12px; font-weight: bold; cursor: pointer;">Cancelar</button>
         <button onclick="openInstagramNow()" style="flex: 1; background: var(--ig-color); color: white; border: none; padding: 0.7rem; border-radius: 12px; font-weight: bold; cursor: pointer;">Ir ahora</button>
@@ -295,5 +304,6 @@
   <script src="config.js"></script>
   <script src="catalog-service.js"></script>
   <script src="script.js"></script>
+  <script src="assistant.js"></script>
 </body>
 </html>

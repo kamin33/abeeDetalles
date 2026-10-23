@@ -26,11 +26,29 @@ create table if not exists public.banners (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.store_info (
+  id integer primary key default 1 check (id = 1),
+  shipping text not null default '',
+  payment text not null default '',
+  hours text not null default '',
+  location text not null default '',
+  customization text not null default '',
+  whatsapp text not null default '',
+  updated_at timestamptz not null default now()
+);
+
+insert into public.store_info (id)
+values (1)
+on conflict (id) do nothing;
+
 alter table public.products enable row level security;
 alter table public.banners enable row level security;
+alter table public.store_info enable row level security;
 
 grant select on table public.products, public.banners to anon;
 grant select, insert, update, delete on table public.products, public.banners to authenticated;
+grant select on table public.store_info to anon;
+grant select, insert, update on table public.store_info to authenticated;
 
 create policy "Public can read active products"
   on public.products for select
@@ -46,6 +64,14 @@ create policy "Authenticated admins can manage products"
 
 create policy "Authenticated admins can manage banners"
   on public.banners for all to authenticated
+  using (true) with check (true);
+
+create policy "Public can read store info"
+  on public.store_info for select
+  using (true);
+
+create policy "Authenticated admins can manage store info"
+  on public.store_info for all to authenticated
   using (true) with check (true);
 
 -- Crea el bucket desde Storage y marca su lectura pública:

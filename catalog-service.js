@@ -76,6 +76,15 @@
       : fallback;
   }
 
+  async function loadStoreInfo(fallback = {}) {
+    if (hasRemoteConfig()) {
+      const rows = await remoteRequest("store_info?select=*&id=eq.1");
+      return rows[0] || fallback;
+    }
+
+    return localRead("abee_store_info", fallback);
+  }
+
   async function saveProducts(products) {
     const normalized = products.map(normalizeProduct);
     localWrite(PRODUCTS_KEY, normalized);
@@ -91,6 +100,7 @@
     hasRemoteConfig,
     loadProducts,
     loadBanners,
+    loadStoreInfo,
     saveProducts,
     saveBanners,
     remoteRequest,

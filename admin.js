@@ -1,6 +1,6 @@
 (function () {
   const config = window.catalogService.getConfig();
-  const state = { products: [], banners: [], type: "product", editingId: null, accessToken: null };
+  const state = { products: [], banners: [], info: {}, type: "product", editingId: null, accessToken: null };
   const $ = id => document.getElementById(id);
 
   function setMessage(id, text, success = false) {
@@ -29,16 +29,19 @@
 
   async function loadData() {
     if (isRemote()) {
-      [state.products, state.banners] = await Promise.all([
+      [state.products, state.banners, state.info] = await Promise.all([
         api("products?select=*&order=created_at.asc"),
-        api("banners?select=*&order=sort_order.asc")
+        api("banners?select=*&order=sort_order.asc"),
+        api("store_info?select=*&id=eq.1").then(rows => rows[0] || {})
       ]);
     } else {
       state.products = JSON.parse(localStorage.getItem("abee_products") || "[]");
       state.banners = JSON.parse(localStorage.getItem("abee_banners") || "[]");
+      state.info = JSON.parse(localStorage.getItem("abee_store_info") || "{}");
     }
     renderProducts();
     renderBanners();
+    renderStoreInfo();
   }
 
   function showDashboard() {
@@ -62,6 +65,13 @@
         <div><h3>${escapeHtml(banner.title)}</h3><p>${escapeHtml(banner.tag || "")} · Orden ${Number(banner.sort_order || 0)} · ${banner.active === false ? "Oculto" : "Visible"}</p></div>
         <div class="admin-item-actions"><button data-edit-banner="${banner.id}">Editar</button><button data-delete-banner="${banner.id}">Eliminar</button></div>
       </article>`).join("") : `<p class="admin-muted">No hay banners guardados.</p>`;
+  }
+
+  function renderStoreInfo() {
+    ["shipping", "payment", "hours", "location", "customization", "whatsapp"].forEach(field => {
+      const input = $(`info-${field}`);
+      if (input) input.value = state.info[field] || "";
+    });
   }
 
   function escapeHtml(value) {
@@ -209,6 +219,36 @@
       state.banners = current ? state.banners.map(item => item.id === current.id ? entry : item) : [...state.banners, entry];
       await window.catalogService.saveBanners(state.banners);
     }
+
+  }
+
+  async function saveStoreInfo(event) {
+    event.preventDefault();
+    const info = {
+      id: 1,
+      shipping: $("info-shipping").value.trim(),
+      payment: $("info-payment").value.trim(),
+      hours: $("info-hours").value.trim(),
+      location: $("info-location").value.trim(),
+      customization: $("info-customization").value.trim(),
+      whatsapp: $("info-whatsapp").value.trim()
+    };
+    try {
+      if (isRemote()) {
+        await api("store_info?on_conflict=id", {
+          method: "POST",
+          headers: { Prefer: "return=representation,resolution=merge-duplicates" },
+          body: JSON.stringify(info)
+        });
+      } else {
+        localStorage.setItem("abee_store_info", JSON.stringify(info));
+      }
+      state.info = info;
+      setMessage("info-message", "Información guardada correctamente.", true);
+    } catch (error) {
+      console.error(error);
+      setMessage("info-message", error.message || "No se pudo guardar la información.");
+    }
   }
 
   async function deleteEntry(type, id) {
@@ -287,6 +327,7 @@
   $("new-banner").addEventListener("click", () => openEditor("banner"));
   $("close-editor").addEventListener("click", () => $("editor-dialog").close());
   $("editor-form").addEventListener("submit", saveEntry);
+  $("store-info-form").addEventListener("submit", saveStoreInfo);
   document.querySelectorAll(".admin-tab").forEach(tab => tab.addEventListener("click", () => {
     document.querySelectorAll(".admin-tab").forEach(item => item.classList.remove("active"));
     tab.classList.add("active");

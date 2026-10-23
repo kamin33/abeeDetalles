@@ -156,6 +156,8 @@
 .admin-icon-button { width: 34px; height: 34px; border-radius: 50%; transition: background .18s ease; }
 .admin-icon-button:hover { background: var(--brand-50); color: var(--brand-700); }
 .admin-note { border: 1px solid #ead7c0; border-radius: 9px; }
+.admin-info-form { max-width: 760px; }
+.admin-info-form textarea { min-height: 76px; }
 
 @media (max-width: 640px) {
   .admin-body { padding: 1rem .75rem; }

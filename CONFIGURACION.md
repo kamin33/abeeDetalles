@@ -21,6 +21,17 @@ Este modo guarda datos en `localStorage` y sirve únicamente para probar la inte
 
 Con una configuración válida, el panel utiliza autenticación por correo y contraseña, PostgreSQL para productos/banners y Storage para imágenes/videos. La tienda pública solo consulta registros activos.
 
+## Activar el asistente de la tienda
+
+El chat de la tienda puede recomendar productos según palabras clave, presupuesto, categoría, color y descripción. También responde con la información de envíos, pagos, horarios, ubicación y personalización que se guarde en Supabase.
+
+- Si acabas de crear las tablas, `supabase-schema.sql` ya incluye `store_info`.
+- Si la base de datos ya estaba configurada, ejecuta [`assistant-schema.sql`](./assistant-schema.sql) en SQL Editor.
+- Entra a `https://abeedetalles.studio/admin/`, abre la pestaña **Asistente**, completa la información y pulsa **Guardar información**.
+- El botón de chat aparece en la esquina inferior de la tienda. Cuando el asistente no encuentra una respuesta, muestra una orientación general para que la clienta contacte por WhatsApp.
+
+Esta primera versión no necesita una API de inteligencia artificial ni una tarjeta bancaria: busca en el catálogo real de Supabase y ordena las coincidencias. Más adelante se puede conectar un modelo de IA sin cambiar la tabla de productos ni la interfaz.
+
 ## Importar los productos originales
 
 Después de iniciar sesión en `admin/` con la cuenta de Supabase:

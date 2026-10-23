@@ -32,6 +32,7 @@
       <nav class="admin-tabs" aria-label="Secciones del panel">
         <button class="admin-tab active" data-section="products-section">Productos</button>
         <button class="admin-tab" data-section="banners-section">Banners</button>
+        <button class="admin-tab" data-section="assistant-section">Asistente</button>
       </nav>
 
       <section id="products-section" class="admin-panel">
@@ -41,6 +42,19 @@
       <section id="banners-section" class="admin-panel" hidden>
         <div class="admin-panel-heading"><div><h2>Banners</h2><p class="admin-muted">Ordena y actualiza tus imágenes o videos promocionales.</p></div><button id="new-banner" class="admin-button">Nuevo banner</button></div>
         <div id="banners-list" class="admin-list"></div>
+      </section>
+      <section id="assistant-section" class="admin-panel" hidden>
+        <div class="admin-panel-heading"><div><h2>Información del asistente</h2><p class="admin-muted">Estos textos se usarán para responder dudas de la tienda.</p></div></div>
+        <form id="store-info-form" class="admin-form admin-info-form">
+          <label>Envíos y entregas<textarea id="info-shipping" maxlength="600"></textarea></label>
+          <label>Formas de pago<textarea id="info-payment" maxlength="600"></textarea></label>
+          <label>Horarios de atención<textarea id="info-hours" maxlength="400"></textarea></label>
+          <label>Ubicación o punto de entrega<textarea id="info-location" maxlength="400"></textarea></label>
+          <label>Personalización<textarea id="info-customization" maxlength="600"></textarea></label>
+          <label>WhatsApp<input id="info-whatsapp" maxlength="30"></label>
+          <button class="admin-button" type="submit">Guardar información</button>
+          <p id="info-message" class="admin-message" role="status"></p>
+        </form>
       </section>
     </section>
   </main>
