@@ -18,7 +18,7 @@
 .admin-button:disabled { opacity: .5; cursor: wait; }
 .admin-message { min-height: 1.2em; color: var(--danger-600); font-size: .85rem; }
 .admin-message.success { color: var(--success-600); }
-.admin-dashboard { display: grid; gap: 1rem; }
+.admin-dashboard { display: grid; gap: 1rem; width: 100%; min-width: 0; }
 .admin-header, .admin-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .admin-header { padding: .5rem 0; }
 .admin-header > div:first-child { margin-right: auto; text-align: left; }
@@ -54,7 +54,7 @@
   padding: 2.5rem 1.25rem;
 }
 
-.admin-shell { max-width: 1180px; }
+.admin-shell { width: 100%; max-width: 1180px; min-width: 0; }
 .admin-login {
   border: 1px solid rgba(164, 66, 110, .12);
   border-radius: 18px;
@@ -110,6 +110,8 @@
 .admin-panel {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
   border: 1px solid rgba(164, 66, 110, .1);
   border-radius: 16px;
   box-shadow: 0 14px 40px rgba(66, 43, 49, .08);
@@ -135,7 +137,7 @@
   padding: .85rem;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-.admin-list-item > div:nth-child(2) { min-width: 0; }
+.admin-list-item > div:nth-child(2) { min-width: 0; overflow: hidden; }
 .admin-list-item h3, .admin-list-item p { overflow-wrap: anywhere; }
 .admin-list-item p { line-height: 1.4; margin-top: .18rem; }
 .admin-list-item:hover { transform: translateY(-2px); border-color: #e5c8d3; box-shadow: 0 9px 22px rgba(74, 41, 54, .09); }
