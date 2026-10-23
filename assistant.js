@@ -10,7 +10,7 @@
   };
   const state = { products: [], info: DEFAULT_INFO, open: false };
   const $ = id => document.getElementById(id);
-  const POSITION_KEY = "abee_assistant_position";
+  const POSITION_KEY = "abee_assistant_position_v2";
 
   function normalize(value) {
     return String(value || "")
