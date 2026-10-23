@@ -1403,9 +1403,8 @@ a {
   right: 1rem;
   bottom: 5.75rem;
   z-index: 2100;
-  display: grid;
-  justify-items: end;
-  gap: .5rem;
+  width: max-content;
+  height: 42px;
 }
 .assistant-toggle {
   border: 0;
@@ -1426,9 +1425,9 @@ a {
   transform: translateY(-2px);
 }
 .assistant-panel {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + .5rem);
+  position: fixed;
+  right: 1rem;
+  bottom: calc(5.75rem + 42px + .5rem);
   width: min(330px, calc(100vw - 1.5rem));
   height: min(440px, calc(100vh - 9rem));
   display: grid;
@@ -1473,6 +1472,7 @@ a {
 .assistant-contact { display: inline-block; margin-top: .65rem; color: var(--brand-700); font-weight: 600; font-size: .82rem; }
 @media (max-width: 640px) {
   .assistant-widget { right: .75rem; bottom: 5.5rem; }
+  .assistant-panel { right: .75rem; bottom: calc(5.5rem + 42px + .5rem); }
   .assistant-toggle span { display: none; }
   .assistant-header small::after { content: " · Arrastra para mover"; }
 }
