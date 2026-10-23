@@ -1436,7 +1436,10 @@ a {
   padding: .9rem 1rem;
   background: var(--brand-50);
   border-bottom: 1px solid var(--border);
+  cursor: grab;
+  user-select: none;
 }
+.assistant-header.is-dragging { cursor: grabbing; }
 .assistant-header strong, .assistant-header small { display: block; }
 .assistant-header small { color: var(--text-secondary); font-size: .78rem; margin-top: .15rem; }
 .assistant-header button { width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; }
@@ -1460,4 +1463,5 @@ a {
 @media (max-width: 640px) {
   .assistant-widget { right: .75rem; top: 5rem; }
   .assistant-toggle span { display: none; }
+  .assistant-header small::after { content: " · Mueve este chat"; }
 }

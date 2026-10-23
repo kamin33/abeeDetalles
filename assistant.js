@@ -10,6 +10,7 @@
   };
   const state = { products: [], info: DEFAULT_INFO, open: false };
   const $ = id => document.getElementById(id);
+  const POSITION_KEY = "abee_assistant_position";
 
   function normalize(value) {
     return String(value || "")
@@ -135,6 +136,72 @@
     if (event.key === "Escape" && state.open) toggle(false);
   });
 
+  function setupDragging() {
+    const widget = document.querySelector(".assistant-widget");
+    const header = document.querySelector(".assistant-header");
+    if (!widget || !header) return;
+
+    let dragging = false;
+    let moved = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    function clampPosition(left, top) {
+      const width = widget.offsetWidth;
+      const height = widget.offsetHeight;
+      return {
+        left: Math.max(8, Math.min(left, window.innerWidth - width - 8)),
+        top: Math.max(76, Math.min(top, window.innerHeight - height - 8))
+      };
+    }
+
+    function applyPosition(left, top, persist = true) {
+      const position = clampPosition(left, top);
+      widget.style.left = `${position.left}px`;
+      widget.style.top = `${position.top}px`;
+      widget.style.right = "auto";
+      if (persist) localStorage.setItem(POSITION_KEY, JSON.stringify(position));
+    }
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(POSITION_KEY) || "null");
+      if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
+        applyPosition(saved.left, saved.top, false);
+      }
+    } catch (error) {
+      console.warn("No se pudo recuperar la posición del asistente.", error);
+    }
+
+    header.addEventListener("pointerdown", event => {
+      if (event.target.closest("button")) return;
+      const bounds = widget.getBoundingClientRect();
+      dragging = true;
+      moved = false;
+      offsetX = event.clientX - bounds.left;
+      offsetY = event.clientY - bounds.top;
+      header.setPointerCapture(event.pointerId);
+      header.classList.add("is-dragging");
+    });
+
+    header.addEventListener("pointermove", event => {
+      if (!dragging) return;
+      moved = true;
+      applyPosition(event.clientX - offsetX, event.clientY - offsetY);
+    });
+
+    header.addEventListener("pointerup", event => {
+      if (!dragging) return;
+      dragging = false;
+      header.releasePointerCapture(event.pointerId);
+      header.classList.remove("is-dragging");
+    });
+
+    window.addEventListener("resize", () => {
+      const bounds = widget.getBoundingClientRect();
+      applyPosition(bounds.left, bounds.top, false);
+    });
+  }
+
   async function initialize() {
     if (!window.catalogService) return;
     $("assistant-form").addEventListener("submit", submit);
@@ -151,6 +218,7 @@
         toggle(false);
       }
     });
+    setupDragging();
     try {
       state.products = await window.catalogService.loadProducts([]);
     } catch (error) {
