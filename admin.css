@@ -108,14 +108,26 @@
 .admin-tab { border: 0; border-radius: 8px; padding: .65rem 1.15rem; }
 .admin-tab.active { color: #fff; background: var(--brand-700); border-bottom-color: transparent; box-shadow: 0 5px 12px rgba(164, 66, 110, .2); }
 .admin-panel {
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(164, 66, 110, .1);
   border-radius: 16px;
   box-shadow: 0 14px 40px rgba(66, 43, 49, .08);
   padding: 1.5rem;
+  min-height: 560px;
 }
-.admin-panel-heading { padding-bottom: .25rem; }
+.admin-panel-heading {
+  min-height: 66px;
+  align-items: center;
+  padding-bottom: .25rem;
+}
 .admin-panel h2 { font-size: 1.35rem; letter-spacing: -.025em; }
-.admin-list { gap: .75rem; }
+.admin-list {
+  flex: 1;
+  align-content: start;
+  gap: .75rem;
+  min-height: 430px;
+}
 .admin-list-item {
   border-color: #eee5e1;
   border-radius: 12px;
@@ -147,6 +159,7 @@
   .admin-body { padding: 1rem .75rem; }
   .admin-login { margin: 1.5rem auto; padding: 2rem 1.25rem; }
   .admin-panel { padding: 1rem; }
+  .admin-panel-heading { min-height: 88px; }
   .admin-tabs { width: 100%; }
   .admin-tab { flex: 1; }
   .admin-dialog > form { padding: 1.15rem; }
