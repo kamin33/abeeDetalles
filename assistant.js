@@ -195,7 +195,7 @@
       applyPosition(button, BUTTON_POSITION_KEY, savedButton.left, savedButton.top, 8, false);
     }
 
-    function makeDraggable(element, handle, key, minimumTop, onClick) {
+    function makeDraggable(element, handle, key, minimumTop) {
       let dragging = false;
       let moved = false;
       let offsetX = 0;
@@ -209,7 +209,6 @@
         offsetY = event.clientY - bounds.top;
         handle.setPointerCapture(event.pointerId);
         handle.classList.add("is-dragging");
-        event.preventDefault();
       });
       handle.addEventListener("pointermove", event => {
         if (!dragging) return;
@@ -221,12 +220,18 @@
         dragging = false;
         handle.releasePointerCapture(event.pointerId);
         handle.classList.remove("is-dragging");
-        if (!moved && onClick) onClick();
+        if (element === button) {
+          button.dataset.dragged = moved ? "true" : "false";
+        }
+      });
+      handle.addEventListener("pointercancel", () => {
+        dragging = false;
+        handle.classList.remove("is-dragging");
       });
     }
 
     makeDraggable(panel, header, PANEL_POSITION_KEY, 8);
-    makeDraggable(button, button, BUTTON_POSITION_KEY, 8, () => toggle());
+    makeDraggable(button, button, BUTTON_POSITION_KEY, 8);
 
     const keepVisible = () => {
       if (panel.style.left && panel.style.top && !panel.hidden) {
@@ -246,7 +251,12 @@
     if (!window.catalogService) return;
     $("assistant-form").addEventListener("submit", submit);
     $("assistant-toggle").addEventListener("click", event => {
-      if (event.detail === 0) toggle();
+      if (event.currentTarget.dataset.dragged === "true") {
+        event.currentTarget.dataset.dragged = "";
+        return;
+      }
+      event.currentTarget.dataset.dragged = "";
+      toggle();
     });
     $("assistant-close").addEventListener("click", event => {
       event.preventDefault();

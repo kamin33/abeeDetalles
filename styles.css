@@ -1423,6 +1423,8 @@ a {
   letter-spacing: .02em;
   transition: transform .18s ease, background .18s ease;
   touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .assistant-toggle:hover {
   background: var(--brand-700);
