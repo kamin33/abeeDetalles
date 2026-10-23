@@ -1407,6 +1407,9 @@ a {
   height: 42px;
 }
 .assistant-toggle {
+  position: fixed;
+  right: 1rem;
+  bottom: 5.75rem;
   border: 0;
   border-radius: 999px;
   background: var(--brand-900);
@@ -1419,6 +1422,7 @@ a {
   font-weight: 600;
   letter-spacing: .02em;
   transition: transform .18s ease, background .18s ease;
+  touch-action: none;
 }
 .assistant-toggle:hover {
   background: var(--brand-700);
@@ -1429,7 +1433,7 @@ a {
   right: 1rem;
   bottom: calc(5.75rem + 42px + .5rem);
   width: min(330px, calc(100vw - 1.5rem));
-  height: min(440px, calc(100vh - 9rem));
+  height: min(440px, calc(100dvh - 9rem));
   display: grid;
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
@@ -1448,6 +1452,7 @@ a {
   border-bottom: 1px solid var(--border);
   cursor: grab;
   user-select: none;
+  touch-action: none;
 }
 .assistant-header.is-dragging { cursor: grabbing; }
 .assistant-header strong, .assistant-header small { display: block; }
@@ -1472,7 +1477,8 @@ a {
 .assistant-contact { display: inline-block; margin-top: .65rem; color: var(--brand-700); font-weight: 600; font-size: .82rem; }
 @media (max-width: 640px) {
   .assistant-widget { right: .75rem; bottom: 5.5rem; }
-  .assistant-panel { right: .75rem; bottom: calc(5.5rem + 42px + .5rem); }
+  .assistant-toggle { right: .75rem; bottom: 5.5rem; }
+  .assistant-panel { right: .75rem; bottom: calc(5.5rem + 42px + .5rem); width: min(330px, calc(100vw - 1rem)); height: min(420px, calc(100dvh - 8rem)); }
   .assistant-toggle span { display: none; }
   .assistant-header small::after { content: " · Arrastra para mover"; }
 }

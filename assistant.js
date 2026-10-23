@@ -10,7 +10,8 @@
   };
   const state = { products: [], info: DEFAULT_INFO, open: false };
   const $ = id => document.getElementById(id);
-  const POSITION_KEY = "abee_assistant_panel_position_v3";
+  const PANEL_POSITION_KEY = "abee_assistant_panel_position_v4";
+  const BUTTON_POSITION_KEY = "abee_assistant_button_position_v1";
   let restorePanelPosition = () => {};
 
   function normalize(value) {
@@ -115,7 +116,6 @@
     $("assistant-toggle").setAttribute("aria-expanded", String(state.open));
     if (state.open) {
       restorePanelPosition();
-      $("assistant-input").focus();
     }
   }
 
@@ -134,7 +134,6 @@
     if (panel) panel.removeAttribute("hidden");
     if (toggleButton) toggleButton.setAttribute("aria-expanded", "true");
     restorePanelPosition();
-    $("assistant-input")?.focus();
   };
 
   document.addEventListener("keydown", event => {
@@ -144,76 +143,111 @@
   function setupDragging() {
     const panel = document.querySelector(".assistant-panel");
     const header = document.querySelector(".assistant-header");
-    if (!panel || !header) return;
+    const button = document.querySelector(".assistant-toggle");
+    if (!panel || !header || !button) return;
 
-    let dragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    function clampPosition(left, top) {
-      const width = panel.offsetWidth;
-      const height = panel.offsetHeight;
+    const viewport = () => {
+      const visual = window.visualViewport;
       return {
-        left: Math.max(8, Math.min(left, window.innerWidth - width - 8)),
-        top: Math.max(76, Math.min(top, window.innerHeight - height - 8))
+        width: visual?.width || window.innerWidth,
+        height: visual?.height || window.innerHeight,
+        offsetTop: visual?.offsetTop || 0,
+        offsetLeft: visual?.offsetLeft || 0
+      };
+    };
+
+    function clampPosition(element, left, top, minimumTop = 8) {
+      const view = viewport();
+      const width = element.offsetWidth;
+      const height = element.offsetHeight;
+      return {
+        left: Math.max(view.offsetLeft + 8, Math.min(left, view.offsetLeft + view.width - width - 8)),
+        top: Math.max(view.offsetTop + minimumTop, Math.min(top, view.offsetTop + view.height - height - 8))
       };
     }
 
-    function applyPosition(left, top, persist = true) {
-      const position = clampPosition(left, top);
-      panel.style.left = `${position.left}px`;
-      panel.style.top = `${position.top}px`;
-      panel.style.right = "auto";
-      panel.style.bottom = "auto";
-      if (persist) localStorage.setItem(POSITION_KEY, JSON.stringify(position));
+    function applyPosition(element, key, left, top, minimumTop = 8, persist = true) {
+      const position = clampPosition(element, left, top, minimumTop);
+      element.style.left = `${position.left}px`;
+      element.style.top = `${position.top}px`;
+      element.style.right = "auto";
+      element.style.bottom = "auto";
+      if (persist) localStorage.setItem(key, JSON.stringify(position));
     }
 
-    let savedPosition = null;
-    try {
-      savedPosition = JSON.parse(localStorage.getItem(POSITION_KEY) || "null");
-    } catch (error) {
-      console.warn("No se pudo recuperar la posición del asistente.", error);
+    function readPosition(key) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || "null");
+      } catch (error) {
+        console.warn("No se pudo recuperar la posición del asistente.", error);
+        return null;
+      }
     }
+
+    const savedPanel = readPosition(PANEL_POSITION_KEY);
+    const savedButton = readPosition(BUTTON_POSITION_KEY);
     restorePanelPosition = () => {
-      if (savedPosition && Number.isFinite(savedPosition.left) && Number.isFinite(savedPosition.top)) {
-        applyPosition(savedPosition.left, savedPosition.top, false);
+      if (savedPanel && Number.isFinite(savedPanel.left) && Number.isFinite(savedPanel.top)) {
+        applyPosition(panel, PANEL_POSITION_KEY, savedPanel.left, savedPanel.top, 8, false);
       }
     };
+    if (savedButton && Number.isFinite(savedButton.left) && Number.isFinite(savedButton.top)) {
+      applyPosition(button, BUTTON_POSITION_KEY, savedButton.left, savedButton.top, 8, false);
+    }
 
-    header.addEventListener("pointerdown", event => {
-      if (event.target.closest("button")) return;
-      const bounds = panel.getBoundingClientRect();
-      dragging = true;
-      offsetX = event.clientX - bounds.left;
-      offsetY = event.clientY - bounds.top;
-      header.setPointerCapture(event.pointerId);
-      header.classList.add("is-dragging");
-    });
+    function makeDraggable(element, handle, key, minimumTop, onClick) {
+      let dragging = false;
+      let moved = false;
+      let offsetX = 0;
+      let offsetY = 0;
+      handle.addEventListener("pointerdown", event => {
+        if (event.target.closest("button") && element === panel) return;
+        const bounds = element.getBoundingClientRect();
+        dragging = true;
+        moved = false;
+        offsetX = event.clientX - bounds.left;
+        offsetY = event.clientY - bounds.top;
+        handle.setPointerCapture(event.pointerId);
+        handle.classList.add("is-dragging");
+        event.preventDefault();
+      });
+      handle.addEventListener("pointermove", event => {
+        if (!dragging) return;
+        moved = true;
+        applyPosition(element, key, event.clientX - offsetX, event.clientY - offsetY, minimumTop);
+      });
+      handle.addEventListener("pointerup", event => {
+        if (!dragging) return;
+        dragging = false;
+        handle.releasePointerCapture(event.pointerId);
+        handle.classList.remove("is-dragging");
+        if (!moved && onClick) onClick();
+      });
+    }
 
-    header.addEventListener("pointermove", event => {
-      if (!dragging) return;
-      applyPosition(event.clientX - offsetX, event.clientY - offsetY);
-    });
+    makeDraggable(panel, header, PANEL_POSITION_KEY, 8);
+    makeDraggable(button, button, BUTTON_POSITION_KEY, 8, () => toggle());
 
-    header.addEventListener("pointerup", event => {
-      if (!dragging) return;
-      dragging = false;
-      header.releasePointerCapture(event.pointerId);
-      header.classList.remove("is-dragging");
-    });
-
-    window.addEventListener("resize", () => {
-      if (panel.style.left && panel.style.top) {
+    const keepVisible = () => {
+      if (panel.style.left && panel.style.top && !panel.hidden) {
         const bounds = panel.getBoundingClientRect();
-        applyPosition(bounds.left, bounds.top, false);
+        applyPosition(panel, PANEL_POSITION_KEY, bounds.left, bounds.top, 8, false);
       }
-    });
+      if (button.style.left && button.style.top) {
+        const bounds = button.getBoundingClientRect();
+        applyPosition(button, BUTTON_POSITION_KEY, bounds.left, bounds.top, 8, false);
+      }
+    };
+    window.addEventListener("resize", keepVisible);
+    window.visualViewport?.addEventListener("resize", keepVisible);
   }
 
   async function initialize() {
     if (!window.catalogService) return;
     $("assistant-form").addEventListener("submit", submit);
-    $("assistant-toggle").addEventListener("click", () => toggle());
+    $("assistant-toggle").addEventListener("click", event => {
+      if (event.detail === 0) toggle();
+    });
     $("assistant-close").addEventListener("click", event => {
       event.preventDefault();
       event.stopPropagation();
