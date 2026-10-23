@@ -114,6 +114,10 @@
     if (state.open) $("assistant-input").focus();
   }
 
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && state.open) toggle(false);
+  });
+
   async function initialize() {
     if (!window.catalogService) return;
     $("assistant-form").addEventListener("submit", submit);
