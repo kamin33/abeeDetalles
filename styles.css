@@ -1401,7 +1401,7 @@ a {
 .assistant-widget {
   position: fixed;
   right: 1rem;
-  bottom: 1rem;
+  top: 5.5rem;
   z-index: 2100;
   display: grid;
   justify-items: end;
@@ -1456,6 +1456,6 @@ a {
 .assistant-product button { border: 0; border-radius: 6px; background: var(--brand-900); color: #fff; padding: .35rem .45rem; cursor: pointer; font-size: .72rem; }
 .assistant-contact { display: inline-block; margin-top: .65rem; color: var(--brand-700); font-weight: 600; font-size: .82rem; }
 @media (max-width: 640px) {
-  .assistant-widget { right: .75rem; bottom: .75rem; }
+  .assistant-widget { right: .75rem; top: 5rem; }
   .assistant-toggle span { display: none; }
 }

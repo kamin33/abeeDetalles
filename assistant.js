@@ -116,16 +116,6 @@
 
   async function initialize() {
     if (!window.catalogService) return;
-    try {
-      state.products = await window.catalogService.loadProducts([]);
-    } catch (error) {
-      console.error("No se pudo cargar el catálogo del asistente.", error);
-    }
-    try {
-      state.info = { ...DEFAULT_INFO, ...(await window.catalogService.loadStoreInfo(DEFAULT_INFO)) };
-    } catch (error) {
-      console.warn("No se encontró store_info; se usarán respuestas generales.", error);
-    }
     $("assistant-form").addEventListener("submit", submit);
     $("assistant-toggle").addEventListener("click", () => toggle());
     $("assistant-close").addEventListener("click", () => toggle(false));
@@ -136,6 +126,16 @@
         toggle(false);
       }
     });
+    try {
+      state.products = await window.catalogService.loadProducts([]);
+    } catch (error) {
+      console.error("No se pudo cargar el catálogo del asistente.", error);
+    }
+    try {
+      state.info = { ...DEFAULT_INFO, ...(await window.catalogService.loadStoreInfo(DEFAULT_INFO)) };
+    } catch (error) {
+      console.warn("No se encontró store_info; se usarán respuestas generales.", error);
+    }
   }
 
   initialize();
