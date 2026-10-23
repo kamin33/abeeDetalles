@@ -1428,6 +1428,7 @@ a {
   border-radius: 14px;
   box-shadow: var(--shadow-lg);
 }
+.assistant-panel[hidden] { display: none !important; }
 .assistant-header {
   display: flex;
   align-items: center;

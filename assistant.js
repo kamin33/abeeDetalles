@@ -114,6 +114,23 @@
     if (state.open) $("assistant-input").focus();
   }
 
+  window.closeAssistant = function () {
+    state.open = false;
+    const panel = $("assistant-panel");
+    const toggleButton = $("assistant-toggle");
+    if (panel) panel.setAttribute("hidden", "");
+    if (toggleButton) toggleButton.setAttribute("aria-expanded", "false");
+  };
+
+  window.openAssistant = function () {
+    state.open = true;
+    const panel = $("assistant-panel");
+    const toggleButton = $("assistant-toggle");
+    if (panel) panel.removeAttribute("hidden");
+    if (toggleButton) toggleButton.setAttribute("aria-expanded", "true");
+    $("assistant-input")?.focus();
+  };
+
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && state.open) toggle(false);
   });
@@ -122,7 +139,11 @@
     if (!window.catalogService) return;
     $("assistant-form").addEventListener("submit", submit);
     $("assistant-toggle").addEventListener("click", () => toggle());
-    $("assistant-close").addEventListener("click", () => toggle(false));
+    $("assistant-close").addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      window.closeAssistant();
+    });
     $("assistant-messages").addEventListener("click", event => {
       const button = event.target.closest("[data-assistant-product]");
       if (button && typeof window.openProductModal === "function") {
