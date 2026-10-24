@@ -14,6 +14,7 @@
   const BUTTON_POSITION_KEY = "abee_assistant_button_position_v1";
   const CHAT_HISTORY_KEY = "abee_assistant_history_v1";
   const MAX_HISTORY_MESSAGES = 40;
+  const MAX_CONTEXT_MESSAGES = 8;
   let restorePanelPosition = () => {};
 
   function normalize(value) {
@@ -92,6 +93,10 @@
       },
       body: JSON.stringify({
         query,
+        history: state.history.slice(-MAX_CONTEXT_MESSAGES).map(message => ({
+          role: message.type === "user" ? "user" : "assistant",
+          content: message.text
+        })),
         products: state.products.filter(product => product.active !== false).slice(0, 100),
         storeInfo: state.info
       })

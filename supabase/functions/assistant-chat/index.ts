@@ -17,6 +17,7 @@ type Product = {
 
 type RequestBody = {
   query?: string;
+  history?: { role?: string; content?: string }[];
   products?: Product[];
   storeInfo?: Record<string, string>;
 };
@@ -78,6 +79,15 @@ Deno.serve(async request => {
 
   const products = Array.isArray(body.products) ? compactProducts(body.products) : [];
   const storeInfo = body.storeInfo && typeof body.storeInfo === "object" ? body.storeInfo : {};
+  const history = Array.isArray(body.history)
+    ? body.history
+        .filter(message => (message.role === "user" || message.role === "assistant") && typeof message.content === "string")
+        .slice(-8)
+        .map(message => ({
+          role: message.role,
+          content: String(message.content).slice(0, 500)
+        }))
+    : [];
   const prompt = `Eres el asistente de ventas de Abee Detalles, una tienda artesanal de detalles y regalos para cualquier persona.
 Preséntate como el asistente de Abee Detalles, sin decir que la tienda vende solo a estudiantes,
 que pertenece al Pedagógico de Monterrico o que atiende exclusivamente dentro de esa institución.
@@ -103,6 +113,10 @@ ${JSON.stringify(storeInfo)}
 Catálogo:
 ${JSON.stringify(products)}
 
+Historial reciente de la conversación (puede estar vacío):
+${JSON.stringify(history)}
+
+La última pregunta de la clienta es la consulta que debes responder:
 Pregunta:
 ${query}`;
 
