@@ -112,8 +112,11 @@
 
   function toggle(force) {
     state.open = typeof force === "boolean" ? force : !state.open;
-    $("assistant-panel").hidden = !state.open;
-    $("assistant-toggle").setAttribute("aria-expanded", String(state.open));
+    const panel = $("assistant-panel");
+    const toggleButton = $("assistant-toggle");
+    if (!panel || !toggleButton) return;
+    panel.hidden = !state.open;
+    toggleButton.setAttribute("aria-expanded", String(state.open));
     if (state.open) {
       restorePanelPosition();
     }
@@ -226,7 +229,7 @@
       handle.addEventListener("pointerup", event => {
         if (!dragging) return;
         dragging = false;
-        handle.releasePointerCapture(event.pointerId);
+        if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
         handle.classList.remove("is-dragging");
         if (element === button) {
           button.dataset.dragged = moved ? "true" : "false";
@@ -234,8 +237,21 @@
       });
       handle.addEventListener("pointercancel", () => {
         dragging = false;
+        moved = false;
         handle.classList.remove("is-dragging");
       });
+      if (element === button) {
+        handle.addEventListener("click", event => {
+          if (moved || handle.dataset.dragged === "true") {
+            event.preventDefault();
+            event.stopPropagation();
+            handle.dataset.dragged = "";
+            moved = false;
+            return;
+          }
+          window.toggleAssistant();
+        });
+      }
     }
 
     makeDraggable(panel, header, PANEL_POSITION_KEY, 8);
@@ -256,14 +272,13 @@
   }
 
   async function initialize() {
-    if (!window.catalogService) return;
-    $("assistant-form").addEventListener("submit", submit);
-    $("assistant-close").addEventListener("click", event => {
+    $("assistant-form")?.addEventListener("submit", submit);
+    $("assistant-close")?.addEventListener("click", event => {
       event.preventDefault();
       event.stopPropagation();
       window.closeAssistant();
     });
-    $("assistant-messages").addEventListener("click", event => {
+    $("assistant-messages")?.addEventListener("click", event => {
       const button = event.target.closest("[data-assistant-product]");
       if (button && typeof window.openProductModal === "function") {
         window.openProductModal(Number(button.dataset.assistantProduct));
@@ -271,6 +286,7 @@
       }
     });
     setupDragging();
+    if (!window.catalogService) return;
     try {
       state.products = await window.catalogService.loadProducts([]);
     } catch (error) {

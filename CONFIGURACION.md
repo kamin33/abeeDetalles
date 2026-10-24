@@ -60,3 +60,11 @@ El proyecto puede publicarse como sitio estático en GitHub Pages. Supabase se u
 - Panel: `https://abeedetalles.studio/admin/`
 
 GitHub Pages sirve `index.html` automáticamente en la raíz y `admin/index.html` automáticamente dentro de `/admin/`, por eso las extensiones `.html` no aparecen en las URLs.
+
+## Cache busting automático
+
+El workflow [`.github/workflows/pages.yml`](./.github/workflows/pages.yml) construye la publicación mediante [`scripts/build-site.mjs`](./scripts/build-site.mjs). En cada despliegue, los archivos CSS y JavaScript locales reciben un hash basado en su contenido y las referencias HTML se actualizan automáticamente. Por ejemplo, `styles.css` puede publicarse como `styles.e65463937ce2.css`.
+
+Así, cuando cambia un recurso, el navegador recibe una URL nueva y no reutiliza el archivo anterior. El HTML debe seguir siendo revalidable; no conviene configurarlo con caché indefinida en un proxy externo porque podría seguir apuntando al hash viejo.
+
+Las imágenes y videos del catálogo no se renombran: son recursos administrados por Supabase y conservan sus URLs remotas.
