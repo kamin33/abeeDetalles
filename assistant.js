@@ -211,11 +211,15 @@
       let moved = false;
       let offsetX = 0;
       let offsetY = 0;
+      let startX = 0;
+      let startY = 0;
       handle.addEventListener("pointerdown", event => {
         if (event.target.closest("button") && element === panel) return;
         const bounds = element.getBoundingClientRect();
         dragging = true;
         moved = false;
+        startX = event.clientX;
+        startY = event.clientY;
         offsetX = event.clientX - bounds.left;
         offsetY = event.clientY - bounds.top;
         handle.setPointerCapture(event.pointerId);
@@ -223,6 +227,11 @@
       });
       handle.addEventListener("pointermove", event => {
         if (!dragging) return;
+        const distance = Math.hypot(
+          event.clientX - startX,
+          event.clientY - startY
+        );
+        if (!moved && distance < 8) return;
         moved = true;
         applyPosition(element, key, event.clientX - offsetX, event.clientY - offsetY, minimumTop);
       });
