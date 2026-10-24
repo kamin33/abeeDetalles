@@ -136,6 +136,14 @@
     restorePanelPosition();
   };
 
+  window.toggleAssistant = function () {
+    if (state.open) {
+      window.closeAssistant();
+    } else {
+      window.openAssistant();
+    }
+  };
+
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && state.open) toggle(false);
   });
