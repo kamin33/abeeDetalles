@@ -40,6 +40,25 @@ function compactProducts(products: Product[]) {
   }));
 }
 
+function parseAssistantPayload(text: unknown, products: ReturnType<typeof compactProducts>) {
+  if (typeof text !== "string") return null;
+  try {
+    const parsed = JSON.parse(text.replace(/^```json\s*|\s*```$/g, "").trim());
+    const validIds = new Set(products.map(product => product.id));
+    const productIds = Array.isArray(parsed.productIds)
+      ? parsed.productIds.map(String).filter((id: string) => validIds.has(id)).slice(0, 3)
+      : [];
+    return {
+      text: String(parsed.text || "No pude encontrar una recomendación confiable."),
+      productIds,
+      contact: parsed.contact === true
+    };
+  } catch (error) {
+    console.error("El proveedor devolvió JSON inválido.", error);
+    return null;
+  }
+}
+
 Deno.serve(async request => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (request.method !== "POST") return json({ error: "Método no permitido." }, 405);
@@ -145,6 +164,39 @@ ${query}`;
           : undefined;
       }
     }
+    const groqKey = Deno.env.get("GROQ_API_KEY");
+    if (groqKey) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
+      try {
+        const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${groqKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: Deno.env.get("GROQ_MODEL") || "llama-3.1-8b-instant",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.2,
+            max_tokens: 500,
+            response_format: { type: "json_object" }
+          }),
+          signal: controller.signal
+        });
+        if (groqResponse.ok) {
+          const groqResult = await groqResponse.json();
+          const fallback = parseAssistantPayload(groqResult.choices?.[0]?.message?.content, products);
+          if (fallback) return json(fallback);
+        } else {
+          console.error("El proveedor secundario rechazó la solicitud.", groqResponse.status);
+        }
+      } catch (error) {
+        console.error("El proveedor secundario agotó el tiempo de respuesta.", error);
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
     return json({
       error: "Gemini no pudo responder en este momento.",
       providerStatus,
@@ -155,20 +207,8 @@ ${query}`;
   const result = await geminiResponse.json();
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
   if (typeof text !== "string") return json({ error: "Gemini devolvió una respuesta vacía." }, 502);
-
-  try {
-    const parsed = JSON.parse(text);
-    const validIds = new Set(products.map(product => product.id));
-    const productIds = Array.isArray(parsed.productIds)
-      ? parsed.productIds.map(String).filter((id: string) => validIds.has(id)).slice(0, 3)
-      : [];
-    return json({
-      text: String(parsed.text || "No pude encontrar una recomendación confiable."),
-      productIds,
-      contact: parsed.contact === true
-    });
-  } catch (error) {
-    console.error("Gemini devolvió JSON inválido.", error);
-    return json({ error: "La respuesta de Gemini no tuvo el formato esperado." }, 502);
-  }
+  const response = parseAssistantPayload(text, products);
+  return response
+    ? json(response)
+    : json({ error: "La respuesta del proveedor no tuvo el formato esperado." }, 502);
 });

@@ -52,6 +52,18 @@ El asistente puede usar un modelo Flash de Gemini mediante la función [`supabas
 
 La función recibe la pregunta, productos activos e información de la tienda; devuelve texto y hasta tres IDs de productos. Si Gemini no está configurado, alcanza un límite o falla, el frontend muestra automáticamente la respuesta del recomendador local. No compartas la API key ni la incluyas en el repositorio.
 
+### Proveedor secundario opcional
+
+La función puede intentar Groq después de Gemini si guardas sus secretos:
+
+```powershell
+supabase secrets set GROQ_API_KEY=TU_CLAVE_DE_GROQ
+supabase secrets set GROQ_MODEL=llama-3.1-8b-instant
+supabase functions deploy assistant-chat
+```
+
+No es obligatorio configurarlo. Si no existe `GROQ_API_KEY`, se usa directamente el fallback local. Las cuotas gratuitas, modelos y condiciones de uso de cada proveedor pueden cambiar; revísalas antes de usarlo en producción.
+
 ## Importar los productos originales
 
 Después de iniciar sesión en `admin/` con la cuenta de Supabase:
