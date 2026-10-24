@@ -24,7 +24,7 @@ type RequestBody = {
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" }
+    headers: { ...corsHeaders, "Content-Type": "application/json; charset=utf-8" }
   });
 }
 
@@ -76,26 +76,69 @@ ${JSON.stringify(products)}
 Pregunta:
 ${query}`;
 
-  const geminiResponse = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.2,
-          responseMimeType: "application/json",
-          maxOutputTokens: 500
+  const configuredModel = Deno.env.get("GEMINI_MODEL");
+  const models = configuredModel
+    ? [configuredModel]
+    : ["gemini-flash-latest", "gemini-2.5-flash", "gemini-2.5-flash-lite"];
+  let geminiResponse: Response | null = null;
+  for (const model of models) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      geminiResponse = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.2,
+              responseMimeType: "application/json",
+              maxOutputTokens: 500
+            }
+          }),
+          signal: controller.signal
         }
-      })
+      );
+    } catch (error) {
+      console.error("Gemini agotó el tiempo de respuesta.", model, error);
+      geminiResponse = null;
+    } finally {
+      clearTimeout(timeout);
     }
-  );
+    if (!geminiResponse) break;
+    if (geminiResponse.ok || geminiResponse.status !== 404) break;
+  }
 
-  if (!geminiResponse.ok) {
-    const detail = await geminiResponse.text();
-    console.error("Gemini rechazó la solicitud.", geminiResponse.status, detail);
-    return json({ error: "Gemini no pudo responder en este momento." }, 502);
+  if (!geminiResponse || !geminiResponse.ok) {
+    const providerStatus = geminiResponse?.status;
+    const detail = geminiResponse ? await geminiResponse.text() : "timeout";
+    console.error("Gemini rechazó o agotó el tiempo de la solicitud.", providerStatus, detail);
+    const status = providerStatus && [401, 403, 404, 429].includes(providerStatus) ? 502 : 503;
+    let availableModels: string[] | undefined;
+    if (providerStatus === 404) {
+      const modelsResponse = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models",
+        { headers: { "x-goog-api-key": apiKey } }
+      );
+      if (modelsResponse.ok) {
+        const modelsResult = await modelsResponse.json();
+        availableModels = Array.isArray(modelsResult.models)
+          ? modelsResult.models
+              .filter((item: { supportedGenerationMethods?: string[] }) =>
+                item.supportedGenerationMethods?.includes("generateContent"))
+              .map((item: { name?: string }) => item.name?.replace("models/", ""))
+              .filter(Boolean)
+              .slice(0, 20)
+          : undefined;
+      }
+    }
+    return json({
+      error: "Gemini no pudo responder en este momento.",
+      providerStatus,
+      availableModels
+    }, status);
   }
 
   const result = await geminiResponse.json();

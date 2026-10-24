@@ -95,8 +95,8 @@
       })
     });
     if (!response.ok) {
-      const detail = await response.text();
-      throw new Error(`El asistente remoto respondió ${response.status}: ${detail}`);
+      const detail = await response.json().catch(() => ({}));
+      throw new Error(`El asistente remoto respondió ${response.status} (Gemini: ${detail.providerStatus || "desconocido"}).`);
     }
     const result = await response.json();
     const productsById = new Map(state.products.map(product => [String(product.id), product]));

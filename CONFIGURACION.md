@@ -34,13 +34,17 @@ Esta primera versión no necesita una API de inteligencia artificial ni una tarj
 
 ## Activar Gemini opcionalmente
 
-El asistente puede usar **Gemini 2.5 Flash** mediante la función [`supabase/functions/assistant-chat/index.ts`](./supabase/functions/assistant-chat/index.ts). La clave nunca se guarda en `config.js` ni en `assistant.js`.
+El asistente puede usar un modelo Flash de Gemini mediante la función [`supabase/functions/assistant-chat/index.ts`](./supabase/functions/assistant-chat/index.ts). La clave nunca se guarda en `config.js` ni en `assistant.js`.
 
 1. Instala la CLI de Supabase e inicia sesión.
 2. Vincula el proyecto: `supabase link --project-ref czyglomnkcwiuoqpjaho`.
 3. Guarda la clave creada en Google AI Studio como secreto:
 
    `supabase secrets set GEMINI_API_KEY=TU_API_KEY`
+
+   Para este proyecto, el modelo que probé y respondió correctamente es:
+
+   `supabase secrets set GEMINI_MODEL=gemini-flash-lite-latest`
 
 4. Publica la función:
 
