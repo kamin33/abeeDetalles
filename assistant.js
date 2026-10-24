@@ -250,14 +250,6 @@
   async function initialize() {
     if (!window.catalogService) return;
     $("assistant-form").addEventListener("submit", submit);
-    $("assistant-toggle").addEventListener("click", event => {
-      if (event.currentTarget.dataset.dragged === "true") {
-        event.currentTarget.dataset.dragged = "";
-        return;
-      }
-      event.currentTarget.dataset.dragged = "";
-      toggle();
-    });
     $("assistant-close").addEventListener("click", event => {
       event.preventDefault();
       event.stopPropagation();

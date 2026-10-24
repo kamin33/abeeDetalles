@@ -264,7 +264,7 @@
       <div id="assistant-messages" class="assistant-messages"><div class="assistant-message bot"><p>¡Hola! Pregúntame por un producto o dime para quién es, tu presupuesto o tu color favorito.</p></div></div>
       <form id="assistant-form" class="assistant-form"><input id="assistant-input" maxlength="240" placeholder="Ej. busco un regalo de S/ 15" autocomplete="off"><button type="submit" aria-label="Enviar">➤</button></form>
     </div>
-    <button id="assistant-toggle" class="assistant-toggle" type="button" aria-expanded="false">💬 <span>¿Te ayudo?</span></button>
+    <button id="assistant-toggle" class="assistant-toggle" type="button" aria-expanded="false" onclick="if (this.dataset.dragged !== 'true') window.openAssistant(); this.dataset.dragged = '';">💬 <span>¿Te ayudo?</span></button>
   </section>
 
   <!-- Música (bucle) -->
