@@ -68,3 +68,5 @@ El workflow [`.github/workflows/pages.yml`](./.github/workflows/pages.yml) const
 Así, cuando cambia un recurso, el navegador recibe una URL nueva y no reutiliza el archivo anterior. El HTML debe seguir siendo revalidable; no conviene configurarlo con caché indefinida en un proxy externo porque podría seguir apuntando al hash viejo.
 
 Las imágenes y videos del catálogo no se renombran: son recursos administrados por Supabase y conservan sus URLs remotas.
+
+En GitHub, entra a **Settings > Pages** y selecciona **GitHub Actions** como fuente de publicación. Si continúa seleccionado `Deploy from a branch`, el workflow puede terminar correctamente pero el dominio seguirá sirviendo la versión antigua de la rama.
