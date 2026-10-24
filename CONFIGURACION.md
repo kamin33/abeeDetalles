@@ -32,6 +32,22 @@ El chat de la tienda puede recomendar productos según palabras clave, presupues
 
 Esta primera versión no necesita una API de inteligencia artificial ni una tarjeta bancaria: busca en el catálogo real de Supabase y ordena las coincidencias. Más adelante se puede conectar un modelo de IA sin cambiar la tabla de productos ni la interfaz.
 
+## Activar Gemini opcionalmente
+
+El asistente puede usar **Gemini 2.5 Flash** mediante la función [`supabase/functions/assistant-chat/index.ts`](./supabase/functions/assistant-chat/index.ts). La clave nunca se guarda en `config.js` ni en `assistant.js`.
+
+1. Instala la CLI de Supabase e inicia sesión.
+2. Vincula el proyecto: `supabase link --project-ref czyglomnkcwiuoqpjaho`.
+3. Guarda la clave creada en Google AI Studio como secreto:
+
+   `supabase secrets set GEMINI_API_KEY=TU_API_KEY`
+
+4. Publica la función:
+
+   `supabase functions deploy assistant-chat`
+
+La función recibe la pregunta, productos activos e información de la tienda; devuelve texto y hasta tres IDs de productos. Si Gemini no está configurado, alcanza un límite o falla, el frontend muestra automáticamente la respuesta del recomendador local. No compartas la API key ni la incluyas en el repositorio.
+
 ## Importar los productos originales
 
 Después de iniciar sesión en `admin/` con la cuenta de Supabase:

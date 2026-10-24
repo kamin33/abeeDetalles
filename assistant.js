@@ -79,10 +79,41 @@
     };
   }
 
+  async function answerWithGemini(query) {
+    const config = window.catalogService?.getConfig?.() || {};
+    if (!config.assistantFunctionUrl || !config.supabaseAnonKey) return null;
+    const response = await fetch(config.assistantFunctionUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${config.supabaseAnonKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query,
+        products: state.products.filter(product => product.active !== false).slice(0, 100),
+        storeInfo: state.info
+      })
+    });
+    if (!response.ok) {
+      const detail = await response.text();
+      throw new Error(`El asistente remoto respondió ${response.status}: ${detail}`);
+    }
+    const result = await response.json();
+    const productsById = new Map(state.products.map(product => [String(product.id), product]));
+    return {
+      text: String(result.text || ""),
+      products: Array.isArray(result.productIds)
+        ? result.productIds.map(id => productsById.get(String(id))).filter(Boolean).slice(0, 3)
+        : [],
+      contact: result.contact === true
+    };
+  }
+
   function renderMessage(message, type) {
     const container = $("assistant-messages");
     const content = document.createElement("div");
     content.className = `assistant-message ${type}`;
+    if (message.loading) content.dataset.loading = "true";
     content.innerHTML = `<p>${escapeHtml(message.text)}</p>`;
     if (message.products?.length) {
       content.insertAdjacentHTML("beforeend", `<div class="assistant-products">${message.products.map(product => `
@@ -100,14 +131,30 @@
     container.scrollTop = container.scrollHeight;
   }
 
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault();
     const input = $("assistant-input");
+    const submitButton = $("assistant-form button[type='submit']");
     const query = input.value.trim();
     if (!query) return;
     renderMessage({ text: query }, "user");
     input.value = "";
-    renderMessage(answer(query), "bot");
+    if (submitButton) submitButton.disabled = true;
+    try {
+      renderMessage({ text: "Estoy revisando el catálogo para recomendarte algo...", loading: true }, "bot");
+      const loadingMessage = $("assistant-messages").lastElementChild;
+      const response = await answerWithGemini(query);
+      if (loadingMessage) loadingMessage.remove();
+      renderMessage(response || answer(query), "bot");
+    } catch (error) {
+      console.warn("No se pudo consultar Gemini; se usará el recomendador local.", error);
+      const loadingMessage = $("assistant-messages").lastElementChild;
+      if (loadingMessage?.dataset.loading === "true") loadingMessage.remove();
+      renderMessage(answer(query), "bot");
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+      input.focus();
+    }
   }
 
   function toggle(force) {
