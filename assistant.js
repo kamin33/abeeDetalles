@@ -8,10 +8,12 @@
     customization: "Algunos detalles pueden personalizarse. Escríbenos para confirmar.",
     whatsapp: PHONE_NUMBER
   };
-  const state = { products: [], info: DEFAULT_INFO, open: false };
+  const state = { products: [], info: DEFAULT_INFO, open: false, history: [] };
   const $ = id => document.getElementById(id);
   const PANEL_POSITION_KEY = "abee_assistant_panel_position_v4";
   const BUTTON_POSITION_KEY = "abee_assistant_button_position_v1";
+  const CHAT_HISTORY_KEY = "abee_assistant_history_v1";
+  const MAX_HISTORY_MESSAGES = 40;
   let restorePanelPosition = () => {};
 
   function normalize(value) {
@@ -109,8 +111,29 @@
     };
   }
 
-  function renderMessage(message, type) {
+  function saveHistory() {
+    try {
+      localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(state.history.slice(-MAX_HISTORY_MESSAGES)));
+    } catch (error) {
+      console.warn("No se pudo guardar el historial del asistente.", error);
+    }
+  }
+
+  function readHistory() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || "[]");
+      return Array.isArray(saved) ? saved.filter(message =>
+        message && (message.type === "user" || message.type === "bot") && typeof message.text === "string"
+      ).slice(-MAX_HISTORY_MESSAGES) : [];
+    } catch (error) {
+      console.warn("No se pudo recuperar el historial del asistente.", error);
+      return [];
+    }
+  }
+
+  function renderMessage(message, type, persist = true) {
     const container = $("assistant-messages");
+    if (!container) return;
     const content = document.createElement("div");
     content.className = `assistant-message ${type}`;
     if (message.loading) content.dataset.loading = "true";
@@ -129,6 +152,25 @@
     }
     container.appendChild(content);
     container.scrollTop = container.scrollHeight;
+    if (persist && !message.loading) {
+      state.history.push({
+        type,
+        text: String(message.text || ""),
+        products: Array.isArray(message.products) ? message.products.slice(0, 3) : [],
+        contact: message.contact === true
+      });
+      state.history = state.history.slice(-MAX_HISTORY_MESSAGES);
+      saveHistory();
+    }
+  }
+
+  function restoreHistory() {
+    state.history = readHistory();
+    if (!state.history.length) return;
+    const container = $("assistant-messages");
+    if (!container) return;
+    container.replaceChildren();
+    state.history.forEach(message => renderMessage(message, message.type, false));
   }
 
   async function submit(event) {
@@ -341,6 +383,7 @@
         toggle(false);
       }
     });
+    restoreHistory();
     setupDragging();
     if (!window.catalogService) return;
     try {
