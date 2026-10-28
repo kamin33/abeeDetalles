@@ -680,6 +680,59 @@ function openInstagramNow() {
 }
 
 /* ===================== INICIO ===================== */
+function initializeSectionNavigation() {
+  const navigationLinks = document.querySelectorAll(
+    ".navbar-fixed a[href^='#']"
+  );
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  navigationLinks.forEach(link => {
+    link.addEventListener("click", event => {
+      const targetId = link.getAttribute("href");
+      if (!targetId || targetId === "#") return;
+
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      event.preventDefault();
+      if (targetId === "#inicio") {
+        window.scrollTo({
+          behavior: "auto",
+          top: 0
+        });
+      } else {
+        target.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+          block: "start"
+        });
+      }
+
+      if (typeof target.focus === "function") {
+        const hadTabIndex = target.hasAttribute("tabindex");
+        if (!hadTabIndex) target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+        if (!hadTabIndex) target.addEventListener(
+          "blur",
+          () => target.removeAttribute("tabindex"),
+          { once: true }
+        );
+      }
+
+      if (targetId === "#inicio") {
+        window.scrollTo({ behavior: "auto", top: 0 });
+      }
+
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`
+      );
+    });
+  });
+}
+
 async function initializeStorefront() {
   if (window.catalogService) {
     try {
@@ -698,4 +751,5 @@ async function initializeStorefront() {
   initBanner();
 }
 
+initializeSectionNavigation();
 initializeStorefront();

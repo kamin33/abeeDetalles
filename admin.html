@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Administración | Abee Detalles</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="admin-ui.css">
 </head>
 <body class="admin-body">
   <main class="admin-shell">
@@ -25,18 +25,58 @@
 
     <section id="dashboard-view" class="admin-dashboard" hidden>
       <header class="admin-header">
-        <div><p class="admin-eyebrow">Abee Detalles</p><h1>Tu catálogo</h1></div>
-        <div class="admin-header-actions"><a href="index.html" class="admin-link" target="_blank" rel="noopener noreferrer">Ver tienda</a><button id="logout-button" class="admin-button secondary">Cerrar sesión</button></div>
+        <div class="admin-header-top">
+          <div class="admin-identity"><p>Abee Detalles</p><h1>Administración</h1></div>
+          <div class="admin-header-actions">
+            <a href="index.html" class="admin-link" target="_blank" rel="noopener noreferrer" aria-label="Ver tienda (abre en otra pestaña)" title="Ver tienda">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M11.5 3.5h5v5M16 4l-7.5 7.5M8.5 4.5h-4v12h12v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="admin-action-label">Ver tienda</span>
+            </a>
+            <button id="logout-button" type="button" class="admin-button secondary admin-session-button" aria-label="Cerrar sesión" title="Cerrar sesión">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 3.5H4v13h4M8.5 10H17m-3.5-3.5L17 10l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="admin-action-label">Cerrar sesión</span>
+            </button>
+          </div>
+        </div>
+        <nav class="admin-tabs" aria-label="Secciones del panel">
+          <button class="admin-tab active" data-section="products-section">Productos</button>
+          <button class="admin-tab" data-section="banners-section">Banners</button>
+          <button class="admin-tab" data-section="assistant-section">Asistente</button>
+        </nav>
       </header>
       <p id="dashboard-message" class="admin-message" role="status"></p>
-      <nav class="admin-tabs" aria-label="Secciones del panel">
-        <button class="admin-tab active" data-section="products-section">Productos</button>
-        <button class="admin-tab" data-section="banners-section">Banners</button>
-        <button class="admin-tab" data-section="assistant-section">Asistente</button>
-      </nav>
 
       <section id="products-section" class="admin-panel">
         <div class="admin-panel-heading"><div><h2>Productos</h2><p class="admin-muted">Precios, ofertas y visibilidad del catálogo.</p></div><div class="admin-header-actions"><!-- Importación puntual ya realizada: <button id="import-legacy" class="admin-button secondary">Importar catálogo anterior</button> --><button id="new-product" class="admin-button">Nuevo producto</button></div></div>
+        <div class="product-toolbar" aria-label="Buscar y filtrar productos">
+          <label class="product-search">
+            <span class="sr-only">Buscar productos</span>
+            <span aria-hidden="true">⌕</span>
+            <input id="product-search" type="search" placeholder="Buscar" autocomplete="off">
+          </label>
+          <div class="product-filter quick-filter" data-default-label="Estado">
+            <span class="sr-only">Filtrar por estado</span>
+            <button type="button" class="quick-filter-display" tabindex="-1" aria-hidden="true"><span class="filter-value"><span class="filter-value-text">Estado</span></span><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <select id="product-status-filter" aria-label="Filtrar por estado">
+              <option value="all">Todos los estados</option><option value="active">Activos</option><option value="inactive">Inactivos</option>
+            </select>
+          </div>
+          <div class="product-filter quick-filter" data-default-label="Categoría">
+            <span class="sr-only">Filtrar por categoría</span>
+            <button type="button" class="quick-filter-display" tabindex="-1" aria-hidden="true"><span class="filter-value"><span class="filter-value-text">Categoría</span></span><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <select id="product-category-filter" aria-label="Filtrar por categoría"><option value="all">Todas las categorías</option></select>
+          </div>
+          <div class="product-filter quick-filter" data-default-label="Todos">
+            <span class="sr-only">Ordenar productos</span>
+            <button type="button" class="quick-filter-display" tabindex="-1" aria-hidden="true"><span class="filter-value"><span class="filter-value-text">Todos</span></span><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <select id="product-sort" aria-label="Ordenar productos">
+              <option value="newest">Más recientes</option>
+              <option value="oldest">Más antiguos</option>
+              <option value="name">Nombre A-Z</option>
+              <option value="price-low">Precio menor</option>
+              <option value="price-high">Precio mayor</option>
+            </select>
+          </div>
+        </div>
+        <p id="products-summary" class="products-summary" aria-live="polite"></p>
         <div id="products-list" class="admin-list"></div>
       </section>
       <section id="banners-section" class="admin-panel" hidden>
@@ -61,14 +101,24 @@
 
   <dialog id="editor-dialog" class="admin-dialog">
     <form id="editor-form" class="admin-form" method="dialog">
-      <div class="admin-dialog-header"><h2 id="editor-title"></h2><button type="button" id="close-editor" class="admin-icon-button" aria-label="Cerrar">✕</button></div>
+      <div class="admin-dialog-header"><div><p class="admin-eyebrow">Catálogo</p><h2 id="editor-title"></h2><p id="editor-subtitle" class="admin-muted">Completa la información para mostrar un producto atractivo y claro.</p></div><button type="button" id="close-editor" class="admin-icon-button" aria-label="Cerrar">✕</button></div>
       <div id="product-fields">
-        <label>Nombre<input id="product-name" maxlength="80"></label>
-        <div class="admin-form-grid"><label>Categoría<input id="product-category" maxlength="30" placeholder="llaveros"></label><label>Precio (S/)<input id="product-price" type="number" min="0" step="0.01"></label></div>
-        <label>Oferta visible<input id="product-offer" maxlength="180" placeholder="1 por S/ 10 — 2 por S/ 18"></label>
-        <label>Descripción<textarea id="product-desc" maxlength="500"></textarea></label>
-        <label>Colores separados por coma<input id="product-colors" placeholder="Rosado, Blanco"></label>
-        <label>Imagen<input id="product-image" type="file" accept="image/*"></label>
+        <section class="editor-section">
+          <div class="editor-section-heading"><span class="editor-step">01</span><div><h3>Información básica</h3><p>Lo primero que verá tu clienta.</p></div></div>
+          <label>Nombre del producto<span class="field-hint">Usa un nombre corto y fácil de recordar.</span><input id="product-name" maxlength="80" placeholder="Ej. Ramo de tulipanes" required></label>
+          <div class="admin-form-grid"><label>Categoría<span class="field-hint">Ayuda a encontrarlo.</span><input id="product-category" maxlength="30" placeholder="llaveros" required></label><label>Precio (S/)<span class="field-hint">Precio por unidad.</span><input id="product-price" type="number" min="0" step="0.01" placeholder="0.00" required></label></div>
+        </section>
+        <section class="editor-section">
+          <div class="editor-section-heading"><span class="editor-step">02</span><div><h3>Presentación</h3><p>Detalles que ayudan a decidir.</p></div></div>
+          <label>Oferta visible<span class="field-hint">Opcional · aparecerá en la tarjeta.</span><input id="product-offer" maxlength="180" placeholder="Ej. 1 por S/ 10 — 2 por S/ 18"></label>
+          <label>Descripción<span class="field-hint">Cuenta qué hace especial a este producto.</span><textarea id="product-desc" maxlength="500" placeholder="Describe el diseño, tamaño o una ocasión ideal..."></textarea></label>
+          <label>Colores separados por coma<span class="field-hint">Ejemplo: Rosado, Blanco, Lila.</span><input id="product-colors" placeholder="Rosado, Blanco"></label>
+        </section>
+        <section class="editor-section">
+          <div class="editor-section-heading"><span class="editor-step">03</span><div><h3>Imagen y publicación</h3><p>Controla cómo se verá en tu tienda.</p></div></div>
+          <label class="file-field">Imagen del producto<span class="field-hint">Recomendado: formato cuadrado y buena iluminación.</span><input id="product-image" type="file" accept="image/*"></label>
+          <label class="admin-checkbox product-active-field"><input id="product-active" type="checkbox" checked> <span><strong>Mostrar producto en la tienda</strong><small>Desactívalo para ocultarlo sin eliminarlo.</small></span></label>
+        </section>
       </div>
       <div id="banner-fields" hidden>
         <label>Etiqueta<input id="banner-tag" maxlength="60"></label>
@@ -78,11 +128,23 @@
         <div class="admin-form-grid"><label>Orden<input id="banner-order" type="number" min="0" step="1" value="0"></label><label class="admin-checkbox"><input id="entry-active" type="checkbox" checked> Visible</label></div>
       </div>
       <p id="editor-message" class="admin-message" role="alert"></p>
-      <button class="admin-button" type="submit">Guardar cambios</button>
+      <div class="editor-actions"><button class="admin-button secondary" type="button" id="cancel-editor">Cancelar</button><button class="admin-button" type="submit">Guardar cambios</button></div>
     </form>
   </dialog>
+  <aside class="admin-toast-region" role="status" aria-live="polite" aria-atomic="true">
+    <div id="admin-toast" class="admin-toast" data-variant="success" hidden>
+      <span class="admin-toast-mark" aria-hidden="true">
+        <svg id="toast-action-icon" class="toast-action-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="M10 9v4M10 6.5h.01"/></svg>
+      </span>
+      <p id="toast-copy" class="admin-message"></p>
+      <button id="dismiss-toast" type="button" class="admin-toast-close" aria-label="Cerrar notificación"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <span id="toast-progress" class="admin-toast-progress" aria-hidden="true"></span>
+    </div>
+  </aside>
+
   <script src="config.js"></script>
   <script src="catalog-service.js"></script>
   <script src="admin.js"></script>
+  <script src="admin-ui.js"></script>
 </body>
 </html>

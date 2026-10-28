@@ -1,6 +1,6 @@
 (function () {
   const config = window.catalogService.getConfig();
-  const state = { products: [], banners: [], info: {}, type: "product", editingId: null, accessToken: null };
+  const state = { products: [], banners: [], info: {}, type: "product", editingId: null, accessToken: null, productSearch: "", productStatus: "all", productCategory: "all", productSort: "newest" };
   const $ = id => document.getElementById(id);
 
   function setMessage(id, text, success = false) {
@@ -30,7 +30,7 @@
   async function loadData() {
     if (isRemote()) {
       [state.products, state.banners, state.info] = await Promise.all([
-        api("products?select=*&order=created_at.asc"),
+        api("products?select=*&order=created_at.desc"),
         api("banners?select=*&order=sort_order.asc"),
         api("store_info?select=*&id=eq.1").then(rows => rows[0] || {})
       ]);
@@ -50,12 +50,58 @@
   }
 
   function renderProducts() {
-    $("products-list").innerHTML = state.products.length ? state.products.map(product => `
-      <article class="admin-list-item">
-        <img src="${escapeAttribute(resolveMediaUrl(product.img))}" alt="">
-        <div><h3>${escapeHtml(product.name)}</h3><p>S/ ${Number(product.price).toFixed(2)} · ${escapeHtml(product.category)} · ${product.active === false ? "Oculto" : "Visible"}</p><p>${escapeHtml(product.offer_text || product.offerText || "Sin oferta")}</p></div>
-        <div class="admin-item-actions"><button data-edit-product="${product.id}">Editar</button><button data-delete-product="${product.id}">Eliminar</button></div>
-      </article>`).join("") : `<p class="admin-muted">No hay productos guardados. Crea el primero para probar el panel.</p>`;
+    const search = state.productSearch.toLocaleLowerCase();
+    const categories = [...new Set(state.products.map(product => String(product.category || "").trim()).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, "es"));
+    const categoryFilter = $("product-category-filter");
+    const selectedCategory = categories.includes(state.productCategory) ? state.productCategory : "all";
+    state.productCategory = selectedCategory;
+    categoryFilter.innerHTML = `<option value="all">Categorías</option>${categories.map(category => `<option value="${escapeAttribute(category)}">${escapeHtml(category)}</option>`).join("")}`;
+    categoryFilter.value = selectedCategory;
+    const filtered = state.products
+      .filter(product => state.productStatus === "all" ||
+        (state.productStatus === "active" ? product.active !== false : product.active === false))
+      .filter(product => state.productCategory === "all" || String(product.category || "") === state.productCategory)
+      .filter(product => {
+        if (!search) return true;
+        return [product.name, product.category, product.desc, product.offer_text, product.offerText]
+          .some(value => String(value || "").toLocaleLowerCase().includes(search));
+      })
+      .sort((a, b) => compareProducts(a, b, state.productSort));
+
+    $("products-summary").textContent = `${filtered.length} de ${state.products.length} producto${state.products.length === 1 ? "" : "s"}`;
+    $("products-list").innerHTML = filtered.length ? filtered.map(product => {
+      const active = product.active !== false;
+      return `
+      <article class="admin-list-item product-card ${active ? "" : "is-inactive"}">
+        <div class="product-card-media">
+          <img src="${escapeAttribute(resolveMediaUrl(product.img))}" alt="">
+          <span class="product-status ${active ? "is-active" : "is-inactive"}">${active ? "Activo" : "Inactivo"}</span>
+        </div>
+        <div class="product-card-content">
+          <div class="product-card-heading"><h3>${escapeHtml(product.name)}</h3><strong>S/ ${Number(product.price).toFixed(2)}</strong></div>
+          <p class="product-category">${escapeHtml(product.category || "Sin categoría")}</p>
+          <p class="product-description">${escapeHtml(product.desc || "Sin descripción")}</p>
+          <p class="product-offer">${escapeHtml(product.offer_text || product.offerText || "Sin oferta")}</p>
+        </div>
+        <div class="admin-item-actions product-card-actions">
+          <button class="status-button ${active ? "" : "is-inactive"}" data-toggle-product="${product.id}" aria-pressed="${active}">${active ? "Pausar" : "Activar"}</button>
+          <button data-edit-product="${product.id}">Editar</button>
+          <button class="danger-button" data-delete-product="${product.id}">Eliminar</button>
+        </div>
+      </article>`;
+    }).join("") : `<div class="empty-products"><strong>No encontramos productos</strong><p>${state.products.length ? "Prueba con otra búsqueda o cambia los filtros." : "Crea el primero para comenzar a organizar tu catálogo."}</p></div>`;
+  }
+
+  function compareProducts(a, b, sort) {
+    if (sort === "name") return String(a.name || "").localeCompare(String(b.name || ""), "es");
+    if (sort === "price-low" || sort === "price-high") {
+      const difference = Number(a.price || 0) - Number(b.price || 0);
+      return sort === "price-low" ? difference : -difference;
+    }
+    const dateA = Date.parse(a.created_at || "") || Number(a.id) || 0;
+    const dateB = Date.parse(b.created_at || "") || Number(b.id) || 0;
+    return sort === "oldest" ? dateA - dateB : dateB - dateA;
   }
 
   function renderBanners() {
@@ -108,6 +154,9 @@
     state.editingId = id;
     const entry = (type === "product" ? state.products : state.banners).find(item => String(item.id) === String(id));
     $("editor-title").textContent = `${id ? "Editar" : "Nuevo"} ${type === "product" ? "producto" : "banner"}`;
+    $("editor-subtitle").textContent = type === "product"
+      ? (id ? "Actualiza los datos sin perder el orden de tu catálogo." : "Completa la información para mostrar un producto atractivo y claro.")
+      : "Prepara el contenido que aparecerá en el carrusel principal.";
     $("product-fields").hidden = type !== "product";
     $("banner-fields").hidden = type !== "banner";
     $("editor-message").textContent = "";
@@ -119,6 +168,7 @@
       $("product-desc").value = entry?.desc || "";
       $("product-colors").value = (entry?.colors || []).join(", ");
       $("product-image").value = "";
+      $("product-active").checked = entry?.active !== false;
     } else {
       $("banner-tag").value = entry?.tag || "";
       $("banner-title").value = entry?.title || "";
@@ -187,7 +237,7 @@
       offer_text: $("product-offer").value.trim(),
       desc: $("product-desc").value.trim(),
       colors: $("product-colors").value.split(",").map(color => color.trim()).filter(Boolean),
-      img: image, active: current?.active !== false
+      img: image, active: $("product-active").checked
     };
     if (isRemote()) {
       if (current) await api(`products?id=eq.${encodeURIComponent(current.id)}`, { method: "PATCH", body: JSON.stringify(entry) });
@@ -260,9 +310,34 @@
       else await window.catalogService.saveBanners(collection.filter(item => item.id !== id));
       await loadData();
       setMessage("dashboard-message", "Elemento eliminado.", true);
-    } catch (error) {
-      setMessage("dashboard-message", error.message || "No se pudo eliminar el elemento.");
+  } catch (error) {
+    setMessage("dashboard-message", error.message || "No se pudo eliminar el elemento.");
+  }
+  }
+
+  async function toggleProduct(id) {
+  const product = state.products.find(item => String(item.id) === String(id));
+  if (!product) return;
+  const active = product.active === false;
+  try {
+    if (isRemote()) {
+      await api(`products?id=eq.${encodeURIComponent(id)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ active })
+      });
+    } else {
+      state.products = state.products.map(item =>
+        String(item.id) === String(id) ? { ...item, active } : item
+      );
+      await window.catalogService.saveProducts(state.products);
     }
+    product.active = active;
+    renderProducts();
+    setMessage("dashboard-message", `Producto ${active ? "activado" : "puesto como inactivo"}.`, true);
+  } catch (error) {
+    console.error(error);
+    setMessage("dashboard-message", error.message || "No se pudo cambiar el estado del producto.");
+  }
   }
 
   async function importLegacyCatalog() {
@@ -323,9 +398,26 @@
   });
   $("logout-button").addEventListener("click", () => location.reload());
   $("new-product").addEventListener("click", () => openEditor("product"));
+  $("product-search").addEventListener("input", event => {
+    state.productSearch = event.target.value.trim();
+    renderProducts();
+  });
+  $("product-status-filter").addEventListener("change", event => {
+    state.productStatus = event.target.value;
+    renderProducts();
+  });
+  $("product-category-filter").addEventListener("change", event => {
+    state.productCategory = event.target.value;
+    renderProducts();
+  });
+  $("product-sort").addEventListener("change", event => {
+    state.productSort = event.target.value;
+    renderProducts();
+  });
   // La importación histórica queda desactivada en la interfaz después de la migración inicial.
   $("new-banner").addEventListener("click", () => openEditor("banner"));
   $("close-editor").addEventListener("click", () => $("editor-dialog").close());
+  $("cancel-editor").addEventListener("click", () => $("editor-dialog").close());
   $("editor-form").addEventListener("submit", saveEntry);
   $("store-info-form").addEventListener("submit", saveStoreInfo);
   document.querySelectorAll(".admin-tab").forEach(tab => tab.addEventListener("click", () => {
@@ -336,8 +428,10 @@
   $("products-list").addEventListener("click", event => {
     const edit = event.target.closest("[data-edit-product]");
     const remove = event.target.closest("[data-delete-product]");
+    const toggle = event.target.closest("[data-toggle-product]");
     if (edit) openEditor("product", edit.dataset.editProduct);
     if (remove) deleteEntry("product", remove.dataset.deleteProduct);
+    if (toggle) toggleProduct(toggle.dataset.toggleProduct);
   });
   $("banners-list").addEventListener("click", event => {
     const edit = event.target.closest("[data-edit-banner]");

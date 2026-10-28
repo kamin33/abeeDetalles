@@ -58,7 +58,7 @@ La función puede intentar Groq después de Gemini si guardas sus secretos:
 
 ```powershell
 supabase secrets set GROQ_API_KEY=TU_CLAVE_DE_GROQ
-supabase secrets set GROQ_MODEL=llama-3.1-8b-instant
+supabase secrets set GROQ_MODEL=openai/gpt-oss-20b
 supabase functions deploy assistant-chat
 ```
 

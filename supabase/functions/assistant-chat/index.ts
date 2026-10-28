@@ -1,4 +1,4 @@
-const corsHeaders = {
+﻿const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS"
@@ -50,32 +50,32 @@ function parseAssistantPayload(text: unknown, products: ReturnType<typeof compac
       ? parsed.productIds.map(String).filter((id: string) => validIds.has(id)).slice(0, 3)
       : [];
     return {
-      text: String(parsed.text || "No pude encontrar una recomendación confiable."),
+      text: String(parsed.text || "No pude encontrar una recomendaciÃ³n confiable."),
       productIds,
       contact: parsed.contact === true
     };
   } catch (error) {
-    console.error("El proveedor devolvió JSON inválido.", error);
+    console.error("El proveedor devolviÃ³ JSON invÃ¡lido.", error);
     return null;
   }
 }
 
 Deno.serve(async request => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  if (request.method !== "POST") return json({ error: "Método no permitido." }, 405);
+  if (request.method !== "POST") return json({ error: "MÃ©todo no permitido." }, 405);
 
   const apiKey = Deno.env.get("GEMINI_API_KEY");
-  if (!apiKey) return json({ error: "GEMINI_API_KEY no está configurada." }, 503);
+  if (!apiKey) return json({ error: "GEMINI_API_KEY no estÃ¡ configurada." }, 503);
 
   let body: RequestBody;
   try {
     body = await request.json();
   } catch {
-    return json({ error: "La solicitud no contiene JSON válido." }, 400);
+    return json({ error: "La solicitud no contiene JSON vÃ¡lido." }, 400);
   }
 
   const query = String(body.query || "").trim().slice(0, 240);
-  if (!query) return json({ error: "La consulta está vacía." }, 400);
+  if (!query) return json({ error: "La consulta estÃ¡ vacÃ­a." }, 400);
 
   const products = Array.isArray(body.products) ? compactProducts(body.products) : [];
   const storeInfo = body.storeInfo && typeof body.storeInfo === "object" ? body.storeInfo : {};
@@ -89,34 +89,34 @@ Deno.serve(async request => {
         }))
     : [];
   const prompt = `Eres el asistente de ventas de Abee Detalles, una tienda artesanal de detalles y regalos para cualquier persona.
-Preséntate como el asistente de Abee Detalles, sin decir que la tienda vende solo a estudiantes,
-que pertenece al Pedagógico de Monterrico o que atiende exclusivamente dentro de esa institución.
-Responde en español, con amabilidad y de forma breve. Usa únicamente el catálogo y la información entregados.
+PresÃ©ntate como el asistente de Abee Detalles, sin decir que la tienda vende solo a estudiantes,
+que pertenece al PedagÃ³gico de Monterrico o que atiende exclusivamente dentro de esa instituciÃ³n.
+Responde en espaÃ±ol, con amabilidad y de forma breve. Usa Ãºnicamente el catÃ¡logo y la informaciÃ³n entregados.
 Contexto opcional para interpretar consultas: en algunas comunidades estudiantiles,
-como la del Pedagógico de Monterrico, cada estudiante nuevo puede tener una madrina o padrino,
-que suele ser un estudiante de un año superior. Esa madrina o padrino también puede tener
-sus propios padrinos o madrinas, llamados abuelos o abuelas dentro de esa tradición.
-Usa esta aclaración únicamente si la persona menciona ahijado, ahijada, padrino, madrina,
-abuelo o abuela, o pregunta explícitamente por ese tipo de vínculo. En ese caso, interpreta
-primero que podría hablar de un vínculo estudiantil y recomienda el regalo de forma natural.
+como la del PedagÃ³gico de Monterrico, cada estudiante nuevo puede tener una madrina o padrino,
+que suele ser un estudiante de un aÃ±o superior. Esa madrina o padrino tambiÃ©n puede tener
+sus propios padrinos o madrinas, llamados abuelos o abuelas dentro de esa tradiciÃ³n.
+Usa esta aclaraciÃ³n Ãºnicamente si la persona menciona ahijado, ahijada, padrino, madrina,
+abuelo o abuela, o pregunta explÃ­citamente por ese tipo de vÃ­nculo. En ese caso, interpreta
+primero que podrÃ­a hablar de un vÃ­nculo estudiantil y recomienda el regalo de forma natural.
 No menciones Monterrico si la persona no lo menciona o si no es necesario para responder.
-No asumas que se trata de un familiar biológico ni inventes nombres o relaciones específicas.
-No inventes productos, precios, ofertas, colores, horarios, envíos ni formas de pago.
-Si la información no alcanza, dilo claramente y recomienda consultar por WhatsApp.
-Elige como máximo 3 productos cuyos id aparezcan en el catálogo. Si la pregunta no pide productos, devuelve productIds como [].
-Devuelve exclusivamente JSON válido con esta forma:
+No asumas que se trata de un familiar biolÃ³gico ni inventes nombres o relaciones especÃ­ficas.
+No inventes productos, precios, ofertas, colores, horarios, envÃ­os ni formas de pago.
+Si la informaciÃ³n no alcanza, dilo claramente y recomienda consultar por WhatsApp.
+Elige como mÃ¡ximo 3 productos cuyos id aparezcan en el catÃ¡logo. Si la pregunta no pide productos, devuelve productIds como [].
+Devuelve exclusivamente JSON vÃ¡lido con esta forma:
 {"text":"respuesta para la clienta","productIds":["id"],"contact":false}
 
-Información de la tienda:
+InformaciÃ³n de la tienda:
 ${JSON.stringify(storeInfo)}
 
-Catálogo:
+CatÃ¡logo:
 ${JSON.stringify(products)}
 
-Historial reciente de la conversación (puede estar vacío):
+Historial reciente de la conversaciÃ³n (puede estar vacÃ­o):
 ${JSON.stringify(history)}
 
-La última pregunta de la clienta es la consulta que debes responder:
+La Ãºltima pregunta de la clienta es la consulta que debes responder:
 Pregunta:
 ${query}`;
 
@@ -146,7 +146,7 @@ ${query}`;
         }
       );
     } catch (error) {
-      console.error("Gemini agotó el tiempo de respuesta.", model, error);
+      console.error("Gemini agotÃ³ el tiempo de respuesta.", model, error);
       geminiResponse = null;
     } finally {
       clearTimeout(timeout);
@@ -158,7 +158,7 @@ ${query}`;
   if (!geminiResponse || !geminiResponse.ok) {
     const providerStatus = geminiResponse?.status;
     const detail = geminiResponse ? await geminiResponse.text() : "timeout";
-    console.error("Gemini rechazó o agotó el tiempo de la solicitud.", providerStatus, detail);
+    console.error("Gemini rechazÃ³ o agotÃ³ el tiempo de la solicitud.", providerStatus, detail);
     const status = providerStatus && [401, 403, 404, 429].includes(providerStatus) ? 502 : 503;
     let availableModels: string[] | undefined;
     if (providerStatus === 404) {
@@ -186,11 +186,11 @@ ${query}`;
         const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${groqKey}`,
+            Authorization: "Bearer " + groqKey,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: Deno.env.get("GROQ_MODEL") || "llama-3.1-8b-instant",
+            model: Deno.env.get("GROQ_MODEL") || "openai/gpt-oss-20b",
             messages: [{ role: "user", content: prompt }],
             temperature: 0.2,
             max_tokens: 500,
@@ -203,10 +203,10 @@ ${query}`;
           const fallback = parseAssistantPayload(groqResult.choices?.[0]?.message?.content, products);
           if (fallback) return json(fallback);
         } else {
-          console.error("El proveedor secundario rechazó la solicitud.", groqResponse.status);
+          console.error("El proveedor secundario rechazÃ³ la solicitud.", groqResponse.status);
         }
       } catch (error) {
-        console.error("El proveedor secundario agotó el tiempo de respuesta.", error);
+        console.error("El proveedor secundario agotÃ³ el tiempo de respuesta.", error);
       } finally {
         clearTimeout(timeout);
       }
@@ -220,7 +220,7 @@ ${query}`;
 
   const result = await geminiResponse.json();
   const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (typeof text !== "string") return json({ error: "Gemini devolvió una respuesta vacía." }, 502);
+  if (typeof text !== "string") return json({ error: "Gemini devolviÃ³ una respuesta vacÃ­a." }, 502);
   const response = parseAssistantPayload(text, products);
   return response
     ? json(response)
